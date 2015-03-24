@@ -1,0 +1,43 @@
+#options:
+#	ph: &7[&aHomes&7] &a
+#	eh: &c[Homes] &c
+
+command /list:
+	aliases: ls, online
+	trigger:
+		if size of all players is 0:
+			message "&7[&aList&7]&f Online Players: 0"
+			stop
+		message "&7[&aList&7]&f Online Players (%number of players%): %all players%"
+		stop
+
+#command /listworld:
+#	trigger:
+#		message "&7[&aListworld&7] &aAll worlds: %all worlds%"
+#		stop
+
+#command /sethome:
+#	permission: essentials.home
+#	executable by: players
+#	trigger:
+#		set {Home.%player%.%world%} to location of player
+#		message "{@ph}Home set for world %world%."
+#		stop
+#
+#command /home:
+#	permission: essentials.home
+#	executable by: players
+#	trigger:
+#		if {Home.%player%.%world%} is not set:
+#			message "{@eh}You haven't set a home in this world."
+#			stop
+#		teleport player to {Home.%player%.%world%}
+#		message "{@ph}Going home."
+#		stop
+
+command //wand:
+	permission: worldedit.wand
+	trigger:
+		add 1 wooden axe of fortune 3 named "&f%player%'s WorldEdit Wand" to the player
+		message "&dLeft click: select pos ##1; Right click: select pos ##2"
+		stop

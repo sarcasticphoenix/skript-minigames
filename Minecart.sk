@@ -1,0 +1,63 @@
+options:
+	eject-block: mossy cobble
+	boost-block: gold ore
+	largeboost-block: emerald ore
+	ultraboost-block: diamond ore
+	slow-block: coal ore
+	reset-block: iron ore
+	spawn-text-1: [Minecart]
+	spawn-text-2: Spawn
+	permission: minecart.admin
+	e: &c[Minecart] &c
+	p: &7[&aMinecart&7] &f
+
+on walking over {@eject-block}:
+	player is riding a minecart
+	set {_v} to the vehicle of player
+	eject the passenger from {_v}
+	stop
+
+on walking over {@boost-block}:
+	player is riding a minecart
+	set maximum minecart speed of vehicle of player to 1
+	message "{@p}Your minecart's max speed: &61.0"
+	stop
+
+on walking over {@largeboost-block}:
+	player is riding a minecart
+	set maximum minecart speed of vehicle of player to 1.5
+	message "{@p}Your minecart's max speed: &c1.5"
+
+on walking over {@ultraboost-block}:
+	player is riding a minecart
+	set maximum minecart speed of vehicle of player to 2.0
+	message "{@p}Your minecart's max speed: &42.0"
+	stop
+
+on walking over {@slow-block}:
+	player is riding a minecart
+	set maximum minecart speed of vehicle of player to 0.2
+	message "{@p}Your minecart's max speed: &a0.2"
+	stop
+
+on walking over {@reset-block}:
+	player is riding a minecart
+	set maximum minecart speed of vehicle of player to 0.5
+	message "{@p}Your minecart's max speed: &a0.5"
+	stop
+
+on right click on sign:
+	line 1 of clicked block is "{@spawn-text-1}"
+	line 2 of clicked block is "{@spawn-text-2}"
+	cancel event
+	teleport player to location of clicked block
+	make the player ride a minecart
+	stop
+
+on sign change:
+	line 1 of event-block is "{@spawn-text-1}"
+	player doesn't have permission "{@permission}"
+	cancel event
+	message "&cYou don't have permission."
+	stop		
+

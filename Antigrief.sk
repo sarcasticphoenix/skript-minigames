@@ -1,0 +1,38 @@
+#================================
+#Ultimate AntiGriefing script
+#By Sarc
+#Orignially made for SarcaCraft
+#mc.sarc.biz:1234
+#================================
+
+#===============
+#Block item dropping
+#===============
+	
+on sheep eat:
+	cancel event
+	
+on xp spawn:
+	world is "DefaultPlot" or "PlayerPlot" or "ProPlot" or "ProWorld" or "Freebuild"
+	cancel event
+	
+on flow:
+	world is "DefaultPlot" or "PlayerPlot" or "Freebuild" or "Parkour"
+	cancel event
+	
+on fade:
+	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	cancel event
+	
+on form:
+	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	cancel event
+
+on spread:
+	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	cancel event
+	stop
+
+on ignition:
+	world isn't "Survival"
+	cancel event

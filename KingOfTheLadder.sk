@@ -1,0 +1,255 @@
+options:
+	p: &7[&3KOTL&7] &3
+
+on script load:
+	if {KOTL.gameCount} is not set:
+		set {KOTL.gameCount} to 0
+	set {KOTL.canStart} to true
+	set {KOTL.started} to false
+	loop all players:
+		set {KOTL.userdata.%loop-player%.playing} to false
+		world of loop-player is "KingOfTheLadder"
+		teleport loop-player to {KOTL.lobby}
+		send "{@p}Game reset by administrator." to loop-player
+	clear {KOTL.players::*}
+	set line 3 of block at {KOTL.sign} to "Nobody"
+	delete {KOTL.winning}
+	add 1 to {KOTL.gameCount}
+	stop
+
+on join:
+	if {KOTL.userdata.%player%.playing} is true:
+		set {KOTL.userdata.%player%.playing} to false
+		teleport player to {KOTL.lobby}
+	stop
+
+on quit:
+	{KOTL.started} is true
+	if {KOTL.userdata.%player%.playing} is true:
+		remove player from {KOTL.players::*}
+		if size of {KOTL.players::*} is less than 2:
+			loop {KOTL.players::*}:
+				set {KOTL.userdata.%loop-value%.playing} to false
+				teleport loop-value to {KOTL.lobby}
+				send "{@p}Not enough players in the game." to loop-value
+			set {KOTL.canStart} to true
+			set {KOTL.started} to false
+			clear {KOTL.players::*}
+			set line 3 of block at {KOTL.sign} to "Nobody"
+			delete {KOTL.winning}
+			add 1 to {KOTL.gameCount}
+		stop
+
+on right click on sign:
+	line 1 of clicked block is "[KOTL]"
+	if line 2 of clicked block is "Join":
+		if {KOTL.started} is true:
+			message "{@p}Game is already started."
+			stop
+		teleport player to {KOTL.waiting}
+		add player to {KOTL.players::*}
+		set {KOTL.userdata.%player%.playing} to true
+		set gamemode of player to survival
+		clear the player's inventory
+		set tool of player to iron sword
+		enchant the tool of player with knockback 1
+		equip the player with all iron armor
+		set {_size} to size of {KOTL.players::*}
+		loop {KOTL.players::*}:
+			send "{@p}%{_size}% players ingame." to loop-value
+		stop
+	else if line 2 of clicked block is "Start":
+		if {KOTL.canStart} is false:
+			message "{@p}Someone already pressed the start sign."
+			stop
+		if size of {KOTL.players::*} is less than or equal to 2:
+			message "{@p}Not enough players."
+			stop
+		broadcast "{@p}Game is beginning in 15 seconds."
+		set {KOTL.canStart} to false
+		set {_int} to 15
+		while {_int} is greater than 0:
+			loop {KOTL.players::*}:
+				send "{@p}Starting in %{_int}%" to loop-value
+			subtract 1 from {_int}
+			wait 1 seconds
+		loop {KOTL.players::*}:
+			set {KOTL.userdata.%loop-value%.playing} to false
+			teleport loop-value to {KOTL.arena}
+			send "{@p}Stay on the top for 10 seconds." to loop-value
+			send "{@p}You have 2 minutes to complete this task." to loop-value
+			send "{@p}Right click the sign at the top once you get there." to loop-value
+			send "{@p}Good luck!" to loop-value
+			set {KOTL.userdata.%loop-value%.playing} to true
+		set {KOTL.started} to true
+		add 1 to {KOTL.gameCount}
+		set {_admgame} to {KOTL.gameCount}
+		wait 30 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}1.5 minutes remaining." to loop-value
+		else:
+			stop
+		wait 30 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}1 minute remaining." to loop-value
+		else:
+			stop
+		wait 30 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}30 seconds remaining." to loop-value
+		else:
+			stop
+		wait 25 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}5 seconds remaining." to loop-value
+		else:
+			stop
+		wait 1 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}4 seconds remaining." to loop-value
+		else:
+			stop
+		wait 1 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}3 seconds remaining." to loop-value
+		else:
+			stop
+		wait 1 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}2 seconds remaining." to loop-value
+		else:
+			stop
+		wait 1 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}1 second remaining." to loop-value
+		else:
+			stop
+		wait 1 seconds
+		if {_admgame} is {KOTL.gameCount}:
+			loop {KOTL.players::*}:
+				send "{@p}Game over." to loop-value
+				set {KOTL.userdata.%loop-value%.playing} to false
+				teleport loop-value to {KOTL.lobby}
+			set {KOTL.canStart} to true
+			set {KOTL.started} to false
+			clear {KOTL.players::*}
+			stop
+		else:
+			stop
+	else if line 2 of clicked block is "Winning:":
+		block at location of player is clicked block
+		if {KOTL.winning} is set:
+			message "{@p}%{KOTL.winning}% is winning. Dethrone them first."
+			stop
+		set line 3 of clicked block to the player's name
+		loop {KOTL.players::*}:
+			send "{@p}%player% has climbed to the top! Dethrone them within 10 seconds or they win!" to loop-value
+		set {KOTL.winning} to the player
+		message "{@p}Good! Stay at the top for 10 seconds."
+		set {_int} to 10
+		while {_int} is greater than 0:
+			if block at location of player is clicked block:
+				message "{@p}%{_int}% seconds until victory."
+				subtract 1 from {_int}
+				wait 1 seconds
+				if {_int} is 0:
+					broadcast "{@p}%player% won!"
+					execute console command "/eco give %player% 5000"
+					loop {KOTL.players::*}:
+						set {KOTL.userdata.%loop-value%.playing} to false
+						teleport loop-value to {KOTL.lobby}
+						send "{@p}Game ended." to loop-value
+					set {KOTL.canStart} to true
+					set {KOTL.started} to false
+					clear {KOTL.players::*}
+					set line 3 of clicked block to "Nobody"
+					delete {KOTL.winning}
+					add 1 to {KOTL.gameCount}
+					stop
+			else:
+				message "{@p}Displaced... Try again."
+				set line 3 of clicked block to "Nobody"
+				delete {KOTL.winning}
+				stop
+		stop
+
+on command:
+	world is "KingOfTheLadder"
+	{KOTL.userdata.%player%.playing} is true
+	command isn't "kotl leave" or "kotl" or "msg" or "r"
+	cancel event
+	message "{@p}You may only do /kotl leave."
+	stop
+
+on player teleport:
+	{KOTL.userdata.%player%.playing} is true
+	cancel event
+	message "{@p}You may not teleport while ingame."
+	stop
+
+command /kotl [<text>]:
+	permission: kotl.commands
+	trigger:
+		if arg 1 is not set:
+			message "{@p}/kotl leave|setlobby|setwaiting|setarena|setsign"
+			stop
+		if arg 1 is "leave":
+			if {KOTL.userdata.%player%.playing} is true:
+				remove player from {KOTL.players::*}
+				set {KOTL.userdata.%player%.playing} to false
+				teleport player to {KOTL.lobby}
+				if size of {KOTL.players::*} is less than 2:
+					loop {KOTL.players::*}:
+						set {KOTL.userdata.%loop-value%.playing} to false
+						teleport loop-value to {KOTL.lobby}
+						send "{@p}Not enough players in the game." to loop-value
+					set {KOTL.canStart} to true
+					set {KOTL.started} to false
+					clear {KOTL.players::*}
+					set line 3 of block at {KOTL.sign} to "Nobody"
+					delete {KOTL.winning}
+				stop
+			else:
+				message "{@p}Not ingame."
+				stop
+		else:
+			player has permission "kotl.admin"
+			if arg 1 is "setlobby":
+				set {KOTL.lobby} to location of player
+				message "{@p}Set."
+			if arg 1 is "setwaiting":
+				set {KOTL.waiting} to location of player
+				message "{@p}Set."
+			if arg 1 is "setarena":
+				set {KOTL.arena} to location of player
+				message "{@p}Set."
+			if arg 1 is "setsign":
+				set {KOTL.sign} to location of target block
+				message "{@p}Set."
+
+on damage of player:
+	world is "KingOfTheLadder"
+	if {KOTL.userdata.%victim%.playing} is true:
+		set damage to 0
+		if damage cause is burning:
+			set {KOTL.userdata.%victim%.playing} to false
+			teleport victim to {KOTL.arena}
+			set {KOTL.userdata.%victim%.playing} to true
+		heal the victim
+		extinguish the victim
+		set food bar of victim to 20
+	else:
+		set damage to 0
+		heal the victim
+		teleport victim to {KOTL.lobby}
+		extinguish the victim
+		set food bar of victim to 20
+	stop

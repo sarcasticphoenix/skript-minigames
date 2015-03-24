@@ -1,0 +1,42 @@
+options:
+	p: &7[&aPersonal Warps&7] &a
+	e: &c[Personal Warps] &c
+
+command /personalwarp [<text>]:
+	aliases: pwarp
+	permission: pwarp.use
+	trigger:
+		if arg 1 is not set:
+			message "{@p}Your warps: (%size of {PWarp.lists.%player%::*}%)"
+			message "{@p}%{PWarp.lists.%player%::*}%"
+			stop
+		if {PWarp.%player%.%arg 1%} is not set:
+			message "{@e}Warp %arg 1% doesn't exist."
+			stop
+		teleport player to {PWarp.%player%.%arg 1%}
+		message "{@p}Teleporting..."
+		stop
+
+command /setpersonalwarp <text>:
+	aliases: setpwarp
+	permission: pwarp.set
+	trigger:
+		if {PWarp.%player%.%arg 1%} is set:
+			message "{@e}Warp %arg 1% already exists."
+			stop
+		set {PWarp.%player%.%arg 1%} to location of player
+		add arg 1 to {PWarp.lists.%player%::*}
+		message "{@p}Warp %arg 1% set."
+		stop
+
+command /delpersonalwarp <text>:
+	aliases: delpwarp
+	permission: pwarp.del
+	trigger:
+		if {PWarp.lists.%player%::*} doesn't contain arg 1:
+			message "{@e}Warp %arg 1% doesn't exist."
+			stop
+		delete {PWarp.%player%.%arg 1%}
+		remove arg 1 from {PWarp.lists.%player%::*}
+		message "{@p}Warp %arg 1% deleted."
+		stop

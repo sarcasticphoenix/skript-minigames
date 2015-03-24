@@ -1,0 +1,13 @@
+options:
+	p: &7[&aSearch&7] &f
+
+command /search <player = %player%>:
+	permission: search.use
+	trigger:
+		loop all items in inventory of arg 1:
+			message "{@p}%loop-item%"
+		message "{@p}Helm: %helmet of arg 1%"
+		message "{@p}Chest: %chestplate of arg 1%"
+		message "{@p}Leg: %leggings of arg 1%"
+		message "{@p}Boots: %boots of arg 1%"
+		stop

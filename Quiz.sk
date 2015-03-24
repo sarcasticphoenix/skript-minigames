@@ -1,0 +1,33 @@
+command /unlock:
+	trigger:
+		player doesn't have permission "quiz.bypass"
+		set {unlocked.%player%} to true
+		message "&7[&eSarcaCraft&7] &eNow, click the iron."
+		stop
+
+on click on iron block:
+	player doesn't have permission "quiz.bypass"
+	world is "Hub"
+	{unlocked.%player%} is true
+	teleport player to {Hub.spawnpoint}
+	execute console command "/pex user %player% group set Newcomer"
+	message "&7[&eSarcaCraft&7] &eWelcome!"
+	stop
+
+on first join:
+	teleport player to {Hub.quiz}
+	wait 0.1 seconds
+	teleport player to {Hub.quiz}
+	message "&7[&eSarcaCraft&7] &eWelcome! Please read our tutorial!"
+	stop
+
+command /quiz <text>:
+	permission: quiz.admin
+	trigger:
+		if arg 1 is "setspawn":
+			set {Hub.spawnpoint} to location of player
+			message "Set"
+		else if arg 1 is "setquiz":
+			set {Hub.quiz} to location of player
+			message "Set"
+		stop

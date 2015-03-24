@@ -1,0 +1,109 @@
+#  __  __          ____                     __    __         
+# /\ \/\ \        /\  _`\                  /\ \__/\ \        
+# \ \ `\\ \    ___\ \ \/\ \     __     __  \ \ ,_\ \ \___    
+#  \ \ , ` \  / __`\ \ \ \ \  /'__`\ /'__`\ \ \ \/\ \  _ `\  
+#   \ \ \`\ \/\ \L\ \ \ \_\ \/\  __//\ \L\.\_\ \ \_\ \ \ \ \ 
+#    \ \_\ \_\ \____/\ \____/\ \____\ \__/.\_\\ \__\\ \_\ \_\
+#     \/_/\/_/\/___/  \/___/  \/____/\/__/\/_/ \/__/ \/_/\/_/
+                                                           
+                                                           
+
+#=======================#
+# NoDeath               #
+# By Sarc               #
+#=======================#
+
+
+
+
+options:
+	#================================================================================#
+	# Conditions can be used to define which worlds to not act on.
+	# I.E. Survival games plugins automatically teleport people on death, might conflict with that
+	#
+	conditions: world is not "SurvivalGames" or "Parkour" or "MobArena" or "KingOfTheLadder"
+	#================================================================================#
+	# Effect can be set to anything.
+	# This is triggered upon death.
+	#
+	effect: make victim execute command "/mvs"
+	#
+	# ++ Here's if you don't use multiverse: Comment out the line above and uncomment the line below
+	#
+	#effect: make victim execute command "/spawn"
+	#
+	# ++ The below is not recommended, since it can bug out. YOU HAVE BEEN WARNED... :P
+	# ++ If using the below, use /setskspawn to set the spawnpoint
+	# 
+	#effect: teleport victim to {nodeath.Spawn}
+	#================================================================================#
+	# Messages can be customized
+	# "Natural" is for things like fall death, lava death, etc
+	# "Entity" is for things like PVP
+	#
+	m: &7[&4Death&7]&c %player%&7 was slain by &c 
+	#================================================================================#
+
+on death of player:
+	player is online
+	#gamemode of victim is survival
+	#broadcast "test"
+	# Omit all worlds that have plugins that do similar things, or things could go wrong
+	{@conditions}
+	#play 100 of effect "explode" with data 1 at victim
+	heal the victim
+	extinguish the victim
+	set victim's hunger bar to 20
+	if world is "PVP":
+		set {PVP.killstreak.%victim%} to 0
+		if attacker is a player:
+			attacker isn't victim
+			execute console command "/eco give %attacker% 1600"
+			add 1 to {PVP.killstreak.%attacker%}
+			if {PVP.killstreak.%attacker%} is greater than 1:
+				broadcast "&7[&3PVP&7] &3%attacker%'s killstreak: &l%{PVP.killstreak.%attacker%}%." to "PVP"
+	wait 1 tick
+	{@effect}
+	wait 1 tick
+	execute console command "/heal %victim%"
+	stop
+
+command /setskspawn:
+	permission: nodeath.admin
+	trigger:
+		set {nodeath.Spawn} to location of player
+		message "&8[NoDeath] Set."
+		stop
+
+command /kill <player>:
+	permission: adminchat.adminchat
+	trigger: 
+		damage arg 1 by 10 hearts
+		stop
+
+on death of villager:
+	world is "superflatsurvival"
+	spawn a zombie at the victim
+	stop
+
+on death of creeper:
+	attacker is set
+	create a safe explosion of force 4 at location of victim
+	stop
+
+on right click on sign:
+	line 2 of clicked block is "[Kit]"
+	if line 3 of clicked block is "&8Sapling":
+		if {_waited} is less than 2 days:
+			message "&b[SSurvival]&7 You have to wait %difference between 2 days and {_waited}% before you can receive this kit again!"
+			stop
+		else:
+			message "&b[SFSurvival] &7Received the Sapling Kit!"
+			set {kit.%player%.lastused} to now
+			set {_waited} to difference between {kit.%player%.lastused} and now
+			give player an oak sapling
+			give player a spruce sapling
+			give player a birch sapling
+			give player a jungle sapling
+			give player a dark oak sapling
+			give player an acacia sapling

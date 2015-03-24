@@ -1,0 +1,578 @@
+on script load:
+	set {Escape.isRunning} to false
+	set {Escape.canStart} to true
+	loop {Escape.currentplayers::*}:
+		teleport loop-value to {Escape.spawnpoint}
+		set {Escape.userdata.%loop-value%.isPlaying} to false
+		set {Escape.userdata.%loop-value%.isHolding} to false
+		set {_temp} to loop-value
+		remove slowness from {_temp}
+		set {_jsdkla} to false
+	loop {Escape.golddata::*}:
+		block at loop-value is gold block
+		set block at loop-value to air
+		set {_jksdak} to false
+	clear {Escape.golddata::*}
+	clear {Escape.currentplayers::*}
+	execute console command "/escape forceend"
+	execute console command "/escape resetgold"
+
+on join:
+	{Escape.userdata.%player%.isPlaying} is true
+	teleport player to {Escape.spawnpoint}
+	set {Escape.userdata.%player%.isPlaying} to false
+	set {Escape.userdata.%player%.isHolding} to false
+	remove slowness from player
+	stop
+
+on quit:
+	{Escape.userdata.%player%.isPlaying} is true
+	remove player from {Escape.currentplayers::*}
+	broadcast "&8[Escape] The presence of %player% dissapears..." to "Escape"
+	if {Escape.userdata.%player%.isHolding} is true:
+		set {_loc1} to location of player
+		if block at {_loc1} is air:
+			set {_loc2} to {_loc1}
+		else:
+			if block above {_loc1} is air:
+				set {_loc2} to location of block above {_loc1}
+			else if block north of {_loc1} is air:
+				set {_loc2} to location of block north of {_loc1}
+			else if block south of {_loc1} is air:
+				set {_loc2} to location of block south of {_loc1}
+			else if block east of {_loc1} is air:
+				set {_loc2} to location of block east of {_loc1}
+			else if block west of {_loc1} is air:
+				set {_loc2} to location of block west of {_loc1}
+			else:
+				execute console command "/escape forceend"
+				broadcast "&c[Escape] %player% was carrying a gold block but accedentially swallowed it! Game over!"
+				stop
+		add {_loc2} to {Escape.golddata::*}
+	if size of {Escape.currentplayers::*} is 0:
+		execute console command "/escape forceend"
+		broadcast "&8[Escape] All dead. Game over." to "Escape"
+		stop
+	stop
+
+on right click on sign:
+	line 1 of clicked block is "[Escape]"
+	world is "Escape"
+	if line 2 of clicked block is "Join":
+		if {Escape.isRunning} is true:
+			message "&8[Escape] The game has already started..."
+			stop
+		else if size of {Escape.currentplayers::*} is 10:
+			message "&8[Escape] There are too many players in the game."
+		else:
+			add player to {Escape.currentplayers::*}
+			set {Escape.userdata.%player%.isPlaying} to true
+			teleport player to {Escape.joinpoint}
+			message "&8[Escape] You slip through the glass..."
+			if size of {Escape.currentplayers::*} is 10:
+				broadcast "&8[Escape] Max players reached. Start the game." to "Escape"
+			stop
+	else if line 2 of clicked block is "Start":
+		{Escape.canStart} is true
+		if size of {Escape.currentplayers::*} is less than 1:
+			message "&8[Escape] You need at least 1 person to play."
+		else:
+			set {Escape.canStart} to false
+			broadcast "&8[Escape] Game starting in 15 seconds..." to "Escape"
+			wait 10 seconds
+			broadcast "&8[Escape] Game starting in 5 seconds..." to "Escape"
+			wait 5 seconds
+			set {Escape.isRunning} to true
+			broadcast "&8[Escape] %{Escape.currentplayers::*}% entered the building..." to "Escape"
+			loop {Escape.currentplayers::*}:
+				teleport loop-value to {Escape.gamepoint}
+				send "&8[Escape] You wake up in a room..." to loop-value
+				set {_dasklj} to false
+			if size of {Escape.currentplayers::*} is 0:
+				execute console command "/escape forceend"
+				broadcast "&8[Escape] All dead. Game over." to "Escape"
+			stop
+				
+
+on command:
+	player is in "Escape"
+	{Escape.userdata.%player%.isPlaying} is true
+	command is not "leaveescape"
+	cancel event
+	message "&8[Escape] Only /leaveescape allowed."
+	stop
+
+on right click on gold block:
+	player is in "Escape"
+	{Escape.userdata.%player%.isHolding} is true:
+		message "&8[Escape] You can't carry more than one block at once..."
+	else:
+		block below clicked block is not stone
+		set {Escape.userdata.%player%.isHolding} to true
+		set clicked block to air
+		strike lightning effect at location of clicked block
+		apply slowness to the player for 100000000 days
+		message "&8[Escape] You are burdened by the load."
+		stop
+
+on right click on any stone brick:
+	player is in "Escape"
+	if {Escape.userdata.%player%.isHolding} is true:
+		set {Escape.userdata.%player%.isHolding} to false
+		turn on block at {Escape.other.toggle}
+		message "&8[Escape] Gold block fetched."
+		remove slowness from the player
+		apply speed to the player for 15 seconds
+		wait 1 seconds
+		turn off block at {Escape.other.toggle}
+		if block at {Escape.gold.slot.1} is air:
+			set block at {Escape.gold.slot.1} to gold block
+			broadcast "&8[Escape] 14 gold left..." to "Escape"
+			wait 2 second
+			broadcast "&8[Escape] Bruce: 'How did you get here?! What terrible luck... Save yourself!'" to "Escape"
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 1000000000 days
+				apply speed 1 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_dsaklj} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.2} is air:
+			set block at {Escape.gold.slot.2} to gold block
+			broadcast "&8[Escape] 13 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.3} is air:
+			set block at {Escape.gold.slot.3} to gold block
+			broadcast "&8[Escape] 12 gold left..." to "Escape"
+			wait 1 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 1000000000 days
+				apply speed 3 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_jkdsajl} to false
+			broadcast "&8[Escape] Bruce: 'More of them are coming back... Please be careful, don't wind up like all of us...'" to "Escape"
+			wait 1 second
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+			stop
+		else if block at {Escape.gold.slot.4} is air:
+			set block at {Escape.gold.slot.4} to gold block
+			broadcast "&8[Escape] 11 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.5} is air:
+			set block at {Escape.gold.slot.5} to gold block
+			broadcast "&8[Escape] 10 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 1000000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_dsajds} to false
+		else if block at {Escape.gold.slot.6} is air:
+			set block at {Escape.gold.slot.6} to gold block
+			broadcast "&8[Escape] 9 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 10000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_kldasjl} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.7} is air:
+			set block at {Escape.gold.slot.7} to gold block
+			broadcast "&8[Escape] 8 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.8} is air:
+			set block at {Escape.gold.slot.8} to gold block
+			broadcast "&8[Escape] 7 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 10000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_sadjlkaj} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.9} is air:
+			set block at {Escape.gold.slot.9} to gold block
+			broadcast "&8[Escape] 6 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.10} is air:
+			set block at {Escape.gold.slot.10} to gold block
+			broadcast "&8[Escape] 5 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 10000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_sdjkljkladj} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.11} is air:
+			set block at {Escape.gold.slot.11} to gold block
+			broadcast "&8[Escape] 4 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.12} is air:
+			set block at {Escape.gold.slot.12} to gold block
+			broadcast "&8[Escape] 3 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 10000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_djasklj} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.13} is air:
+			set block at {Escape.gold.slot.13} to gold block
+			broadcast "&8[Escape] 2 gold left..." to "Escape"
+		else if block at {Escape.gold.slot.14} is air:
+			set block at {Escape.gold.slot.14} to gold block
+			broadcast "&8[Escape]Bruce: 'You're so close...please hurry!'" to "Escape"
+			wait 2 second
+			broadcast "&8[Escape] 1 gold left..." to "Escape"
+			wait 3 second
+			spawn a zombie at {Escape.other.obl}
+			loop all entities in "Escape":
+				entity is a zombie
+				apply regeneration 1000 to the loop-entity for 10000000 days
+				apply speed 5 to the loop-entity for 1000000000 days
+				apply invisibility to the loop-entity for 1000000000 days
+				equip the loop-entity with an iron chestplate
+				equip the loop-entity with an iron helmet
+				set {_sdklaj} to false
+			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
+		else if block at {Escape.gold.slot.15} is air:
+			set block at {Escape.gold.slot.15} to gold block
+			broadcast "&8[Escape] Bruce: 'It's too late for me, but I can still save you...'" to "Escape"
+			broadcast "&8[Escape] You are teleported to safety by Bruce's spirit..." to "Escape"
+			wait 1 seconds
+			execute console command "/escape win"
+			stop
+	else:
+		message "&8[Escape] You aren't even carrying any gold."
+
+
+on damage of player:
+	world is "Escape"
+	{Escape.userdata.%victim%.isPlaying} is true
+	set {Escape.userdata.%victim%.isPlaying} to false
+	remove victim from {Escape.currentplayers::*}
+	send "&8[Escape] You died..." to the victim
+	broadcast "&8[Escape] The presence of %victim% dissapears..." to "Escape"
+	if {Escape.userdata.%victim%.isHolding} is true:
+		set {Escape.userdata.%victim%.isHolding} to false
+		set {_loc1} to location of victim
+		if block at {_loc1} is air:
+			set {_loc2} to {_loc1}
+		else:
+			if block above {_loc1} is air:
+				set {_loc2} to location of block above {_loc1}
+			else if block north of {_loc1} is air:
+				set {_loc2} to location of block north of {_loc1}
+			else if block south of {_loc1} is air:
+				set {_loc2} to location of block south of {_loc1}
+			else if block east of {_loc1} is air:
+				set {_loc2} to location of block east of {_loc1}
+			else if block west of {_loc1} is air:
+				set {_loc2} to location of block west of {_loc1}
+			else:
+				execute console command "/escape forceend"
+				broadcast "&c[Escape] %victim% was carrying a gold block but accedentially swallowed it! Game over!" to "Escape"
+				broadcast "&c[Escape] ...actually, there was no space to spawn the gold in. Just an error." to "Escape"
+				stop
+		broadcast "&8[Escape] You hear a thud of a falling block." to "Escape"
+		add {_loc2} to {Escape.golddata::*}
+		set block at {_loc2} to gold block
+	teleport victim to {Escape.spawnpoint}
+	if size of {Escape.currentplayers::*} is 0:
+		execute console command "/escape forceend"
+		broadcast "&8[Escape] All dead. Game over." to "Escape"
+	stop
+
+on damage of zombie:
+	world is "Escape"
+	send "&8Vain" to attacker
+	cancel event
+
+on spawn of zombie:
+	world is "Escape"
+	apply invisibility to the zombie for 10000000 days
+	apply speed 3 to the zombie for 10000000 days
+	apply regeneration 127 to the zombie for 10000000 days
+	equip the zombie with iron helmet
+	equip the zombie with iron chestplate
+	stop
+
+command /leaveescape:
+	permission: escape.commands
+	trigger:
+		world is "Escape"
+		{Escape.userdata.%player%.isPlaying} is true
+		set {Escape.userdata.%player%.isPlaying} to false
+		remove player from {Escape.currentplayers::*}
+		message "&8[Escape] You died..."
+		broadcast "&8[Escape] The presence of %player% dissapears..." to "Escape"
+		if {Escape.userdata.%player%.isHolding} is true:
+			set {Escape.userdata.%player%.isHolding} to false
+			set {_loc1} to location of player
+			if block at {_loc1} is air:
+				set {_loc2} to {_loc1}
+			else:
+				if block above {_loc1} is air:
+					set {_loc2} to location of block above {_loc1}
+				else if block north of {_loc1} is air:
+					set {_loc2} to location of block north of {_loc1}
+				else if block south of {_loc1} is air:
+					set {_loc2} to location of block south of {_loc1}
+				else if block east of {_loc1} is air:
+					set {_loc2} to location of block east of {_loc1}
+				else if block west of {_loc1} is air:
+					set {_loc2} to location of block west of {_loc1}
+				else:
+					execute console command "/escape forceend"
+					broadcast "&c[Escape] %player% was carrying a gold block but accedentially swallowed it! Game over!"
+					stop
+			broadcast "&8[Escape] You hear a thud of a falling block."
+			add {_loc2} to {Escape.golddata::*}
+			set block at {_loc2} to gold block
+		teleport player to {Escape.spawnpoint}
+		if size of {Escape.currentplayers::*} is 0:
+			execute console command "/escape forceend"
+			broadcast "&8[Escape] All dead. Game over." to "Escape"
+		stop
+	
+command /escape <text>:
+	permission: escape.admin
+	trigger:
+		if arg 1 is "forceend":
+			loop {Escape.currentplayers::*}:
+				teleport loop-value to {Escape.spawnpoint}
+				set {Escape.userdata.%loop-value%.isPlaying} to false
+				set {Escape.userdata.%loop-value%.isHolding} to false
+				set {_temp} to loop-value
+				remove slowness from {_temp}
+				set {_SDAKL} to false
+			loop all entities in "Escape":
+				loop-entity is a zombie
+				damage loop-entity by 1000000 hearts
+				set {_dsa} to false
+			loop {Escape.golddata::*}:
+				block at loop-value is gold block
+				set block at loop-value to air
+				set {_sdjakldj} to false
+			clear {Escape.golddata::*}
+			clear {Escape.currentplayers::*}
+			set {Escape.isRunning} to false
+			execute console command "/escape resetgold"
+			set {Escape.canStart} to true
+			execute console command "/escape win"
+		else if arg 1 is "win":
+			loop {Escape.currentplayers::*}:
+				teleport loop-value to {Escape.spawnpoint}
+				set {Escape.userdata.%loop-value%.isPlaying} to false
+				set {Escape.userdata.%loop-value%.isHolding} to false
+				execute console command "/eco give %loop-value% 700000"
+				set {_temp} to loop-value
+				remove slowness from {_temp}
+				set {_djsaklj} to false
+			loop all entities in "Escape":
+				loop-entity is a zombie
+				damage loop-entity by 1000000 hearts
+				set {_sdjkla} to false
+			loop {Escape.golddata::*}:
+				block at loop-value is gold block
+				set block at loop-value to air
+				set {_sdad} to false
+			clear {Escape.golddata::*}
+			clear {Escape.currentplayers::*}
+			set {Escape.isRunning} to false
+			execute console command "/escape resetgold"
+		else if arg 1 is "resetgold":
+			set block at {Escape.gold.begin.1} to gold block
+			set block at {Escape.gold.begin.2} to gold block
+			set block at {Escape.gold.begin.3} to gold block
+			set block at {Escape.gold.begin.4} to gold block
+			set block at {Escape.gold.begin.5} to gold block
+			set block at {Escape.gold.begin.6} to gold block
+			set block at {Escape.gold.begin.7} to gold block
+			set block at {Escape.gold.begin.8} to gold block
+			set block at {Escape.gold.begin.9} to gold block
+			set block at {Escape.gold.begin.10} to gold block
+			set block at {Escape.gold.begin.11} to gold block
+			set block at {Escape.gold.begin.12} to gold block
+			set block at {Escape.gold.begin.13} to gold block
+			set block at {Escape.gold.begin.14} to gold block
+			set block at {Escape.gold.begin.15} to gold block
+			set block at {Escape.gold.slot.1} to air
+			set block at {Escape.gold.slot.2} to air
+			set block at {Escape.gold.slot.3} to air
+			set block at {Escape.gold.slot.4} to air
+			set block at {Escape.gold.slot.5} to air
+			set block at {Escape.gold.slot.6} to air
+			set block at {Escape.gold.slot.7} to air
+			set block at {Escape.gold.slot.8} to air
+			set block at {Escape.gold.slot.9} to air
+			set block at {Escape.gold.slot.10} to air
+			set block at {Escape.gold.slot.11} to air
+			set block at {Escape.gold.slot.12} to air
+			set block at {Escape.gold.slot.13} to air
+			set block at {Escape.gold.slot.14} to air
+			set block at {Escape.gold.slot.15} to air
+		else if arg 1 is "setjoinpoint":
+			set {Escape.joinpoint} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setspawnpoint":
+			set {Escape.spawnpoint} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgamepoint":
+			set {Escape.gamepoint} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold1":
+			set {Escape.gold.begin.1} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold2":
+			set {Escape.gold.begin.2} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold3":
+			set {Escape.gold.begin.3} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold4":
+			set {Escape.gold.begin.4} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold5":
+			set {Escape.gold.begin.5} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold6":
+			set {Escape.gold.begin.6} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold7":
+			set {Escape.gold.begin.7} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold8":
+			set {Escape.gold.begin.8} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold9":
+			set {Escape.gold.begin.9} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold10":
+			set {Escape.gold.begin.10} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold11":
+			set {Escape.gold.begin.11} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold12":
+			set {Escape.gold.begin.12} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold13":
+			set {Escape.gold.begin.13} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold14":
+			set {Escape.gold.begin.14} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setgold15":
+			set {Escape.gold.begin.15} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot1":
+			set {Escape.gold.slot.1} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot2":
+			set {Escape.gold.slot.2} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot3":
+			set {Escape.gold.slot.3} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot4":
+			set {Escape.gold.slot.4} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot5":
+			set {Escape.gold.slot.5} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot6":
+			set {Escape.gold.slot.6} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot7":
+			set {Escape.gold.slot.7} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot8":
+			set {Escape.gold.slot.8} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot9":
+			set {Escape.gold.slot.9} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot10":
+			set {Escape.gold.slot.10} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot11":
+			set {Escape.gold.slot.11} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot12":
+			set {Escape.gold.slot.12} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot13":
+			set {Escape.gold.slot.13} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot14":
+			set {Escape.gold.slot.14} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setslot15":
+			set {Escape.gold.slot.15} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "settoggle":
+			set {Escape.other.toggle} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "setObl":
+			set {Escape.other.obl} to location of player
+			message "&8[Escape] Set."
+		else if arg 1 is "purge":
+			loop 3 times:
+				loop {Escape.currentplayers::*}:
+					teleport loop-value to {Escape.spawnpoint}
+					set {Escape.userdata.%loop-value%.isPlaying} to false
+					set {Escape.userdata.%loop-value%.isHolding} to false
+					set {_temp} to loop-value
+					remove slowness from {_temp}
+					set {_jsdlka} to false
+				loop all entities in "Escape":
+					loop-entity is a zombie
+					damage loop-entity by 1000000 hearts
+					set {_dasdjl} to false
+				loop {Escape.golddata::*}:
+					block at loop-value is gold block
+					set block at loop-value to air
+					set {_dasjkl} to false
+				clear {Escape.golddata::*}
+				clear {Escape.currentplayers::*}
+				set {Escape.isRunning} to false
+				execute console command "/escape resetgold"
+				set {Escape.canStart} to true
+				execute console command "/escape win"
+			execute console command "/sk reload PLUGINescape"
+			execute console command "/sk reload PLUGINescape"
+			execute console command "/sk reload PLUGINescape"
+		stop
+
+on right click on sign:
+	line 1 of clicked block is "[Book]"
+	if line 2 of clicked block is "Bruce's Story":
+		execute console command "/sbs give Escape %player%"
+		stop
+

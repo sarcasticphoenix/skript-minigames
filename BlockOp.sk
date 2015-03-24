@@ -1,0 +1,91 @@
+#==============
+#BlockOp.sk
+#Made by Sarc (sarcasticphoenix)
+#20130503
+#==============
+
+#========================
+#Before using, edit this
+#========================
+
+options:
+	# Server name in broadcasts
+	server-name: SarcaCraft
+	# Allow players to use original /op
+	allow-default-op-command: false
+	# Allow players to use original /deop
+	allow-default-deop-command: false
+	# Kick on /op (No worth if allow-default-op-command is true)
+	kick-on-op-command: true
+	# Kick on /deop (No worth if allow-default-deop-command is true)
+	kick-on-deop-command: true
+	
+#=============================================
+#Everything below is the script/skript stuff
+#=============================================
+
+command /consoleallowop <offline player>:
+	permission: skript.admin
+	executable by: console
+	trigger:
+		set {canBeOpped.%uuid of arg 1%} to true
+		broadcast "&c[{@server-name}] &fAlert! %arg 1% is now allowed to be op by Console!"
+		message "&c[{@server-name}] &fPlease relog to gain operator permissions." to arg 1
+		stop
+
+command /consoledenyop <offline player>:
+	permission: skript.admin
+	executable by: console
+	trigger:
+		set {canBeOpped.%uuid of arg 1%} to false
+		broadcast "&c[{@server-name}] &fAlert! %arg 1% is now not allowed to be op by Console!"
+		set {_p} to arg 1
+		deop {_p}
+		stop
+
+command /allowop <player>:
+	permission: skript.admin
+	executable by: player
+	trigger:
+		if {canBeOpped.%uuid of player%} is true:
+			set {canBeOpped.%uuid of arg 1%} to true
+			broadcast "&c[{@server-name}] &fAlert! %arg 1% is now allowed to be op by %player%!"
+			message "&c[{@server-name}] &fPlease relog to gain operator permissions." to arg 1
+			stop
+			
+command /denyop <offline player>:
+	permission: skript.admin
+	executable by: player
+	trigger:
+		if {canBeOpped.%uuid of player%} is true:
+			set {canBeOpped.%uuid of arg 1%} to false
+			broadcast "&c[{@server-name}] &fAlert! %arg 1% is now not allowed to be op by %player%!"
+			set {_p} to arg 1
+			deop {_p}
+			stop
+
+on join:
+	if {canBeOpped.%uuid of player%} is true:
+		op the player
+		stop
+	else:
+		if player is op:
+			deop the player
+			broadcast "&c[{@server-name}] &fAlert! %player% joined as op, although he cannot be an op!"
+			stop
+		
+on command "/op":
+	if {@allow-default-op-command} is false:
+		cancel event
+		if {@kick-on-op-command} is true:
+			kick the player
+		broadcast "&c[{@server-name}] &fAlert! %player% tried to access op!"
+		stop
+		
+on command "/deop":
+	if {@allow-default-deop-command} is false:
+		cancel event
+		if {@kick-on-deop-command} is true:
+			kick the player
+		broadcast "&c[{@server-name}] &fAlert! %player% tried to access deop!"
+		stop

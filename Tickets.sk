@@ -1,0 +1,278 @@
+options:
+	pt: &7[&aTickets&7] &a
+	et: &c[Tickets] &c
+	pa: &7[&3Admintool&7] &3
+	ea: &c[Admintool] &c
+	pq: &7[&aQueue&7] &a
+	eq: &c[Queue] &c
+
+command /ticket [<text>]:
+	permission: ticket.send
+	trigger:
+		if arg 1 is not set:
+			message "{@et}/ticket Message To Send Here"
+			message "{@et}Your name, the message, and your current coordinates will be sent."
+			stop
+		if {Tickets.players.%player%.n} is not set:
+			set {Tickets.players.%player%.n} to 3
+		if {Tickets.players.%player%.n} is 0:
+			message "{@et}You've already submitted the max number of tickets. Please wait until staff close some of yours."
+			stop
+		set {_i} to 1
+		set {_l} to true
+		message "{@pt}Submitting ticket. This can take a while."
+		while {_l} is true:
+			if {Tickets.data.%{_i}%.user} is not set:
+				set {Tickets.data.%{_i}%.user} to player
+				set {Tickets.data.%{_i}%.text} to arg 1
+				set {Tickets.data.%{_i}%.loc} to location of player
+				message "{@pt}Ticket submitted! (Task number %{_i}%)"
+				set {_l} to false
+				subtract 1 from {Tickets.players.%player%.n}
+				message "{@pt}You can submit %{Tickets.players.%player%.n}% more ticket(s) until staff finish some of your current ones."
+				stop
+			add 1 to {_i}
+			if {_i} is 50:
+				message "{@pt}Still working... (Scanned 50 places to put your ticket)"
+			if {_i} is 100:
+				message "{@pt}Still working... (Scanned 100 places to put your ticket)"
+			if {_i} is 150:
+				message "{@pt}Any second now... (Scanned 150 places to put your ticket)"
+			if {_i} is 200:
+				message "{@pt}Still scanning... (250 places scanned. There must be a lot of tickets right now)"
+			if {_i} is 250:
+				message "{@et}Scanned 250 places. There's simply not enough room for your ticket right now. Please try again later."
+				set {_l} to false
+				stop
+			wait 0.1 seconds
+		set {_z} to false
+		stop
+
+command /queue [<text>]:
+	permission: queue.send
+	trigger:
+		if arg 1 is not set:
+			message "{@eq}/queue InfoAboutTask"
+			stop
+		set {_i} to 1
+		set {_l} to true
+		while {_l} is true:
+			if {Queue.data.%{_i}%.name} is not set:
+				message "{@pq}Task %{_i}% created"
+				set {Queue.data.%{_i}%.name} to arg 1
+				set {Queue.data.%{_i}%.player} to player
+				set {Queue.data.%{_i}%.loc} to location of player
+				stop
+			message "{@pq}Scanning for open slots to place your ticket"
+			wait 0.1 ticks
+			add 1 to {_i}
+			if {_i} is greater than 50:
+				message "{@eq}There are already 50 tasks. Complete some before posting new ones."
+				stop
+		set {_z} to false
+		stop
+
+
+command /admin <text = "home"> [<text>] [<number>]:
+	aliases: adm
+	permission: admintool
+	trigger:
+		if arg 1 is "home" or "h" or "help":
+			message "{@pa}Admintool Beta 1"
+			message "{@pa}ticket|t view|info|goto|close - Ticket management"
+			message "{@pa}queue|q view|info|goto|close - Queue management"
+			message "{@pa}office|o - Go to the staff office"
+			message "{@pa}sulog|s - See who's been using Superuser the most"
+			stop
+		else if arg 1 is "ticket" or "t":
+			if arg 2 is not set:
+				message "{@pa}Tickets MK2"
+				message "{@pa}view|v [Optional Page Number] - View open tickets"
+				message "{@pa}info|i TaskNumber - Show all info associated with the task"
+				message "{@pa}goto|g TaskNumber - Go to where ticket was submitted"
+				message "{@pa}close|c TaskNumber - Close (finish) ticket"
+				stop
+			else if arg 2 is "view" or "v":
+				if arg 3 is not set:
+					set {_i} to 1
+				else:
+					set {_i} to arg 3 * 10 + 1
+				if {Tickets.data.%{_i}%.text} is not set:
+					if {_i} is 1:
+						message "{@pa}No active tickets. Check the Queue."
+						stop
+					else:
+						message "{@pa}No tickets on page %arg 3%. Check page 1 instead."
+						stop
+				set {_l} to true
+				while {_l} is true:
+					if {Tickets.data.%{_i}%.text} is not set:
+						message "{@pa}End of tickets list."
+						stop
+					message "{@pa}ID %{_i}%: %{Tickets.data.%{_i}%.text}%"
+					add 1 to {_i}
+				stop
+			else if arg 2 is "info" or "i":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Tickets.data.%arg 3%.text} is not set:
+					message "{@ea}No such ticket exists"
+					stop
+				message "{@pa}Ticket ID %arg 3%"
+				message "{@pa}Submitted by %{Tickets.data.%arg 3%.user}%"
+				message "{@pa}Text: %{Tickets.data.%arg 3%.text}%"
+				message "{@pa}Location: %{Tickets.data.%arg 3%.loc}%"
+				stop
+			else if arg 2 is "goto" or "g":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Tickets.data.%arg 3%.text} is not set:
+					message "{@ea}No such task exists"
+					stop
+				make player execute command "/admin t i %arg 3%"
+				teleport player to {Tickets.data.%arg 3%.loc}
+				stop
+			else if arg 2 is "close" or "c":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Tickets.data.%arg 3%.text} is not set:
+					message "{@ea}No such task exists"
+					stop
+				add 1 to {Tickets.players.%{Tickets.data.%arg 3%.user}%.n}
+				delete {Tickets.data.%arg 3%.user}
+				delete {Tickets.data.%arg 3%.text}
+				delete {Tickets.data.%arg 3%.loc}
+				message "{@pa}Task %arg 3% finished. You get 5 staffpoints!"
+				add 5 to {Ticket.staff.%player%.score}
+				set {_i} to arg 3
+				set {_j} to {_i}
+				add 1 to {_j}
+				set {_l} to true
+				while {_l} is true:
+					if {Tickets.data.%{_j}%.user} is set:
+						set {Tickets.data.%{_i}%.user} to {Tickets.data.%{_j}%.user}
+						set {Tickets.data.%{_i}%.text} to {Tickets.data.%{_j}%.text}
+						set {Tickets.data.%{_i}%.loc} to {Tickets.data.%{_j}%.loc}
+						delete {Tickets.data.%{_j}%.user}
+						delete {Tickets.data.%{_j}%.text}
+						delete {Tickets.data.%{_j}%.loc}
+						add 1 to {_i}
+						add 1 to {_j}
+					else:
+						loop all players:
+							if loop-player has permission "su.use":
+								send "{@pa}%player% just completed ticket %arg 3%." to loop-player
+						set {_l} to false
+						stop
+				set {_z} to false
+				stop
+		else if arg 1 is "queue" or "q":
+			if arg 2 is not set:
+				message "{@pa}Queue MK2"
+				message "{@pa}view|v [Optional Page Number] - View open queue tasks"
+				message "{@pa}info|i TaskNumber - Show all info associated with the task"
+				message "{@pa}goto|g TaskNumber - Go to where queue task was submitted"
+				message "{@pa}close|c TaskNumber - Close (finish) queue task"
+				stop
+			else if arg 2 is "view" or "v":
+				if arg 3 is not set:
+					set {_i} to 1
+				else:
+					set {_i} to arg 3 * 10 + 1
+				if {Queue.data.%{_i}%.name} is not set:
+					if {_i} is 1:
+						message "{@pa}No active queue tasks. Check the Tickets."
+						stop
+					else:
+						message "{@pa}No queue tasks on page %arg 3%. Check page 1 instead."
+						stop
+				set {_l} to true
+				while {_l} is true:
+					if {Queue.data.%{_i}%.name} is not set:
+						message "{@pa}End of queue tasks list."
+						stop
+					message "{@pa}ID %{_i}%: %{Queue.data.%{_i}%.name}%"
+					add 1 to {_i}
+				stop
+			else if arg 2 is "info" or "i":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Queue.data.%arg 3%.name} is not set:
+					message "{@ea}No such task exists"
+					stop
+				message "{@pa}Queue Task ID %arg 3%"
+				message "{@pa}Submitted by %{Queue.data.%arg 3%.player}%"
+				message "{@pa}Text: %{Queue.data.%arg 3%.name}%"
+				message "{@pa}Location: %{Queue.data.%arg 3%.loc}%"
+				stop
+			else if arg 2 is "goto" or "g":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Queue.data.%arg 3%.name} is not set:
+					message "{@ea}No such task exists"
+					stop
+				make player execute command "/admin q i %arg 3%"
+				teleport player to {Queue.data.%arg 3%.loc}
+				stop
+			else if arg 2 is "close" or "c":
+				if arg 3 is not set:
+					message "{@ea}Task number not given"
+					stop
+				if {Queue.data.%arg 3%.name} is not set:
+					message "{@ea}No such task exists"
+					stop
+				delete {Queue.data.%arg 3%.player}
+				delete {Queue.data.%arg 3%.name}
+				delete {Queue.data.%arg 3%.loc}
+				message "{@pa}Queue task %arg 3% finished. You get 10 staffpoints!"
+				add 5 to {Ticket.staff.%player%.score}
+				set {_i} to arg 3
+				set {_j} to {_i}
+				add 1 to {_j}
+				set {_l} to true
+				while {_l} is true:
+					if {Queue.data.%{_j}%.player} is set:
+						set {Queue.data.%{_i}%.player} to {Queue.data.%{_j}%.player}
+						set {Queue.data.%{_i}%.name} to {Queue.data.%{_j}%.name}
+						set {Queue.data.%{_i}%.loc} to {Queue.data.%{_j}%.loc}
+						delete {Queue.data.%{_j}%.player}
+						delete {Queue.data.%{_j}%.name}
+						delete {Queue.data.%{_j}%.loc}
+						add 1 to {_i}
+						add 1 to {_j}
+					else:
+						loop all players:
+							if loop-player has permission "su.use":
+								send "{@pa}%player% just completed queue task %arg 3%." to loop-player
+						set {_l} to false
+						stop
+				set {_z} to false
+				stop
+		else if arg 1 is "office" or "o":
+			if arg 2 is "set":
+				if {Admin.office} is set:
+					message "{@ea}Office location already set."
+					stop
+				else:
+					set {Admin.office} to location of player
+					message "{@pa}Location set. Delete with /admin o del"
+					stop
+			else if arg 2 is "delete" or "del":
+				delete {Admin.office}
+				message "{@pa}Location deleted."
+				stop
+			if {Admin.office} is not set:
+				message "{@ea}Office location not set. Set it with /admin o set."
+				stop
+			else:
+				teleport player to {Admin.office}
+				message "{@pa}Welcome back to the office, %player%."
+				stop
+		else:
+			message "{@ea}Unknown command %arg 1%"
+			stop

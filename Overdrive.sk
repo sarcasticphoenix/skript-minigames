@@ -1,0 +1,13 @@
+options:
+	p: &7[&cOverdrive&7] &f
+
+command /overdrive:
+	trigger:
+		message "{@p}http://www.sarc.biz/overdrive"
+		message "{@p}Click URL above for info."
+		stop
+
+on right click holding any sword:
+	#world is "RegularSurvival"
+	if name of tool of player is "&eHoly Blade":
+	

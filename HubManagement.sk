@@ -1,0 +1,197 @@
+options:
+	p: &7[&aSarcaCraft&7] &f
+	mr1: s;3;i;feather;n;&fDuck Hunt;l;&7Shoot down the feathered army;c;fancytp %player% duckhunt;s;4;i;iron helmet;n;&fEscape;l;&7Can you escape?;c;fancytp %player% escape;s;5;i;rotten flesh;n;&fMobArena;l;&7Waves after waves of mobs;c;fancytp %player% mobarena;s;6;i;obsidian;n;&fParkour;l;&7Jump high, travel far;c;fancytp %player% parkour;s;7;i;diamond shovel;n;&fSpleef;l;&7Dig your way to victory;c;fancytp %player% spleef;
+	mr2: s;12;i;bow;n;&fSurvival Games;l;&7Be the last one standing;c;fancytp %player% survivalgames;s;13;i;diamond sword;n;&fPVP;l;&7Bash down enemies;c;fancytp %player% pvp;s;14;i;bookshelf;n;&fMaze;l;&7Pathfinding at work;c;fancytp %player% maze;s;15;i;ladder;n;&fKing of the Ladder;l;&7Climb to victory;c;fancytp %player% kingoftheladder;s;16;i;iron hoe;n;&fGunfight;l;&7Gun down your enemies;c;fancytp %player% gunfight;
+
+on click on sign:
+	line 1 of clicked block is "&1=&3=&b=&3=&1="
+	line 4 of clicked block is "&1=&3=&b=&3=&1="
+	line 2 of clicked block is "Click to warp"
+	line 3 of clicked block is "to hub"
+	cancel event
+	teleport player to {Hub.spawnpoint}
+	message "&7[&aSarcaCraft&7] &fTeleporting to hub."
+	stop
+
+on sign change:
+	line 1 of event-block is "&1=&3=&b=&3=&1="
+	line 4 of event-block is "&1=&3=&b=&3=&1="
+	player doesn't have permission "essentials.signs.create.warp"
+	cancel event
+	stop
+
+command /makehubsign:
+	permission: essentials.signs.create.warp
+	trigger:
+		if target block isn't sign or wall sign:
+			message "Look at a sign. >.>"
+			stop
+		set line 1 of target block to "&1=&3=&b=&3=&1="
+		set line 4 of target block to "&1=&3=&b=&3=&1="
+		set line 2 of target block to "Click to warp"
+		set line 3 of target block to "to hub"
+		message "Magic!"
+
+on right click holding oak sapling:
+	world is "Hub"
+	name of tool of player is "&aKey of the World"
+	cancel event
+	set tool of player to air
+	#spawn 50 of particle fireworks spark offset by 1.5, 1.5, 1.5 at location of player
+	#spawn 100 of particle fireworks spark:1 offset by 0.5, 0.5, 0.5 at location of player
+	teleport player to {Hub.key}
+	stop
+
+command /worldkey [<text>]:
+	permission: adminchat.adminchat
+	executable by: players
+	trigger:
+		if arg 1 is "set":
+			set {Hub.key} to location of player
+			message "&7[&fSarcaCraft&7] &fThe center of the world has been set."
+			stop
+		add 1 oak sapling named "&aKey of the World" to the player's inventory
+		stop
+
+command /fancytp <player> <text>:
+	trigger:
+		arg 1 is online
+		push player-arg upwards at speed 1.5
+		apply invisibility to the player-arg for 0.5 seconds
+		apply slowness 127 to the player-arg for 0.5 seconds
+		apply nausea to the player-arg for 0.5 seconds
+		wait 0.5 seconds
+		execute console command "/mvtp %arg 1% %arg 2%"
+		wait 1 tick
+		apply blindness to the player-arg for 1.5 seconds
+		apply slowness 127 to the player arg for 0.5 seconds
+		heal the player-arg
+		stop
+
+
+#command /setad <number>:
+#	permission: ad.set
+#	trigger:
+#		set {Ads.%arg 1%} to location of player
+#		message "&7[&fAds&7] &f%arg 1% set."
+#		stop
+
+on player teleport:
+	player is in world "Hub"
+	tool of player is iron ingot
+	#if block below player is not stone brick:
+	#	cancel event
+	#	message "&7[&aSarcaCraft&7] &fYou must stand on stone brick to use the teleporter."
+	#	stop
+	remove 1 iron ingot from the player
+	wait 0.1 seconds
+	apply blindness to the player for 1.5 seconds
+	stop
+on damage:
+	world is "hub"
+	cancel event
+
+every 5 minutes:
+	execute console command "/time noon Spleef"
+	execute console command "/time noon PVP"
+	#execute console command "/time noon hub"
+	stop
+
+command /sethubspawn:
+	permission: staff.staff
+	trigger:
+		set {Hub.spawnpoint} to location of player
+		message "set"
+		stop
+
+#on step on cake:
+#	world is "Hub"
+#	push the player backwards with speed 5
+#	stop
+
+
+on click on blue wool:
+	block below clicked block is iron block
+	cancel event
+	wait 1 tick
+	show "s;2;i;green rug;n;&fDefault Plot World;l;&7Large plots to build in;c;fancytp %player% defaultplot;s;3;i;dark oak sapling;n;&fFreebuild;l;&7Use the terrain wisely;c;fancytp %player% freebuild;s;4;i;light green rug;n;&fPlayer Plot World;l;&7Rank 200+;c;fancytp %player% playerplot;s;5;i;blue rug;n;&fPro Plot World;l;&7Rank 400+ Plot world;c;fancytp %player% proplot;s;6;i;rail;n;&fPro Flat World;l;&7Rank 400+ Infinite world;c;fancytp %player% proworld;s;7;i;sandstone:1;n;&fEmporium;l;&7Showcase of good builds;c;fancytp %player% emporium" with 1 rows named "&1Build Worlds" to the player
+	make player see clicked block as active redstone lamp
+	wait 0.5 seconds
+	make player see clicked block as blue wool
+	stop
+
+on click on light blue wool:
+	block below clicked block is iron block
+	cancel event
+	wait 1 tick
+	show "s;3;i;wooden pick;n;&fSurvival;l;&7Regular faction survival;c;fancytp %player% RegularSurvival;s;4;i;locked chest;n;&fSkyGrid;l;&7Floating blocks everywhere!;c;fancytp %player% SkyGrid;s;5;i;white wool;n;&fSkyblock;l;&7Survival in the sky;c;fancytp %player% skyworld;s;6;i;netherrack;n;&fNether;l;&7Fire, Lava, Nether police all included;c;fancytp %player% nether;s;9;i;166;n;&fOld Survival;l;&7Please switch to the new one;c;fancytp %player% survival;" with 1 rows named "&bSurvival Worlds" to the player
+	make player see clicked block as active redstone lamp
+	wait 0.5 seconds
+	make player see clicked block as light blue wool
+	stop
+
+on click on cyan wool:
+	block below clicked block is iron block
+	cancel event
+	wait 1 tick
+	show "{@mr1}{@mr2}" with 2 rows named "&3Minigame Worlds" to the player
+	make player see clicked block as active redstone lamp
+	wait 0.5 seconds
+	make player see clicked block as cyan wool
+	stop
+
+command /spawn:
+	trigger:
+		make player execute command "/mvs"
+		stop
+
+command /hub:
+	aliases: mainhub, lobby
+	trigger:
+		message "{@p}To get to hub:"
+		message "{@p}1. /spawn to get to the world's spawn"
+		message "{@p}2. Find the warp to hub sign"
+		message "{@p}3. Right click the sign"
+		stop
+
+#command /setworld <text>:
+#	permission: "adminchat.adminchat"
+#	trigger:
+#		set {World.%arg 1%.spawn} to location of player
+#		message "&7[&eTeleport&7] &eLocation set."
+
+#command /tpworld <text>:
+#	permission: adminchat.adminchat"
+#	trigger:
+#		teleport player to {World.%arg 1%.spawn}
+
+#on teleport:
+#	wait 1 tick
+#	world is "Hub"
+#	if player contains 1 minecart:
+#		stop
+#	else:
+#		give player a minecart named "&7Hub Navigator"
+
+#on right click with a minecart:
+#	world is "Hub"
+#	cancel event
+#	show "s;4;i;blue wool;n;&1&lCreative;l;&7Teleport to the selection of &1Build &7worlds.;c;hubtp %player% creative;s;5;i;cyan wool;n;&3&lMinigames;l;&7Teleport to the selection of &3Minigame &7worlds.;c;hubtp %player% minigames;s;6;i;light blue wool;n;&b&lSurvival;l;&7Teleport to the selection of &bSurvival &7worlds.;c;hubtp %player% survival;" with 1 rows named "&7&lTeleporter" to the player
+
+#command /hubtp <player> <text>:
+#	executable by: console
+#	trigger:
+#		if arg 2 is "creative":
+#			teleport arg 1 to {Hub.Creative.World}
+#		else if arg 2 is "survival":
+#			teleport arg 1 to {Hub.Survival.World}
+#		else if arg 2 is "minigames":
+#			teleport arg 1 to {Hub.Minigames.World}
+#		stop
+#
+#command /hubtpset <text>:
+#	permission: adminchat.adminchat
+#	trigger:
+#		set {Hub.%arg 1%.World} to location of player
+#		message "Location set."
+

@@ -1,0 +1,10 @@
+command /anvil <player> [<text>]:
+	permission: anvil.use
+	trigger:
+		set {_z} to location of arg 1
+		if arg 2 is set:
+			set y-coordinate of {_z} to y-coordinate of {_z} + 25
+		else:
+			set y-coordinate of {_z} to y-coordinate of {_z} + 2
+		set block at {_z} to anvil
+		stop

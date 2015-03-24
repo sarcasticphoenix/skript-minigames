@@ -1,0 +1,41 @@
+options:
+	p: &7[&aezBan&7] &a
+	e: &c[ezBan] &c
+
+command /easyban [<offline player>] [<number>]:
+	aliases: ezban
+	permission: e.ban
+	trigger:
+		if arg 1 is not set:
+			if arg 2 is not set:
+				message "{@p}/ezban player rulenumber"
+				make player execute command "/rules"
+				stop
+			message "{@e}/ezban player rulenumber"
+			message "{@e}/ezban for help"
+			stop
+		if arg 2 is not set:
+			message "{@e}/ezban player rulenumber"
+			message "{@e}/ezban for help"
+			stop
+		if arg 2 is 1:
+			set {_z} to "rule 1 - Common sense rule."
+		else if arg 2 is 2:
+			set {_z} to "rule 2 - Asking rule."
+		else if arg 2 is 3:
+			set {_z} to "rule 3 - Nuisance and Interruption rule."
+		else if arg 2 is 4:
+			set {_z} to "rule 4 - Reading and searching rule."
+		else if arg 2 is 5:
+			set {_z} to "rule 5 - Get-Along-Damnit rule."
+		else if arg 2 is 6:
+			set {_z} to "rule 6 - Use-Your-Resources-Wisely rule."
+		else if arg 2 is 7:
+			set {_z} to "rule 7 - Innocence rule."
+		else if arg 2 is 8:
+			set {_z} to "rule 8 - Honor rule."
+		else:
+			message "{@e}%arg 2% is not a valid rule ID"
+			stop
+		make player execute command "/ban %arg 1% You have been banned for breaking %{_z}%. See all rules at sarc.biz/rules. Testify at our forums."
+		stop

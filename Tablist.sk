@@ -1,0 +1,54 @@
+on command:
+	wait 0.1 seconds
+	if player is in world "GunFight" or "DuckHunt" or "Escape" or "MobArena" or "Parkour" or "Spleef" or "KingOfTheLadder" or "Maze" or "SurvivalGames" or "PVP":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&3&l%display name of player%"
+		else:
+			set player's tablist name to "&3%name of player%"
+		stop
+	if player is in world "Building" or "DefaultPlot" or "Freebuild" or "PlayerPlot" or "ProWorld" or "ProPlot" or "Emporium":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&1&l%display name of player%"
+		else:
+			set player's tablist name to "&1%name of player%"
+		stop
+	if player is in world "skygrid" or "Survival" or "skyworld":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&b&l%display name of player%"
+		else:
+			set player's tablist name to "&b%name of player%"
+		stop
+	else:
+		if player has permission "adminchat.adminchat":
+			set the player's tablist name to "&f&l%display name of player%"
+		else:
+			set player's tablist name to "&f%name of player%"
+		stop
+	
+
+on join:
+	wait 0.1 seconds
+	if player is in world "GunFight" or "DuckHunt" or "Escape" or "MobArena" or "Parkour" or "Spleef" or "KingOfTheLadder" or "Maze" or "SurvivalGames" or "PVP":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&3&l%display name of player%"
+		else:
+			set player's tablist name to "&3%name of player%"
+			stop
+	if player is in world "Building" or "DefaultPlot" or "Freebuild" or "PlayerPlot" or "ProWorld" or "ProPlot" or "Emporium":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&1&l%display name of player%"
+		else:
+			set player's tablist name to "&1%name of player%"
+			stop
+	if player is in world "skygrid" or "Survival" or "skyworld":
+		if player has permission "adminchat.adminchat":
+			set player's tablist name to "&b&l%display name of player%"
+		else:
+			set player's tablist name to "&b%name of player%"
+			stop
+	else:
+		if player has permission "adminchat.adminchat":
+			set the player's tablist name to "&f&l%display name of player%"
+		else:
+			set player's tablist name to "&f%name of player%"
+			stop	

@@ -1,0 +1,28 @@
+options:
+	p: &7[&fRide&7] &f
+
+command /ride <player>:
+	permission: creative.ride
+	trigger:
+		if distance between player and arg 1 is between -10 and 10:
+			message "{@p}Ride request sent to %arg 1%. They have 10 seconds to accept."
+			send "{@p}%player% requested to ride you. Do /rideaccept to accept." to arg 1
+			set {Ride.%arg 1%} to player
+			wait 10 seconds
+			if {Ride.%arg 1%} is set:
+				message "{@p}Ride request timed out."
+				delete {Ride.%arg 1%}		
+			stop
+		else:
+			message "{@p}Be less than 10 blocks away from %arg 1% to /ride them."
+			stop
+
+command /rideaccept:
+	permission: creative.ride
+	trigger:
+		if {Ride.%player%} is not set:
+			message "{@p}No pending requests"
+			stop
+		make {Ride.%player%} ride player
+		delete {Ride.%player%}
+		stop

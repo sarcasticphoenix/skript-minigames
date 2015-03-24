@@ -1,0 +1,76 @@
+options:
+	p: &7[&aNews&7] &a
+	signcount: 9
+
+#i = 1 is the newest news sign
+#i = signcount is the oldest news sign
+
+command /news <text = "help"> [<number>] [<text>]:
+	permission: news.manage
+	trigger:
+		if arg 1 is "sign":
+			if arg 2 is not set:
+				message "{@p}Number needed"
+				stop
+			set {_i} to arg 2
+			if target block is not a sign:
+				message "{@p}Look at a sign"
+				stop
+			set {News.sign.%{_i}%} to location of target block
+			message "{@p}Set sign %{_i}%"
+			stop
+		else if arg 1 is "ready":
+			set {_i} to 1
+			while {_i} is less than or equal to {@signcount}:
+				set {_text.%{_i}%.1} to line 1 of block at {News.sign.%{_i}%}
+				set {_text.%{_i}%.2} to line 2 of block at {News.sign.%{_i}%}
+				set {_text.%{_i}%.3} to line 3 of block at {News.sign.%{_i}%}
+				set {_text.%{_i}%.4} to line 4 of block at {News.sign.%{_i}%}
+				add 1 to {_i}
+			set {_i} to 1
+			while {_i} is less than or equal to {@signcount}:
+				set line 1 of block at {News.sign.%{_i}%} to "&9>>>>>>>>>>>>>"
+				set line 2 of block at {News.sign.%{_i}%} to "&9News being"
+				set line 3 of block at {News.sign.%{_i}%} to "&9moved"
+				set line 4 of block at {News.sign.%{_i}%} to "&9>>>>>>>>>>>>>"
+				wait 0.1 seconds
+				add 1 to {_i}
+			set {_i} to {@signcount}
+			while {_i} is greater than or equal to 2:
+				set {_j} to {_i} - 1
+				set line 1 of block at {News.sign.%{_i}%} to {_text.%{_j}%.1}
+				set line 2 of block at {News.sign.%{_i}%} to {_text.%{_j}%.2}
+				set line 3 of block at {News.sign.%{_i}%} to {_text.%{_j}%.3}
+				set line 4 of block at {News.sign.%{_i}%} to {_text.%{_j}%.4}
+				subtract 1 from {_i}
+			set line 1 of block at {News.sign.1} to ""
+			set line 2 of block at {News.sign.1} to ""
+			set line 3 of block at {News.sign.1} to ""
+			set line 4 of block at {News.sign.1} to ""
+			message "{@p}News moved"
+			stop
+		else if arg 1 is "write":
+			if arg 2 is not set:
+				message "{@p}/news write Line Text"
+			set {_i} to arg 2
+			if arg 3 is not set:
+				set {_t} to ""
+			set {_t} to arg 3
+			set line {_i} of block at {News.sign.1} to {_t}
+			message "{@p}Written"
+			stop
+		else if arg 1 is "purge":
+			set {_i} to 1
+			while {_i} is less than or equal to {@signcount}:
+				set line 1 of block at {News.sign.%{_i}%} to ""
+				set line 2 of block at {News.sign.%{_i}%} to ""
+				set line 3 of block at {News.sign.%{_i}%} to ""
+				set line 4 of block at {News.sign.%{_i}%} to ""
+				add 1 to {_i}
+			message "{@p}News purged"
+		else:
+			message "{@p}/news sign <number> - Register sign locations"
+			message "{@p}/news ready - Make empty sign to write on"
+			message "{@p}/news write <line> <text> - Write on sign 1"
+			message "{@p}/news purge - Delete all news."
+			stop

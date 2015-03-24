@@ -1,0 +1,14 @@
+on join:
+	{uuider.%name of player%} exists:
+		{uuider.%name of player%} is not uuid of player
+		kick the player due to "Someone with your username has played here before."
+		stop
+	else:
+		set {uuider.%name of player%} to uuid of player
+		stop
+
+command /uuid <offline player = %player%>:
+	permission: uuid.check
+	trigger:
+		message "%UUID of arg 1%"
+		stop

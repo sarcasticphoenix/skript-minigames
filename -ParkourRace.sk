@@ -1,0 +1,167 @@
+#	   ___		   ___			 ___		   ___			 ___		   ___			 ___					___			  ___			___			  ___	  
+#	  /	 /\		  /	 /\			/  /\		  /__/|			/  /\		  /__/\			/  /\				   /  /\		 /	/\		   /  /\		 /	/\	  
+#	 /	/::\	 /	/::\	   /  /::\		 |	|:|		   /  /::\		  \	 \:\	   /  /::\				  /	 /::\		/  /::\		  /	 /:/		/  /:/_	  
+#	/  /:/\:\	/  /:/\:\	  /	 /:/\:\		 |	|:|		  /	 /:/\:\		   \  \:\	  /	 /:/\:\				 /	/:/\:\	   /  /:/\:\	 /	/:/		   /  /:/ /\  
+#  /  /:/~/:/  /  /:/~/::\	 /	/:/~/:/	   __|	|:|		 /	/:/	 \:\   ___	\  \:\	 /	/:/~/:/				/  /:/~/:/	  /	 /:/~/::\	/  /:/	___	  /	 /:/ /:/_ 
+# /__/:/ /:/  /__/:/ /:/\:\ /__/:/ /:/___ /__/\_|:|____ /__/:/ \__\:\ /__/\	 \__\:\ /__/:/ /:/___		   /__/:/ /:/___ /__/:/ /:/\:\ /__/:/  /  /\ /__/:/ /:/ /\
+# \	 \:\/:/	  \	 \:\/:/__\/ \  \:\/:::::/ \	 \:\/:::::/ \  \:\ /  /:/ \	 \:\ /	/:/ \  \:\/:::::/		   \  \:\/:::::/ \	\:\/:/__\/ \  \:\ /	 /:/ \	\:\/:/ /:/
+#  \  \::/	   \  \::/		 \	\::/~~~~   \  \::/~~~~	 \	\:\	 /:/   \  \:\  /:/	 \	\::/~~~~			\  \::/~~~~	  \	 \::/		\  \:\	/:/	  \	 \::/ /:/ 
+#	\  \:\		\  \:\		  \	 \:\		\  \:\		  \	 \:\/:/		\  \:\/:/	  \	 \:\				 \	\:\		   \  \:\		 \	\:\/:/	   \  \:\/:/  
+#	 \	\:\		 \	\:\		   \  \:\		 \	\:\		   \  \::/		 \	\::/	   \  \:\				  \	 \:\		\  \:\		  \	 \::/		\  \::/	  
+#	  \__\/		  \__\/			\__\/		  \__\/			\__\/		  \__\/			\__\/				   \__\/		 \__\/		   \__\/		 \__\/	  
+
+options:
+	p: &7[&3Parkour Race&7] &3
+	e: &c[Parkour Race] &c
+	
+# There will be a long parkour level
+# Multiple people will race
+# Falling off will make you restart
+# When someone beats the parkour, all the parkour blocks dissapear and everyone falls and dies
+# Winner gets $2000
+
+on script load:
+	loop {PR.temp.players::*}:
+		set {PR.userdata.%loop-value%.ingame} to false
+		teleport loop-value to {PR.loc.lobby}
+		send "{@e}Plugin was reloaded" to loop-value
+	set {_z} to false
+	delete {PR.temp.players::*}
+	stop
+
+every 5 seconds:
+	if size of {PR.temp.players::*} is less than 2:
+		loop {PR.a.gate::*}:
+			set block at loop-value to orange wool
+		set {_z} to false
+	else:
+		loop {PR.a.gate::*}:
+			set block at loop-value to air
+		set {_z} to false
+	stop
+	
+
+on click on sign:
+	line 1 of clicked block is "[PRace]"
+	if line 2 of clicked block is "Join":
+		add player to {PR.temp.players::*}
+		teleport player to {PR.loc.arena}
+		set the gamemode of the player to survival
+		set {PR.userdata.%player%.ingame} to true
+		message "{@p}Now ingame."
+		apply invisibility to the player for 1000 days
+		equip the player with gold boots
+		equip the player with chain leggings
+		stop
+	else if line 2 of clicked block is "Leave":
+		remove player from {PR.temp.players::*}
+		set {PR.userdata.%player%.ingame} to false
+		teleport player to {PR.loc.lobby}
+		message "{@p}You left the arena."
+		stop
+	else if line 2 of clicked block is "Win":
+		if block below player is not obsidian:
+			message "{@e}Stand on obsidian to click the sign"
+			stop
+		execute console command "/eco give %player% 2000"
+		delete {PR.temp.players::*}
+		loop all players:
+			if {PR.userdata.%player%.ingame} is true:
+				add player to {PR.temp.players::*}
+		loop {PR.temp.players::*}:
+			set {PR.userdata.%player%.ingame} to false
+			teleport loop-value to {PR.loc.arena}
+			set {PR.userdata.%player%.ingame} to true
+		broadcast "{@p}%player% won."
+		wait 1 tick
+		execute console command "/sk reload ParkourRace"
+		loop {PR.a.blocks::*}:
+			set block at loop-value to air
+			wait 0.25 ticks
+		loop {PR.a.goal::*}:
+			set block at loop-value to air
+		set block at {PR.loc.obs} to air
+		wait 3 seconds
+		loop {PR.a.blocks::*}:
+			chance of 50%:
+				set block at loop-value to quartz block
+			else:
+				set block at loop-value to locked chest
+			wait 1 tick
+		loop {PR.a.goal::*}:
+			set block at loop-value to gray wool
+		set block at {PR.loc.obs} to obsidian
+		stop
+
+command /prace <text>:
+	permission: prace.admin
+	trigger:
+		if arg 1 is "addgate":
+			set {_l} to location of target block
+			add {_l} to {PR.a.gate::*}
+			message "{@p}Added location to arena gate"
+			stop
+		else if arg 1 is "cleargate":
+			delete {PR.a.gate::*}
+			message "{@p}Cleared gate blocks"
+			stop
+		else if arg 1 is "addblock":
+			set {_l} to location of target block
+			add {_l} to {PR.a.blocks::*}
+			message "{@p}Added location to Parkour Blocks array"
+		else if arg 1 is "clearblock":
+			delete {PR.a.blocks::*}
+			message "{@p}Cleared gate blocks"
+		else if arg 1 is "setlobby":
+			set {PR.loc.lobby} to location of player
+			message "{@p}Set lobby."
+		else if arg 1 is "setarena":
+			set {PR.loc.arena} to location of player
+			message "{@p}Set arena."
+		else if arg 1 is "setobs":
+			set {PR.loc.obs} to location of target block
+			message "{@p}Set the obsidian"
+		else if arg 1 is "addgoal":
+			set {_l} to location of target block
+			add {_l} to {PR.a.goal::*}
+			message "{@p}Added goal block"
+		else if arg 1 is "cleargoal":
+			delete {PR.a.goal::*}
+			message "{@p}Deleted"
+		stop
+
+
+on damage of player:
+	{PR.userdata.%victim%.ingame} is true
+	cancel event
+	spawn 50 of lava data 0 offset with 1, 1, 1 at location of victim
+	extinguish the victim
+	set {PR.userdata.%victim%.ingame} to false
+	teleport victim to {PR.loc.arena}
+	set {PR.userdata.%victim%.ingame} to true
+	stop
+
+on player teleport:
+	{PR.userdata.%player%.ingame} is true
+	cancel event
+	message "{@e}Cannot teleport during Parkour Race"
+	stop
+
+on command:
+	{PR.userdata.%player%.ingame} is true
+	cancel event
+	message "{@e}Cannot use commands during Parkour Race"
+	stop
+
+on quit:
+	{PR.userdata.%player%.ingame} is true
+	set {PR.userdata.%player%.ingame} to false
+	teleport player to {PR.loc.lobby}
+	remove player from {PR.temp.players::*}
+	stop
+
+on join:
+	{PR.userdata.%player%.ingame} is true
+	set {PR.userdata.%player%.ingame} to false
+	teleport player to {PR.loc.lobby}
+	stop

@@ -1,0 +1,109 @@
+options:
+	p: &7[&4Death&7] &7
+
+on death:
+	victim is a player
+	if world is "Gunfight":
+		set death message to ""
+		if attacker is a player:
+			broadcast "&7[&aGunfight&7] &f%attacker% gunned down %victim%" to "Gunfight"
+			stop
+		else:
+			broadcast "&7[&aGunfight&7] &f%victim% died" to "Gunfight"
+			stop
+	if victim is attacker:
+		set death message to  "{@p}%victim% was slain by their own clone."
+		stop
+	if attacker is set:
+		if attacker is zombie or skeleton:
+			if world is "nether":
+				set death message to "{@p}%victim% was beaten to death by the nether police"
+				stop
+		if attacker is a zombie:
+			set death message to "{@p}%victim% was eaten alive by a Zombie."
+			stop
+		else if attacker is a skeleton:
+			set death message to "{@p}%victim% was shot by a Skeleton."
+			stop
+		else if attacker is a slime:
+			set death message to "{@p}%victim% was swallowed whole by a Slime."
+			stop
+		else if attacker is a spider or a cave spider:
+			set death message to "{@p}%victim% was caught in the web of an angry Spider."
+			stop
+		else if attacker is a witch:
+			set death message to "{@p}%victim% was spellbound by a Witch."
+			stop					
+		else if attacker is a blaze:
+			set death message to "{@p}%victim% was fireballed by an angry Blaze."
+			stop
+		else if attacker is a magma cube:
+			set death message to "{@p}%victim% was squished by a Magma Cube."
+			stop
+		else if attacker is a enderman:
+			set death message to "{@p}%victim% was surprise-attacked by an Enderman."
+			stop
+		else if attacker is a ghast:
+			set death message to "{@p}%victim% was fireballed by a Ghast."
+			stop
+		if name of tool of attacker is set:
+			set {_n} to "%name of tool of attacker%."
+		if tool of attacker is air:
+			set {_n} to "their bare hands."
+		else:
+			set {_n} to "%name of tool of attacker%."
+		set {_z} to rounded random number between 1 and 4
+		if damage cause is projectile:
+			if {_z} is 1:
+				set death message to "{@p}%victim% was gunned down by %attacker% using %{_n}%"
+			else if {_z} is 2:
+				set death message to "{@p}%victim% was shot down by %attacker% using %{_n}%"
+			else if {_z} is 3:
+				set death message to "{@p}%victim% was sniped by %attacker% using %{_n}%"
+			else if {_z} is 4:
+				set death message to "{@p}%victim% took an arrow to the knee thanks to %attacker% using %{_n}%"
+			stop
+		if {_z} is 1:
+			set death message to "{@p}%victim% died at the hands of %attacker% using %{_n}%"
+		else if {_z} is 2:
+			set death message to "{@p}%victim% was murdered by %attacker% using %{_n}%"
+		else if {_z} is 3:
+			set death message to "{@p}%victim% was mercilessly attacked by %attacker% using %{_n}%"
+		else if {_z} is 4:
+			set death message to "{@p}%victim% was slaughtered by %attacker% using %{_n}%"
+		stop
+	else:
+		if damage causes is lava or melting or fire or burning:
+			set death message to "{@p}%victim% burnt to a crisp."
+		else if damage cause is contact:
+			set death message to "{@p}%victim% was pricked to death by a cactus."
+		else if damage cause is attack:
+			set death message to "{@p}%victim% was slaughtered by an angry monster."
+		else if damage cause is projectile:
+			set death message to "{@p}%victim% was shot by a Skeleton."
+		else if damage cause is drowning:
+			set death message to "{@p}%victim% stayed underwater too long."
+		else if damage cause is suffocation:
+			set death message to "{@p}%victim% suffocated to death."
+		else if damage cause is block explosion or entity explosion:
+			set death message to "{@p}%victim% was demolished by an explosion."
+		else if damage cause is lightning:
+			set death message to "{@p}%victim% was struck by lightning."
+		else if damage cause is suicide:
+			set death message to "{@p}%victim% took their own life."
+		else if damage cause is starvation:
+			set death message to "{@p}%victim% starved to death."
+		else if damage cause is potion:
+			set death message to "{@p}%victim% learned the effects of harmful potions."
+		else if damage cause is wither:
+			set death message to "{@p}%victim% withered away into nothingness."
+		else if damage cause is falling block:
+			set death message to "{@p}%victim% was crushed by falling blocks"
+		else if damage cause is fall:
+			set death message to "{@p}%victim% splatted on the ground."
+		else if damage cause is unknown:
+			set death message to "{@p}We don't know why, but %victim% died."
+		else:
+			set death message to "{@p}%victim% was slain by %damage cause%."
+		stop
+	

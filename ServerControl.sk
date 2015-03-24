@@ -1,0 +1,160 @@
+#===========================
+#Server Control
+#By Sarc (asticphoenix)
+#Originally for SarcaCraft
+#sarc.biz
+#===========================
+
+#===========================
+#Contents:
+# > CodeRed - Emergency Mode command
+# > Reboot - Auto-Reboot after a set time
+#===========================
+
+#===========================
+#CodeRed
+#===========================
+
+# Please, after installing this, ADD YOURSELF TO
+# THE WHITELIST WITH /codered add yourusername BEFORE
+# BAD THINGS HAPPEN so you can connect when code red
+# is actually toggled.
+
+options:
+	# Set your server name
+	server-name: SetYourServerNamePlease...
+	# Kick Message for when code red is turned on
+	initmsg: Code Red. Expect server to be down.
+	# Kick Message for when player tries to connect
+	# while code red is going on.
+	kickmsg: Code Red is active. Please connect later.
+
+variables:
+	# Allow people with permission codered.bypass to join when codered mode is enabled?
+	# Disabled by default in case force-op attackers join
+	{codered.allowpermission} = false
+
+
+command /codered <text="commands"> [<player>]:
+	permission: codered.admin
+	trigger:
+		if arg 1 is "commands":
+			message "&c[CodeRed]"
+			message "&c/codered"
+			message "on - turns codered on"
+			message "off - turns codered off"
+			message "add - add a player to whitelist"
+			message "remove - remove a player from whitelist"
+			stop
+		else if arg 1 is "on":
+			set {codered.on} to true
+			kick all players due to "{@initmsg}"
+			broadcast "&c[{@server-name}] &fCodeRed is on"			
+			stop
+		else if arg 1 is "off":
+			set {codered.on} to false
+			broadcast "&c[{@server-name}] &fCodeRed is off"			
+			stop
+		else if arg 1 is "add" or "remove":
+			set {_player} to arg 2
+			if {_player} is not set:
+				message "&c[CodeRed] &fThis command needs an online player to continue."
+				stop
+			if arg 1 is "add":
+				set {codered.%arg 2%.allow} to true
+				message "&c[CodeRed] &fOperation 'codered ADD %arg 2%' successfull."
+				stop
+			else if arg 1 is "remove":
+				set {codered.%arg 2%.allow} to false
+				message "&c[CodeRed] &fOperation 'codered REMOVE %arg 2%' successfull."
+				if {codered.on} is true:
+					kick {_player} due to "{@kickmsg}"
+					stop			
+		else:
+			message "&c[CodeRed] &fUnknown command. Use /codered commands"
+
+on join:
+	{codered.on} is true
+	if {codered.allowpermission} is true:
+		if player has permission "codered.bypass":
+			stop
+		else:
+			kick the player due to "{@kickmsg}"
+			stop
+	else:
+		if {codered.%player%.allow} is not set:
+			set {codered.%player%.allow} to false
+		if {codered.%player%.allow} is false:
+			kick the player due to "{@kickmsg}"
+		stop
+
+#======================
+#Reboot Management
+#======================
+
+command /reboot [<text>] [<text>]:
+	permission: server.control
+	trigger:
+		if arg 1 is not set:
+			message "Reboot: Time required. Number in minutes, or 'Now'"
+			stop
+		if arg 2 is not set:
+			message "Reboot: Need a reason."
+			stop
+		if arg 1 is "Now":
+			set {_time} to 0
+		else:
+			set {_time} to arg 1 parsed as integer
+			if parse error is set:
+				message "%parse error%"
+				message "Reboot: reboot timeInt reason"
+				stop
+		set {_reason} to arg 2
+		broadcast "&cReboot: %player% &lscheduled a reboot&c in %{_time}% minutes for reason: %{_reason}%"
+		log "[%now%] Scheduled by %player% for reason '%{_reason}%' with delay %{_time}%" to "reboot.log"
+		set {_looping} to true
+		while {_looping} is true:
+			if {_time} is 0:
+				broadcast "&cReboot: System going down for maintenance NOW!"
+				execute console command "/save-all"
+				broadcast "&cSaver-Daemon: Cooldown of 10 seconds for save-complete"
+				wait 10 seconds
+				execute console command "/stop"
+				broadcast "&cServer-Daemon: Requesting all services to terminate..."
+				set {_looping} to false
+				stop
+			broadcast "&cReboot: Rebooting in %{_time}% minutes for reason '%{_reason}%'"
+			broadcast "&cReboot: Reboot was scheduled by %player%"
+			wait 1 minutes
+			subtract 1 from {_time}
+		broadcast "&4Server-Daemon: Fatal: Reboot exception. Logged."
+		log "[%now%] Fatal in Reboot: By %player% for reason '%{_reason}%' with delay %{_time}%" to "fatal.log"
+
+on command "/stop":
+	set {_p} to player
+	{_p} is set
+	cancel event
+	broadcast "&c[Security] %player% tried to access /stop!"
+	stop
+
+command /fix <text>:
+	permission: fix.use
+	trigger:
+		set {fix.%arg 1%} to true
+		message "%arg 1% will be teleported to hub on next join."
+		stop
+
+on join:
+	player is online
+	{fix.%player%} is true
+	execute console command "/mvtp %player% hub"
+	execute console command "/mvtp %player% hub"
+	execute console command "/mvtp %player% hub"
+	set {fix.%player%} to false
+	stop
+
+on command:
+	"%command%" contains "bukkit"
+	player doesn't have permission "adminchat.adminchat"
+	cancel event
+	stop

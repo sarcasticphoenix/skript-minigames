@@ -1,0 +1,35 @@
+options:
+	p: &7[&fOnline&7] &f
+	reward: add 100 to the loop-player's account
+
+every 1 minutes:
+	loop all players:
+		add 1 to {OnlinePoints.%uuid of loop-player%}
+		if {OnlinePoints.ticker.%uuid of loop-player%} is 10:
+			set {OnlinePoints.ticker.%uuid of loop-player%} to 0
+			#send {@notification.1} to loop-player
+			#send {@notification.2} to loop-player
+			{@reward}
+		else:
+			add 1 to {OnlinePoints.ticker.%uuid of loop-player%}
+	stop
+
+command /timetop:
+	permission: eco.top
+	trigger:
+		message "&7============ &fTime spent online &7============"
+		loop all players:
+			message "&f%loop-player%: &7%{OnlinePoints.%uuid of loop-player%}/60% hours (%{OnlinePoints.%uuid of loop-player%}% minutes)"
+		message "&7Only shows players currently online."
+		stop
+
+on join:
+	if {OnlinePoints.%uuid of player%} is not set:
+		if {OnlinePoints.%player%} is set:
+			set {OnlinePoints.%uuid of player%} to {OnlinePoints.%player%}
+			set {OnlinePoints.ticker.%uuid of player%} to {OnlinePoints.ticker.%player%}
+	{OnlinePoints.%uuid of player%} is not set
+	set {OnlinePoints.%uuid of player%} to 0
+	set {OnlinePoints.ticker.%uuid of player%} to 0
+	stop
+

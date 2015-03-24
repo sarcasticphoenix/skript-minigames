@@ -1,0 +1,64 @@
+xoooptions:
+	p: &7[&fCasino&7] &f
+	permission: slot.place
+
+on sign change:
+	line 4 of event-block is "Click to spin"
+	player doesn't have permission "{@permission}"
+	cancel event
+	message "{@p}You don't have permission to build slot machines."
+	stop
+
+on click on sign:
+	line 4 of clicked block is "Click to spin"
+	cancel event
+	if player contains 1 diamond:
+		remove 1 diamond from the player
+	else:
+		message "{@p}You're out of diamonds to spend."
+		stop
+	set line 4 of clicked block to "Spinning..."
+	set {_t} to true
+	loop 27 times:
+		set line 3 of clicked block to line 2 of clicked block
+		set line 2 of clicked block to line 1 of clicked block
+		if {_t} is true:
+			set line 1 of clicked block to "&c| %random integer between 1 and 8% | %random integer between 1 and 8% | %random integer between 1 and 8% |"
+			set {_t} to false
+		else:
+			set line 1 of clicked block to "| %random integer between 1 and 8% | %random integer between 1 and 8% | %random integer between 1 and 8% |"
+			set {_t} to true
+		wait 1 ticks
+	set {_z} to 3
+	loop 3 times:
+		set line 3 of clicked block to line 2 of clicked block
+		set line 2 of clicked block to line 1 of clicked block
+		set {_s.%{_z}%.1} to random integer between 1 and 8
+		set {_s.%{_z}%.2} to random integer between 1 and 8
+		set {_s.%{_z}%.3} to random integer between 1 and 8
+		if {_t} is true:
+			set line 1 of clicked block to "&c| %{_s.%{_z}%.1}% | %{_s.%{_z}%.2}% | %{_s.%{_z}%.3}% |"
+			set {_t} to false
+		else:
+			set line 1 of clicked block to "| %{_s.%{_z}%.1}% | %{_s.%{_z}%.2}% | %{_s.%{_z}%.3}% |"
+			set {_t} to true
+		subtract 1 from {_z}
+		wait 1 ticks
+	set {_p} to 0
+	if {_s.1.1} is equal to {_s.1.2} and {_s.1.3}:
+		add 200 to {_p}
+	if {_s.2.1} is equal to {_s.2.2} and {_s.2.3}:
+		add 300 to {_p}
+	if {_s.3.1} is equal to {_s.3.2} and {_s.3.3}:
+		add 200 to {_p}
+	if {_s.1.1} is equal to {_s.2.2} and {_s.3.3}:
+		add 150 to {_p}
+	if {_s.3.1} is equal to {_s.2.2} and {_s.1.3}:
+		add 150 to {_p}
+	if {_p} is 0:
+		message "{@p}No dice. Try again."
+	else:
+		message "{@p}You got $%{_p}% from the slot machine!"
+		execute console command "/eco give %player% %{_p}%"
+	set line 4 of clicked block to "Click to spin"
+	stop	

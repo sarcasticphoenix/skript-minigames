@@ -1,0 +1,30 @@
+options:
+	p: &8[Debug] &8
+
+command /debug:
+	permission: a.a.a.a.a
+	trigger:
+		if {Debug} is true:
+			set {Debug} to false
+		else:
+			set {Debug} to true
+		message "Done"
+		stop
+
+on left click:
+	{Debug} is true
+	set {_b} to block
+	if {_b} is not set:
+		broadcast "{@p}%player% leftclick"
+	else:
+		broadcast "{@p}%player% leftclick on %{_b}%"
+	stop
+
+on right click:
+	{Debug} is true
+	set {_b} to block
+	if {_b} is not set:
+		broadcast "{@p}%player% rightclick"
+	else:
+		broadcast "{@p}%player% rightclick on %{_b}%"
+	stop

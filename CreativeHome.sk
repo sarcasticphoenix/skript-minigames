@@ -1,0 +1,22 @@
+options:
+	p: &7[&aCreative Home&7] &f
+
+command /creativehome:
+	aliases: chome
+	permission: creativehome.use
+	trigger:
+		if {CreativeHome.%uuid of player%.%world of player%} isn't set:
+			message "{@p}You don't have a home set in this world."
+			stop
+		teleport player to {CreativeHome.%uuid of player%.%world of player%}
+		message "{@p}Whoosh!"
+		stop
+
+command /setcreativehome:
+	aliases: setchome
+	permission: creativehome.set
+	trigger:
+		set {CreativeHome.%uuid of player%.%world of player%} to location of player
+		message "{@p}Home set for this world!"
+		message "{@p}%{CreativeHome.%uuid of player%.%world of player%}%"
+		stop

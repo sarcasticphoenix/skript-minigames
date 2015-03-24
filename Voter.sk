@@ -1,0 +1,6 @@
+command /voter <player> <text>:
+	permission: a.a.a.a.a
+	trigger:
+		broadcast "&7[&aVoter&7] &f%arg 1% just voted for the server on %arg 2%! Thank you for the vote!"
+		execute console command "/eco give %arg 1% 1000"
+		stop

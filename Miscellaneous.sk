@@ -1,0 +1,178 @@
+#====================
+#Fake troll op
+#====================
+command /fakeop <players>:
+	permission: skript.admin
+	trigger:
+		message "<light yellow>You are now Op!" to arguments
+		message "<grey>[P][SarcaCraft]%arg 1%<lime> has been trolled."
+		stop
+
+command /RideCow:
+	permission: skript.admin
+	trigger:
+		make the player ride a cow
+		stop
+		
+command /fakedeop <players>:
+	permission: skript.admin
+	trigger:
+		message "<light yellow>You are no longer Op!" to arguments
+		message "<grey>[P][SarcaCraft]%arg 1%<lime> has been trolled."
+		stop
+		
+on command:
+	command is "pl" or "plugin" or "plugins" or "bukkit:pl" or "bukkit:plugin" or "bukkit.plugins"
+	cancel event
+	message "&fPlugins (2.3289 x 10^38902809):"
+	message "&a##TheAsianStrikesBack"
+	stop
+
+
+on command "/stoplag":
+	cancel event
+	message "&cStoplag has been disabled by the server administrator"
+	stop
+	
+#=============================
+#Random CMDs
+#=============================
+
+
+command /massofdeath <text>:
+	permission: skript.admin
+	trigger:
+		make all players execute command "/me %arg 1%"
+		stop
+
+	
+command /throw:
+	permission: skript.admin
+	trigger:
+		loop entities in radius 5 of location of player:
+			if loop-entity is not the player:
+				push loop-entity upwards at speed 1
+		stop
+	
+command /ex <player>:
+	permission: skript.admin
+	trigger:
+		extinguish arg 1
+		stop
+		
+
+		
+#=======================
+#Glass Drops
+#=======================
+		
+on place of bedrock:
+	player's gamemode is survival
+	player has the permission "adminchat.adminchat":
+		stop
+	else:
+		broadcast "<light red>[!!!]<grey>[Warning]<white>%player% tried to place bedrock in survival mode!"
+		cancel event
+		stop
+		
+#=============================
+#Chat Management
+#===============================
+#Check if someone has been hacking
+#===============================
+			
+command /hacker <players>:
+	description: Checks players' hacking history
+	permission: adminchat.adminchat
+	trigger:
+		make player execute command "/nocheatplus info %arg 1%"
+		stop
+		
+#==============================
+#Block water, lava, and TNT
+#==============================
+
+on place of water:
+	player has permission "place.water":
+		stop
+	else:
+		cancel event
+		if {warning.%player%} is equal to 3:
+			kick the player due to "You were warned too many times for placing illegal blocks."
+			set {warning.%player%} to 0
+			stop
+		else:
+			message "<red>You cannot place that block, young SarcaCrafter."
+			add 1 to {warning.%player%}
+			stop
+			
+on place of lava:
+	player has permission "place.lava":
+		stop
+	else:
+		cancel event
+		if {warning.%player%} is equal to 3:
+			kick the player due to "You were warned too many times for placing illegal blocks."
+			set {warning.%player%} to 0
+			stop
+		else:
+			message "<red>You cannot place that block, young SarcaCrafter."
+			add 1 to {warning.%player%}
+			stop
+			
+on place of TNT:
+	player has permission "place.tnt":
+		stop
+	else:
+		cancel event
+		if {warning.%player%} is equal to 3:
+			kick the player due to "You were warned too many times for placing illegal blocks."
+			set {warning.%player%} to 0
+			stop
+		else:
+			message "<red>You cannot place that block, young SarcaCrafter."
+			add 1 to {warning.%player%}
+			stop
+			
+#=========================
+#Staff waypoints
+#=========================
+command /setadminpoint:
+	aliases: sap
+	permission: adminchat.adminchat
+	trigger:
+		set {adminpoint.%player%} to location of player
+		message "&7[SarcaCraft]<grey>: <white>Waypoint has been set."
+		stop
+		
+command /adminpoint:
+	aliases: ap
+	permission: adminchat.adminchat
+	trigger:
+		if {adminpoint.%player%} is not set:
+			message "<grey>[P]<light grey>[SarcaCraft]<grey>: <white>Adminpoint has not been set."
+			stop trigger
+		teleport player to {adminpoint.%player%}
+		message "<light grey>[SarcaCraft]<grey>: <white>Teleported to adminpoint."
+
+command /lightningspell:
+	aliases: lns
+	trigger:
+		set {_z} to location of target block
+		if distance between {_z} and location of player is not between -100 and 100:
+			message "&c[Lightning Spell] Too far"
+			stop
+		set {_h} to location of block 25 blocks above {_z}
+		#spawn falling block of "stone" at {_h}
+		wait 2.25 seconds
+		loop blocks in radius 1 of {_z}:
+			strike lightning at location of loop-block
+			create a safe explosion of force 2 at location of loop-block
+			wait 0.5 seconds
+		stop
+
+command /speed3:
+	trigger:
+		spawn zombie at location of target block
+		apply speed 3 to last spawned entity
+		stop

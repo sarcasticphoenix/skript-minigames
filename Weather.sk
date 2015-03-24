@@ -1,0 +1,4 @@
+on weather change to rain or thunderstorm:
+	world isn't "RegularSurvival" or "skyworld" or "Skygrid"
+	cancel event
+	stop

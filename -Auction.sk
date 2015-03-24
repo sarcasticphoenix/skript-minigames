@@ -1,0 +1,147 @@
+#============================#
+# Auctions                   #
+# By Sarc (asticphoenix)     #
+# Originally for SarcaCraft  #
+#============================#
+
+options:
+	#==================#
+	# Edit as you like #
+	# p = Prefix       #
+	# e = Error Prefix #
+	#==================#
+	p: &7[&aAuction&7] &a
+	e: &c[Auction] &c
+	permission: auction.use
+	permissionBid: auction.bid
+	permissionAdmin: auction.admin
+
+command /auction <text = "help"> [<number>] [<text>]:
+	permission: {@permission}
+	trigger:
+		if arg 1 is "help":
+			message "{@p}Auction commands:"
+			message "{@p}Sell Price - Sell what you're holding"
+			message "{@p}Info - Know what is being auctioned"
+			message "{@p}Bid Price - Bid for the current item on auction"
+			stop
+		else if arg 1 is "sell":
+			if {Auction.currentItem} is set:
+				message "{@e}Currently, %{Auction.currentItem}% is on auction by %{Auction.currentSeller}%. Please try again later."
+				stop
+			if tool of player is air:
+				message "{@e}You aren't holding anything to sell..."
+				stop
+			if arg 2 is not set:
+				message "{@e}You didn't set a price to start the auction at."
+				stop
+			if arg 2 is less than 1:
+				message "{@e}Auction must start at $1... at least."
+				stop
+			if arg 3 is set:
+				if arg 3 is "short":
+					set {_z} to true
+				else:
+					set {_z} to false
+			else:
+				set {_z} to false
+			set {Auction.currentSeller} to player
+			set {Auction.currentItem} to tool of player
+			set {Auction.startingPrice} to arg 2
+			set {Auction.bidCount} to 0
+			set {Auction.currentBid} to arg 2
+			set {Auction.currentBidder} to player
+			wait 1 tick
+			set tool of player to air
+			broadcast "{@p}%player% started an auction for %{Auction.currentItem}%&a at $%{Auction.startingPrice}%. Auction ends in 30 seconds!"
+			set line 2 of block at {Auction.static.nameSign} to "%{Auction.currentItem}%"
+			set line 2 of block at {Auction.static.bidSign} to "%{Auction.currentBidder}%"
+			set line 3 of block at {Auction.static.bidSign} to "$%{Auction.currentBid}%"
+			set line 2 of block at {Auction.static.sellerSign} to "%{Auction.currentSeller}%"
+			wait 27 seconds
+			broadcast "{@p}Auction ends in 3..."
+			wait 1 seconds
+			broadcast "{@p}..2..."
+			wait 1 seconds
+			broadcast "{@p}..1..."
+			wait 1 seconds
+			if {Auction.bidCount} is 0:
+				message "{@p}Your item was not sold."
+				add {Auction.currentItem} to player
+				broadcast "{@p}The auction ended with no bids."
+			else:
+				broadcast "{@p}%{Auction.currentBidder}% won the auction for %{Auction.currentItem}%&a for %{Auction.currentBid}%!"
+				add {Auction.currentItem} to {Auction.currentBidder}
+				add {Auction.currentBid} to player's balance
+				message "{@p}You got $%{Auction.currentBid}% from the auction!"
+				remove {Auction.currentBid} from {Auction.currentBidder}'s balance
+			delete {Auction.currentSeller}
+			delete {Auction.currentItem}
+			delete {Auction.startingPrice}
+			delete {Auction.bidCount}
+			delete {Auction.currentBid}
+			delete {Auction.currentBidder}
+			set line 2 of block at {Auction.static.nameSign} to "Nothing"
+			set line 3 of block at {Auction.static.nameSign} to ""
+			set line 4 of block at {Auction.static.nameSign} to ""
+			set line 2 of block at {Auction.static.bidSign} to "Nobody"
+			set line 3 of block at {Auction.static.bidSign} to "$0"
+			set line 2 of block at {Auction.static.sellerSign} to "Nobody"
+			set line 3 of block at {Auction.static.sellerSign} to ""
+			stop
+		else if arg 1 is "bid":
+			if player doesn't have permission "{@permissionBid}":
+				message "{@e}You don't have bidding permissions."
+				stop
+			if {Auction.currentItem} is not set:
+				message "{@e}Nothing is on auction at the moment."
+				stop
+			if arg 2 is not set:
+				message "{@e}You didn't specify your bid price."
+				stop
+			if arg 2 is less than or equal to {Auction.currentBid}:
+				message "{@e}Please bid higher than %{Auction.currentBid}%."
+				stop
+			set {_bal} to the player's balance
+			if arg 2 is greater than {_bal}:
+				message "{@e}You only have $%{_bal}%..."
+				stop
+			if {Auction.currentSeller} is player:
+				message "{@e}Sorry, you can't bid for your own items."
+				stop
+			add 1 to {Auction.bidCount}
+			set {Auction.currentBid} to arg 2
+			set {Auction.currentBidder} to player
+			broadcast "{@p}%player% placed a bid of $%arg 2% for the current auction item."
+			set line 2 of block at {Auction.static.bidSign} to "%player%"
+			set line 3 of block at {Auction.static.bidSign} to "%{Auction.currentBid}%"
+			stop
+		else if arg 1 is "info":
+			if {Auction.currentItem} is not set:
+				message "{@p}Currently, no items are on auction."
+				stop
+			message "{@p}Current item: %{Auction.currentItem}%"
+			message "{@p}Seller: %{Auction.currentSeller}%"
+			message "{@p}Bids: %{Auction.bidCount}%"
+			message "{@p}Highest bid: %{Auction.currentBidder}% - %{Auction.currentBid}%"
+			stop
+		else if arg 1 is "setnamesign":
+			player has permission "{@permissionAdmin}"
+			set {Auction.static.nameSign} to location of target block
+			set line 1 of block at {Auction.static.nameSign} to "Current Item:"
+			message "{@p}Set name sign."
+			stop
+		else if arg 1 is "setbidsign":
+			player has permission "{@permissionAdmin}"
+			set {Auction.static.bidSign} to location of target block
+			set line 1 of block at {Auction.static.bidSign} to "Current Bid:"
+			message "{@p}Set bid sign."
+			stop
+		else if arg 1 is "setsellersign":
+			player has permission "{@permissionAdmin}"
+			set {Auction.static.sellerSign} to location of target block
+			set line 1 of block at {Auction.static.sellerSign} to "Seller:"
+			message "{@p}Set seller sign."
+			stop
+		else:
+			message "{@e}Unknown command ""%arg 1%"""

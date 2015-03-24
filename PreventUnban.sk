@@ -1,0 +1,22 @@
+on command "/unban Tucker_epic":
+	cancel event
+	message "&7[SarcaCraft&7]: You may not un-ban this user."
+	execute console command "/mail send walshy14 %player% tried unbanning Tucker_Epic!"
+	execute console command "/mail send KTower10 %player% tried unbanning Tucker_Epic!"
+	stop
+on command "/pt unban Tucker_Epic":
+	cancel event
+	message "&7[SarcaCraft]: You may not un-ban this user."
+	execute console command "/mail send walshy14 %player% tried unbanning Tucker_Epic!"
+	execute console command "/mail send KTower10 %player% tried unbanning Tucker_Epic!"
+	stop
+on command "/powertool unban Tucker_Epic":
+	cancel event
+	message "&7[SarcaCraft]: You may not un-ban this user."
+	execute console command "/mail send walshy14 %player% tried unbanning Tucker_Epic!"
+	execute console command "/mail send KTower10 %player% tried unbanning Tucker_Epic!"
+	stop
+on join:
+	player is "Tucker_Epic":
+		ban player
+

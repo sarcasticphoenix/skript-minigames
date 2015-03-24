@@ -1,0 +1,18 @@
+options:
+	p: &7[&aEnchant&7] &a
+
+command /eex <enchantment type>:
+	permission: enchant.items
+	trigger:
+		enchant tool of player with argument
+		message "{@p}Done"
+		stop
+
+command /setname <text>:
+	permission: enchant.items
+	trigger:
+		set {_n} to arg 1
+		replace all "&" in {_n} with "§"
+		set name of tool of player to {_n}
+		message "{@p}Done"
+		stop

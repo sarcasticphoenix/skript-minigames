@@ -1,0 +1,36 @@
+options:
+	p: &7[&6Donations&7] &6
+
+command /donor <text> <text>:
+	executable by: console
+	permission: a.a.a.a.a.a
+	trigger:
+		if arg 2 is "on":
+			broadcast "{@p}%arg 1% just donated! Thank you for your support!"
+			execute console command "/pex user %arg 1% add essentials.hat"
+			execute console command "/pex user %arg 1% add essentials.chat.color"
+			execute console command "/pex user %arg 1% add essentials.chat.format"
+			execute console command "/pex user %arg 1% add essentials.chat.magic"
+			execute console command "/pex user %arg 1% add donor.perms"
+			stop
+		else if arg 2 is "off":
+			execute console command "/mail send %arg 1% Your donation perks duration ran out."
+			execute console command "/pex user %arg 1% remove essentials.hat"
+			execute console command "/pex user %arg 1% remove essentials.chat.color"
+			execute console command "/pex user %arg 1% remove essentials.chat.format"
+			execute console command "/pex user %arg 1% remove essentials.chat.magic"
+			execute console command "/pex user %arg 1% remove donor.perms"
+			stop
+		else:
+			broadcast "{@p}Error: Unknown argument '%arg 2%'"
+			stop
+
+command /particle [<particle>]:
+	permission: donor.perms
+	trigger:
+		if arg 1 is not set:
+			message "{@p}List of particles: %all enum values of particle%"
+			message "{@p}/particle ParticleName"
+			stop
+		spawn 10 of particle arg 1:1 offset by 0.5, 0.5, 0.5 at head location of player
+		stop

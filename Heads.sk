@@ -1,0 +1,7 @@
+command /head <offlineplayer = %player%>:
+	permission: Heads.give
+	trigger:
+		give arg 1's skull to the player
+		stop
+
+

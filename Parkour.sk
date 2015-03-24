@@ -1,0 +1,160 @@
+#      ___           ___           ___           ___           ___           ___           ___     
+#     /\  \         /\  \         /\  \         /\__\         /\  \         /\__\         /\  \    
+#    /::\  \       /::\  \       /::\  \       /:/  /        /::\  \       /:/  /        /::\  \   
+#   /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/__/        /:/\:\  \     /:/  /        /:/\:\  \  
+#  /::\~\:\  \   /::\~\:\  \   /::\~\:\  \   /::\__\____   /:/  \:\  \   /:/  /  ___   /::\~\:\  \ 
+# /:/\:\ \:\__\ /:/\:\ \:\__\ /:/\:\ \:\__\ /:/\:::::\__\ /:/__/ \:\__\ /:/__/  /\__\ /:/\:\ \:\__\
+# \/__\:\/:/  / \/__\:\/:/  / \/_|::\/:/  / \/_|:|~~|~    \:\  \ /:/  / \:\  \ /:/  / \/_|::\/:/  /
+#      \::/  /       \::/  /     |:|::/  /     |:|  |      \:\  /:/  /   \:\  /:/  /     |:|::/  / 
+#       \/__/        /:/  /      |:|\/__/      |:|  |       \:\/:/  /     \:\/:/  /      |:|\/__/  
+#                   /:/  /       |:|  |        |:|  |        \::/  /       \::/  /       |:|  |    
+#                   \/__/         \|__|         \|__|         \/__/         \/__/         \|__|    
+
+#============================================#
+# Developed by Sarc                          #
+# (Sarcasticphoenix)                         #
+#                                            #
+# Originally made for SarcaCraft             #
+# See it in action at mc.sarc.biz            #
+#============================================#
+
+options:
+	reward-command: "/eco give %player% 1000"
+	parkour-world: "Parkour"
+
+on sign change:
+	line 1 of event-block is "[Parkour]"
+	player does not have permission "parkour.admin"
+	cancel event
+	message "&c[Parkour] You may not place parkour signs!"
+	stop
+
+on right click on sign:
+	line 1 of clicked block parsed as text is "[Parkour]"
+	player has permission "parkour.commands"
+	if line 2 of clicked block parsed as text is "Start":
+		if {Parkour.userdata.waypoints.%player%} is set:
+			teleport player to {Parkour.userdata.waypoints.%player%}
+		else:
+			teleport player to {Parkour.join}
+			set {Parkour.userdata.isPlaying.%player%} to true
+			make player execute command "/swp"
+		set {Parkour.userdata.isPlaying.%player%} to true
+		message "&8[Parkour] Active. Do /leaveparkour to leave."
+		stop
+	else if line 2 of clicked block parsed as text is "Finish":
+		heal the player
+		set player's hunger bar to 20
+		set {_int} to line 3 of clicked block parsed as integer
+		add 1 to {_int}
+		if block below player is not obsidian:
+			message "&8[Parkour] You must stand on obsidian to click this sign."
+			stop
+		set {Parkour.userdata.level.%player%} to {_int}
+		if {Parkour.level.%{_int}%} is not set:
+			make player execute command "/swp"
+			make player execute command "/leaveparkour"
+			message "&8[Parkour] You have finished all existing levels."
+			message "&8[Parkour] Your progress has been saved."
+			message "&8[Parkour] Come back once more levels have been added..."
+			stop
+		else:
+			set {Parkour.score.%player%} to {_int}
+			teleport player to {Parkour.level.%{_int}%}
+			make player execute command "/swp"
+			execute console command {@reward-command}
+			message "&8[Parkour] Now on level %{_int}%."
+			stop
+
+on command:
+	{Parkour.userdata.isPlaying.%player%} is true
+	command parsed as text is not "swp" or "wp" or "leaveparkour":
+		cancel event
+		message "&8[Parkour] Only /swp, /wp, and /leaveparkour are permitted in Parkour."
+
+on damage:
+	world is {@parkour-world}
+	if block below victim is sponge:
+		cancel event
+		stop
+	damage is greater than or equal to health of victim
+	cancel event
+	heal the victim
+	set victim's hunger bar to 20
+	teleport victim to {Parkour.userdata.waypoints.%victim%}
+	wait 1 tick
+	heal the victim
+	extinguish the victim
+	stop
+
+command /swp:
+	permission: parkour.commands
+	trigger:
+		player is in {@parkour-world}
+		if {Parkour.userdata.isPlaying.%player%} is true:
+			if block below player is lava, water, sign, fire, or air:
+				message "&8[Parkour] You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else:
+				set {Parkour.userdata.waypoints.%player%} to location of player
+				message "&8[Parkour] Progress saved."
+				stop
+		else:
+			message "&8[Parkour] You aren't playing parkour."
+			stop
+
+command /wp:
+	permission: parkour.commands
+	trigger:
+		player is in {@parkour-world}
+		{Parkour.userdata.isPlaying.%player%} is true:
+			teleport player to {Parkour.userdata.waypoints.%player%}
+			stop
+		else:
+			message "&8[Parkour] You aren't playing parkour."
+			stop
+
+command /leaveparkour:
+	permission: parkour.commands
+	trigger:
+		player is in {@parkour-world}
+		{Parkour.userdata.isPlaying.%player%} is true:
+			make player execute command "/swp"
+			teleport player to {Parkour.lobby}
+			set {Parkour.userdata.isPlaying.%player%} to false
+			stop
+		else:
+			message "&8[Parkour] You aren't playing parkour."
+			stop
+
+command /parkour <text> [<text>]:
+	permission: parkour.admin
+	trigger:
+		if arg 1 is "setlobby":
+			set {Parkour.lobby} to location of player
+			message "&8[Parkour] Set."
+		else if arg 1 is "setjoin":
+			set {Parkour.join} to location of player
+			message "&8[Parkour] Set."
+		else if arg 1 is "setlevel":
+			set {_lvl} to arg 2
+			if {_lvl} is not set:
+				message "&8[Parkour] Arg 2 needed"
+			else:
+				set {Parkour.level.%{_lvl}%} to location of player
+				message "&8[Parkour] Set."
+		else if arg 1 is "fix":
+			set {_p} to arg 2
+			if {_p} isn't online:
+				message "%arg 2% not online"
+				stop
+			set {Parkour.userdata.isPlaying.%{_p}%} to false
+			message "Done"
+
+on join:
+	if {Parkour.userdata.isPlaying.%player%} is true:
+		set {Parkour.userdata.isPlaying.%player%} to false
+		teleport player to {Parkour.lobby}
+	{Parkour.userdata.level.%player%} is not set
+	set {Parkour.userdata.level.%player%} to 1
+	stop

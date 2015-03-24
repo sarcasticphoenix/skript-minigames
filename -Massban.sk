@@ -1,0 +1,6 @@
+command /massban <offline players>:
+	permission:a.a
+	trigger:
+		ban arg 1 due to "The Banhammer Has Spoken!"
+		message "%arg 1% banned"
+		stop

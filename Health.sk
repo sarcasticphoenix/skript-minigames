@@ -1,0 +1,11 @@
+command /sethealth <number = 10> <player = %player%>:
+	permission: health.set
+	trigger:
+		set health of arg 2 to arg 1
+		stop
+
+command /setmaxhealth <number = 10> <player = %player%>:
+	permission: health.set.max
+	trigger:
+		set max health of arg 2 to arg 1
+		stop	

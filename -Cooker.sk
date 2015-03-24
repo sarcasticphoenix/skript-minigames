@@ -1,0 +1,87 @@
+options:
+	p: &7[&eCooker&7] &e
+	e: &c[Cooker] &c
+
+command /cook:
+	permission: cooker.use
+	trigger:
+		if target block isn't chest or trapped chest:
+			message "{@e}Look at a chest over fire."
+			stop
+		set {_a} to location of target block
+		if block below {_a} isn't fire or lava:
+			message "{@e}Not enough heat to cook."
+			stop
+		if block above {_a} is air:
+			set block above {_a} to fire
+		if block below {_a} is fire:
+			loop items in target block's inventory:
+				if id of loop-item is 319:
+					set id of loop-item to 320
+					set the data value of loop-item to 0
+				else if id of loop-item is 4:
+					set id of loop-item to 1
+					set the data value of loop-item to 0
+				else if id of loop-item is 363:
+					set id of loop-item to 364
+					set the data value of loop-item to 0
+				else if id of loop-item is 365:
+					set id of loop-item to 364
+					set the data value of loop-item to 0
+				else if id of loop-item is 349:
+					set id of loop-item to 350
+					set the data value of loop-item to 0
+				else if id of loop-item is 392:
+					set id of loop-item to 393
+					set the data value of loop-item to 0
+				else if id of loop-item is 14:
+					set id of loop-item to 266
+					set the data value of loop-item to 0
+				else if id of loop-item is 15:
+					set id of loop-item to 265
+					set the data value of loop-item to 0
+				else if id of loop-item is 21:
+					set id of loop-item to 351
+					set data value of loop-item to 4
+				else if id of loop-item is 56:
+					set id of loop-item to 264
+					set the data value of loop-item to 0
+				else if id of loop-item is 73:
+					set id of loop-item to 331
+					set the data value of loop-item to 0
+				else if id of loop-item is 129:
+					set id of loop-item to 388
+					set the data value of loop-item to 0
+				else if id of loop-item is 153:
+					set id of loop-item to 406
+					set the data value of loop-item to 0
+				else if id of loop-item is 263:
+					message "{@e}Heated %loop-item% too much; disintegrated."
+					set id of loop-item to 0
+				else:
+					message "{@e}Heated %loop-item% too much; burned."
+					set {_n} to loop-item
+					set id of loop-item to 263
+					set name of loop-item to "Burned %{_n}%"
+					chance of 50%:
+						set the data value of loop-item to 0
+					else:
+						set the data value of loop-item to 1
+				wait 1 tick
+		else:
+			loop items in target block's inventory:
+				message "{@e}Warning: Too much heat!"
+				if id of loop-item is 263:
+					message "{@e}Heated %loop-item% too much; disintegrated."
+					set id of loop-item to 0
+				else:
+					message "{@e}Heated %loop-item% too much; burned."
+					set id of loop-item to 263
+					chance of 50%:
+						set the data value of loop-item to 0
+					else:
+						set the data value of loop-item to 1
+		if block above {_a} is fire:
+			set block above {_a} to air
+		message "{@p}Finished cooking the contents of the chest."
+		stop

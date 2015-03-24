@@ -1,0 +1,130 @@
+﻿# 
+# MFG's Skript to 
+# 
+# 
+
+options:
+  pre:<gold>[<yellow>Spinning Signs<gold>] <yellow>
+  prebad:<red>[<pink>Spinning Signs<red>] <yellow>
+
+
+command /clearsignsyo:
+  permission: canclearsigns
+  trigger:
+    clear {spinningsigns::*}
+    
+command /clearwoolyo:
+  permission: canclearwool
+  trigger:
+    clear {spinningwool::*}
+
+#on right click on sign:
+#  name of player's tool contains "spin":
+command /spin:
+  permission: canspinsigns
+  trigger:
+    targeted block is a sign:
+      if {spinningsigns::%location of targeted block%} is not set:
+        set {spinningsigns::%location of targeted block%} to location of targeted block
+        message "{@pre}Spinning Sign added"
+      else:
+        message "{@prebad}This sign is no longer a spinning sign!" 
+        clear {spinningsigns::%location of targeted block%}
+    else:
+      message "{@prebad}Look at a sign you silly goose!"
+        
+command /spinwool:
+  permission: canspinsigns
+  trigger:
+    target block is wool
+    if {spinningwool::%location of target block%} is not set:
+      set {spinningwool::%location of target block%} to location of target block
+      message "{@pre}Spinning Wool added"
+    else:
+      message "{@prebad}The wool is no longer a spinning wool!"
+      clear {spinningwool::%location of target block%}
+    
+every 4 ticks:
+  loop {spinningsigns::*}:
+    
+    set {_line1} to "%coloured line 1 of block at loop-value%"
+    set {_line2} to "%coloured line 2 of block at loop-value%"
+    set {_line3} to "%coloured line 3 of block at loop-value%"
+    set {_line4} to "%coloured line 4 of block at loop-value%"
+  
+    set {_newvalue} to data value of block at loop-value
+    #message "%{_newvalue}%" to {playerlistforsigns::*}
+    if {_newvalue} is greater than 14:
+      set data value of block at loop-value to 0
+    else:
+      set data value of block at loop-value to {_newvalue} + 1
+      
+    set line 1 of block at loop-value to "%{_line1}%"
+    set line 2 of block at loop-value to "%{_line2}%"
+    set line 3 of block at loop-value to "%{_line3}%"
+    set line 4 of block at loop-value to "%{_line4}%"
+  loop {spinningwool::*}:
+    set {_v} to random number between 0 and 15
+    set data value of block at loop-value to {_v}
+
+
+on break of sign:
+  wait 10 ticks
+  if block is air:
+    {spinningsigns::%location of block%} is set:
+      clear {spinningsigns::%location of block%}
+      message "{@pre}Spinning Sign Removed!"
+
+on break of wool:
+  wait 10 ticks
+  if block is air:
+    {spinningwool::%location of block%} is set:
+      clear {spinningwool::%location of block%}
+      message "{@pre}Spinning Wool Removed!"
+
+command /snowit <text>:
+  permission: asian.invasion
+  trigger:
+    if arg 1 is "snow":
+      loop blocks in radius 5 of location of player:
+        set {_z} to a rounded random number between 0 and 5
+        if {_z} is 0:
+          shoot a snowball from location of loop-block at speed 0.1 north
+        else if {_z} is 1:
+          shoot a snowball from location of loop-block at speed 0.1 east
+        else if {_z} is 2:
+          shoot a snowball from location of loop-block at speed 0.1 south
+        else if {_z} is 3:
+          shoot a snowball from location of loop-block at speed 0.1 west
+        else if {_z} is 4:
+          shoot a snowball from location of loop-block at speed 0.1 upwards
+        else if {_z} is 5:
+          shoot a snowball from location of loop-block at speed 0.1 downwards
+        else:
+          broadcast "%{_z}%"
+        wait 0.1 tick
+      message "Snowed"
+    else if arg 1 is "arrow":
+      loop blocks in radius 3 of location of player:
+        if rounded down y-coordinate of loop-block is rounded down y-coordinate of player - 1:
+          shoot an arrow from location of loop-block at speed 3 downwards
+        wait 0.1 tick
+      message "Arrowed"
+    else if arg 1 is "arrowbig":
+      loop blocks in radius 15 of location of player:
+        if rounded down y-coordinate of loop-block is rounded down y-coordinate of player - 1:
+          shoot an arrow from location of loop-block at speed 3 downwards
+        wait 0.1 tick
+      message "Arrowed"
+    else if arg 1 is "egg":
+      loop blocks in radius 5 of location of player:
+        shoot an egg from location of loop-block at speed 0 upward
+        wait 0.1 tick
+      message "Egged"
+
+command /snipe <player>:
+	permission: a
+	trigger:
+		shoot an arrow from location of player-arg at speed 0.1 upwards
+		stop
+

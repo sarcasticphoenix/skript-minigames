@@ -1,0 +1,22 @@
+options:
+	p: &7[&fRules&7] &f
+
+command /rules:
+	trigger:
+		message "{@p}1. Common Sense Rule"
+		message "{@p}   &7No hacking, no cheating, no griefing, etc"
+		message "{@p}2. The Asking Rule"
+		message "{@p}   &7Don't ask for staff, items, op, etc"
+		message "{@p}3. The Nuisance Rule"
+		message "{@p}   &7Don't be a nuisance"
+		message "{@p}4. The Reading and Searching Rule"
+		message "{@p}   &7Read info, search before asking"
+		message "{@p}5. The Get Along Rule"
+		message "{@p}   &7Don't argue and flood the chat"
+		message "{@p}6. The Use Your Resources Rule"
+		message "{@p}   &7Use the website, forums, tickets, etc"
+		message "{@p}7. The Innocence Rule"
+		message "{@p}   &7Innocence is not an excuse"
+		message "{@p}8. The Honor Rule"
+		message "{@p}   &7Act on your honor"
+		stop

@@ -1,0 +1,69 @@
+options:
+	p: &7[&aElevator&7] &a
+	e: &c[Elevator] &c
+
+on right click on sign:
+	line 1 of clicked block is "[Elevator]"
+	set {_i} to line 3 of clicked block parsed as integer
+	if parse error is set:
+		message "{&e}%parse error%"
+		stop
+	if {_i} is 0:
+		message "{@e}Error: Floor 0"
+		stop
+	set {_a} to line 2 of clicked block
+	if {_a} is not "Up" or "Down":
+		message "{@e}Error: %{_a}% !=Up && !=Down"
+		stop
+	cancel event
+	set {_b} to location of clicked block
+	message "{@p}Elevator started!"
+	if {_a} is "Up":
+		while {_i} is greater than 0:
+			wait 0.02 seconds
+			set {_b} to location of block above {_b}
+			if block at {_b} is not air or sign:
+				subtract 1 from {_i}
+				message "{@p}Going up a floor..."
+				if {_i} is 0:
+					set {_b} to location of block above {_b}
+					teleport player to {_b}
+					message "{@p}Done."
+					stop
+			if y-coordinate of {_b} is greater than 254:
+				message "{@e}Over height"
+				stop
+		set {_z} to false
+		stop
+	else:
+		add 1 to {_i}
+		while {_i} is greater than 0:
+			wait 0.02 seconds
+			set {_b} to location of block below {_b}
+			if block at {_b} is not air or sign:
+				subtract 1 from {_i}
+				message "{@p}Going down a floor..."
+				if {_i} is 0:
+					set {_b} to location of block above {_b}
+					teleport player to {_b}
+					message "{@p}Done."
+					stop
+			if y-coordinate of {_b} is less than 2:
+				message "{@e}Below height"
+				stop
+		set {_z} to false
+		stop
+
+on break of sign:
+	line 1 of block is "[Elevator]"
+	player doesn't have permission "elevator.edit"
+	cancel event
+	message "{@e}You can't break elevators!"
+	stop
+
+on sign change:
+	line 1 of block is "[Elevator]"
+	player doesn't have permission "elevator.edit"
+	cancel event
+	message "{@e}You can't create elevators!"
+	stop

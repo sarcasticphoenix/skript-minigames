@@ -1,0 +1,210 @@
+options:
+	p: &7[&bSurvival&7] &f
+	e: &c[Survival] &c
+	x: &7[&eXenontool&7] &f
+	
+on right click on villager with lead:
+	cancel event
+	make the villager ride the player
+
+on break of glass:
+	gamemode of player is survival
+	set {_z} to location of block
+	wait 1 tick
+	block at {_z} is air
+	drop 1 glass at {_z}
+	stop
+
+on break of glass pane:
+	gamemode of player is survival
+	set {_z} to location of block
+	wait 1 tick
+	block at {_z} is air
+	chance of 50%
+	drop 1 glass pane at {_z}
+	stop
+
+on break of locked chest:
+	gamemode of player is survival
+	set {_z} to location of block
+	wait 1 tick
+	block at {_z} is air
+	drop 1 locked chest at {_z}
+	stop
+
+on damage of creeper:
+	attacker is a player
+	create a fake explosion at the victim
+
+command /eexmax:
+	permission: enchant.all
+	trigger:
+		enchant the player's tool with feather falling 4
+		enchant the player's tool with fire protection 4
+		enchant the player's tool with feather falling 4
+		enchant the player's tool with projectile protection 4
+		enchant the player's tool with blast protection 4
+		enchant the player's tool with respiration 3
+		enchant the player's tool with aqua affinity 1
+		enchant the player's tool with thorns 3
+		enchant the player's tool with sharpness 5
+		enchant the player's tool with smite 5
+		enchant the player's tool with bane of arthropods 5
+		enchant the player's tool with knockback 2
+		enchant the player's tool with fire aspect 2
+		enchant the player's tool with looting 3
+		enchant the player's tool with efficiency 5
+		enchant the player's tool with silk touch 1
+		enchant the player's tool with unbreaking 3
+		enchant the player's tool with fortune 3
+		enchant the player's tool with power 5
+		enchant the player's tool with punch 2
+		enchant the player's tool with flame 1
+		enchant the player's tool with infinity 1
+		enchant the player's tool with luck of the sea 3
+		enchant the player's tool with lure 3
+		stop
+
+on script load:
+	register new shaped recipe for magma cream of unbreaking 1 named "&eXenontool" using diamond shovel, diamond sword, diamond pickaxe, diamond sword, iron block, diamond sword, diamond axe, diamond sword, diamond hoe
+	register new shaped recipe for bow of unbreaking 2 and power 3 named "&ePrecision Crossbow" using diamond sword, dispenser, diamond sword, redstone comparator item, bow, redstone repeater item, dispenser, diamond block, dispenser
+	stop
+
+on left click holding bow:
+	name of tool of player is "&ePrecision Crossbow"
+	cancel event
+	if player has slowness:
+		remove slowness from the player
+		message "&7[&ePrecision Crossbow&7] &fZoom: 1.0X"
+	else:
+		apply slowness 127 to player
+		message "&7[&ePrecision Crossbow&7] &fZoom: 2.0X"
+	stop
+
+on right click holding magma cream:
+	name of tool of player is "&eXenontool"
+	cancel event
+	open chest with 1 rows named "&eXenontool 1.0" to player
+	wait 1 tick
+	format slot 8 of player with 166 named "&cClose" with lore "&fExit Xenontool" to close
+	format slot 0 of player with player's skull named "&eHello, %player%." with lore "&fThis is Xenontool 1.0." to be unstealable
+	format slot 1 of player with cobblestone named "&eStone to Cobble" with lore "&fTransform all stone in inventory to cobble." to run "xenontool %player% stonetocobble"
+	format slot 2 of player with stone named "&eCobble to Stone" with lore "&fTransform all cobble in inventory to stone.||&cRequires 1 coal for fuel." to run "xenontool %player% cobbletostone"
+	format slot 3 of player with dirt named "&eCrop Magic" with lore "&fGrows wheat, potatoes, and carrots||&fwithin 5 blocks of you.||&cRequires 3 bonemeal for fuel." to run "xenontool %player% cropmagic"
+	format slot 4 of player with anvil named "&eHeal Aura" with lore "&fRepair all tools and||&farmor in the inventory||&cRequires 3 cacti for fuel." to run "xenontool %player% healaura"
+	format slot 5 of player with chest named "&eHandle Artifacts" with lore "&fCreate the potion needed||&fto safely handle artifacts found||&funderground while mining.||&cRequires 5 diamonds for fuel." to run "xenontool %player% handleartifact"
+	format slot 5 of player with chest named "&eGo Green" with lore "&fTurn all dirt in inventory||&finto grass blocks.||&cRequires 2 bonemeal for fuel." to run "xenontool %player% gogreen"
+	stop
+
+command /xenontool <player> <text>:
+	executable by: console
+	permission: a.a.a.a.a
+	trigger:
+		if arg 2 is "stonetocobble":
+			if arg 1 doesn't contain 1 stone:
+				send "{@x}No need, your inventory does not contain any stone." to arg 1
+				stop
+			loop all items in inventory of arg 1:
+				if id of loop-item is 1:
+					set id of loop-item to 4
+			message "{@x}Stone to Cobble complete." to arg 1
+		else if arg 2 is "cobbletostone":
+			if arg 1 doesn't contain 1 cobblestone:
+				send "{@x}No need, your inventory does not contain any cobblestone." to arg 1
+				stop
+			if arg 1 does not contain 1 coal or 1 charcoal:
+				message "{@x}You need 1 coal or charcoal to use Cobble to Stone." to arg 1
+				stop
+			if arg 1 contains 1 coal:
+				remove 1 coal from the arg 1
+			else if arg 1 contains 1 charcoal:
+				remove 1 charcoal from arg 1
+			loop all items in inventory of arg 1:
+				if id of loop-item is 4:
+					set id of loop-item to 1
+			message "{@x}Cobble to Stone complete." to arg 1
+		else if arg 2 is "cropmagic":
+			if arg 1 does not contain 3 bonemeal:
+				message "{@x}You need 3 bonemeal to use Cropmagic." to arg 1
+				stop
+			remove 1 bonemeal from arg 1
+			set {_i} to 0
+			loop all blocks in radius 5 of location of arg 1:
+				if id of loop-block is 59:
+					set data value of loop-block to 7
+					add 1 to {_i}
+				else if id of loop-block is 141:
+					set data value of loop-block to 7
+					add 1 to {_i}
+				else if id of loop-block is 142:
+					set data value of loop-block to 7
+					add 1 to {_i}
+			message "{@x}Cropmagic Complete." to arg 1
+			message "{@x}%{_i}% crops grown." to arg 1
+		if arg 2 is "healaura":
+			if arg 1 doesn't contain any cactus:
+				send "{@x}You need 3 cacti to use Heal Aura." to arg 1
+				stop
+			remove 3 cactus from arg 1
+			loop all items in inventory of arg 1:
+				if loop-item is any sword:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any shovel:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any axe:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any hoe:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any pickaxe:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is fishing rod:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is bow:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is shears:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is flint'n'steel:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any helmet:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any chestplate:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any leggings:
+					set data value of loop-item to 0
+					add 1 to {_i}
+				else if loop-item is any boots:
+					set data value of loop-item to 0
+					add 1 to {_i}
+			message "{@x}Heal Aura complete." to arg 1
+			message "{@x}%{_i}% items repaired." to arg 1
+		else if arg 2 is "handleartifact":
+			if arg 1 does not contain 5 diamond:
+				message "{@x}You need 5 diamonds to use Handle Artifact." to arg 1
+				stop
+			remove 5 diamond from the arg 1
+			add 1 bottle of water named "&1Potion of Handle Artifact" to arg 1
+			send "{@x}Warning: DO NOT DRINK THE POTION! Leave it in your inventory to prevent artifact blasting." to arg 1
+		else if arg 2 is "gogreen":
+			if arg 1 doesn't contain 1 dirt:
+				send "{@x}No need, your inventory does not contain any dirt." to arg 1
+				stop
+			if arg 1 does not contain 2 bonemeal:
+				message "{@x}You need 2 bonemeal to use Go Green." to arg 1
+				stop
+			remove 2 bonemeal from the arg 1
+			loop all items in inventory of arg 1:
+				if id of loop-item is 3:
+					set id of loop-item to 2
+			message "{@x}Go Green complete." to arg 1
+		stop

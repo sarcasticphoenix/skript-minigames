@@ -1,0 +1,39 @@
+on right click with any potion:
+	world is "defaultplot" or "playerplot" or "proplot" or "proworld" or "freebuild"
+	player doesn't have permission "potion.bypass"
+	cancel event
+	remove all potions from player's inventory
+	send "&7[&1Creative&7] &1You cannot use that here!"
+	stop
+
+#on right click with snowball:
+#	world is "defaultplot" or "playerplot" or "proplot" or "proworld" or "freebuild"
+#	cancel event
+#	remove all snowballs from player's inventory
+#	send "&7[&1Creative&7] &1You cannot use that here!"
+#	stop
+
+on right click with eye of ender:
+	world is "defaultplot" or "playerplot" or "proplot" or "proworld" or "freebuild"
+	cancel event
+	remove all eye of ender from player's inventory
+	send "&7[&1Creative&7] &1You cannot use that here!"
+	stop
+
+on right click with any spawn egg:
+	world is "defaultplot" or "playerplot" or "proplot" or "proworld" or "freebuild"
+	player doesn't have permission "mobs.spawn"
+	cancel event
+	message "&7[&1Creative&7] &1Only donors can spawn mobs in building worlds."
+	stop
+
+on place:
+	set {_z} to block
+	world is "defaultplot" or "playerplot" or "proplot" or "proworld" or "emporium" or "freebuild"
+	wait 1 tick
+	block at location of block is {_z}
+	add 2 to the player's account
+	stop
+
+on leaves decay:
+	cancel event

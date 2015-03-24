@@ -1,0 +1,111 @@
+on server list ping:
+	set {_a} to "&7[&b1.8.3&7] "
+	set {_p} to "&7[&bSarcaCraft&7]&b"
+	set {_z} to random integer between 1 and 50
+	if {_z} is 1:
+		set {_s} to "You can see your nose!"
+	else if {_z} is 2:
+		set {_s} to "Now breathing manually!"
+	else if {_z} is 3:
+		set {_s} to "100%% gluten free!"
+	else if {_z} is 4:
+		set {_s} to "Walshy was here!"
+	else if {_z} is 5:
+		set {_s} to "No deaths in 2 days!"
+	else if {_z} is 6:
+		set {_s} to "Go do your homework!"
+	else if {_z} is 7:
+		set {_s} to "Not safe for work!"
+	else if {_z} is 8:
+		set {_s} to "We don't have a Vine!"
+	else if {_z} is 9:
+		set {_s} to "Now with 5 trees!"
+	else if {_z} is 10:
+		set {_s} to "There's something behind your back!"
+	else if {_z} is 11:
+		set {_s} to "There's something on your back!"
+	else if {_z} is 12:
+		set {_s} to "Just 1010101010001!"
+	else if {_z} is 13:
+		set {_s} to "Now using Windows XP!"
+	else if {_z} is 14:
+		set {_s} to "Now AFK!"
+	else if {_z} is 15:
+		set {_s} to "I can't paste!"
+	else if {_z} is 16:
+		set {_s} to "Now with pigs!"
+	else if {_z} is 17:
+		set {_s} to "Will run away!"
+	else if {_z} is 18:
+		set {_s} to "Healthcare provided!"
+	else if {_z} is 19:
+		set {_s} to "Loading the loading the MOTD!"
+	else if {_z} is 20:
+		set {_s} to "Name him Ricky!"
+	else if {_z} is 21:
+		set {_s} to "Some people actually recommend us!"
+	else if {_z} is 22:
+		set {_s} to "Obamacare!"
+	else if {_z} is 23:
+		set {_s} to "Doctors hate us!"
+	else if {_z} is 24:
+		set {_s} to "Have a map!"
+	else if {_z} is 25:
+		set {_s} to "I saw you yesterday!"
+	else if {_z} is 26:
+		set {_s} to "Based on Minecraft!"
+	else if {_z} is 27:
+		set {_s} to "For the faint of heart!"
+	else if {_z} is 28:
+		set {_s} to "You be so hax0rz!"
+	else if {_z} is 29:
+		set {_s} to "Horrible literacy rates!"
+	else if {_z} is 30:
+		set {_s} to "The reason you play Minecraft!"
+	else if {_z} is 31:
+		set {_s} to "Now with mythical beasts!"
+	else if {_z} is 32:
+		set {_s} to "Suitable for vegans!"
+	else if {_z} is 33:
+		set {_s} to "Macaroni and Bacon!"
+	else if {_z} is 34:
+		set {_s} to "Soup or Ribs!"
+	else if {_z} is 35:
+		set {_s} to "Would you like fries with that?"
+	else if {_z} is 36:
+		set {_s} to "Double click me!"
+	else if {_z} is 37:
+		set {_s} to "Held together with duct tape!"
+	else if {_z} is 38:
+		set {_s} to "Cooked medium well!"
+	else if {_z} is 39:
+		set {_s} to "Now with a new server icon!"
+	else if {_z} is 40:
+		set {_s} to "Available in 64GB!"
+	else if {_z} is 41:
+		set {_s} to "Air, air, air, dirt, stone, and more!"
+	else if {_z} is 42:
+		set {_s} to "Now 128 bit!"
+	else if {_z} is 43:
+		set {_s} to "Charges via MicroUSB Cable!"
+	else if {_z} is 44:
+		set {_s} to "Error 404 - Can't taste!"
+	else if {_z} is 45:
+		set {_s} to "Now with pancakes!"
+	else if {_z} is 46:
+		set {_s} to "A whirlwind of chaos!"
+	else if {_z} is 47:
+		set {_s} to "I see a fly!"
+	else if {_z} is 48:
+		set {_s} to "From the planets far away!"
+	else if {_z} is 49:
+		set {_s} to "Nice pick!"
+	else if {_z} is 50:
+		set {_s} to "One of 50 MOTDs!"
+	else:
+		set {_s} to "BUUURP!"
+	#Special MOTDs==============
+	#set {_s} to "Happy Halloween from SarcaCraft!"
+	#===========================
+	set motd to "%{_a}%%{_p}% %{_s}%"
+	stop

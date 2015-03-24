@@ -1,0 +1,95 @@
+# Spy - See what people are doing
+# By Sarc (Sarcasticphoenix)
+
+options:
+	spy-permission: "spy.use"
+	console-action: stop
+	command-args: "&c[Spy] /spy commands|signs|all on|off"
+	activated-format: "&8[Spy] Activated."
+	command-format: "&8[Spy] %player%: /%full command%"
+	sign-format: "&8[SignSpy] %player%: |%line 1 of event-block%&8|%line 2 of event-block%&8|%line 3 of event-block%&8|%line 4 of event-block%&8|"
+	command-toggle-format: "&8[Spy] Command spying set to %{Spy.userdata.%player%.commands}%."
+	sign-toggle-format: "&8[Spy] Sign spying set to %{Spy.userdata.%player%.sign}%."
+	all-toggle-format: "&8[Spy] All spying set to %{Spy.userdata.%player%.sign}%."
+
+on script load:
+	clear {Spy.staff::*}
+	loop all players:
+		loop-player has permission {@spy-permission}
+		add loop-player to {Spy.staff::*}
+		send {@activated-format} to loop-player
+	stop
+
+on join:
+	player has permission {@spy-permission}
+	add player to {Spy.staff::*}
+	execute console command "/sbs give staffv2 %player%"
+	stop
+
+on quit:
+	player has permission {@spy-permission}
+	remove player from {Spy.staff::*}
+	stop
+
+on command:
+	set {_player} to player
+	if {_player} is not set:
+		{@console-action}
+	loop {Spy.staff::*}:
+		{Spy.userdata.%loop-value%.commands} is not false
+		if command is "password":
+			send "&8[Spy] %player%: /password..." to loop-value
+		else:
+			send {@command-format} to loop-value
+	stop
+
+on sign change:
+	wait 0.01 seconds
+	loop {Spy.staff::*}:
+		{Spy.userdata.%loop-value%.sign} is not false
+		send {@sign-format} to loop-value
+	stop
+
+command /spy <text> <text>:
+	permission: spy.use
+	usage: /spy commands|signs|all on|off
+	trigger:
+		if arg 1 is not set:
+			message {@command-args}
+			stop
+		else if arg 2 is not set:
+			message {@command-args}
+			stop
+		if arg 1 is "commands":
+			if arg 2 is "on":
+				set {Spy.userdata.%player%.commands} to true
+				message {@command-toggle-format}
+			else if arg 2 is "off":
+				set {Spy.userdata.%player%.commands} to false
+				message {@command-toggle-format}
+			else:
+				message {@command-args}
+		else if arg 1 is "signs":
+			if arg 2 is "on":
+				set {Spy.userdata.%player%.sign} to true
+				message {@sign-toggle-format}
+			else if arg 2 is "off":
+				set {Spy.userdata.%player%.sign} to false
+				message {@sign-toggle-format}
+			else:
+				message {@command-args}
+		else if arg 1 is "all":
+			if arg 2 is "on":
+				set {Spy.userdata.%player%.sign} to true
+				set {Spy.userdata.%player%.commands} to true
+				message {@sign-toggle-format}
+			else if arg 2 is "off":
+				set {Spy.userdata.%player%.sign} to false
+				set {Spy.userdata.%player%.commands} to false
+				message {@sign-toggle-format}
+			else:
+				message {@command-args}
+
+		else:
+			message {@command-args}
+		stop

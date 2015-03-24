@@ -1,0 +1,36 @@
+options:
+	p: &7[&aPlayer Sign&7] &a
+	e: &c[Player Sign] &c
+	1: ""
+	2: "Players Online" 
+	3: "&8%number of all players%/36"
+	4: ""
+
+command /playersign <text = "blah">:
+	permission: playersign.use
+	trigger:
+		if arg 1 is "add":
+			if target block is not a sign or wall sign:
+				message "{@e}Look at a sign..."
+				stop
+			add location of target block to {Playersigns::*}
+			message "{@p}Added the sign."
+		else if arg 1 is "del":
+			remove location of target block from {Playersigns::*}
+			message "{@p}Deleted the sign."
+		else if arg 1 is "clear":
+			delete {Playersigns::*}
+			message "{@p}Deleted all."
+		else:
+			message "{@p}/playersign add|del|clear"
+		stop
+
+every 15 seconds:
+	size of {Playersigns::*} is greater than 0
+	loop {Playersigns::*}:
+		set line 1 of block at loop-value to {@1}
+		set line 2 of block at loop-value to {@2}
+		set line 3 of block at loop-value to {@3}
+		set line 4 of block at loop-value to {@4}
+	stop
+

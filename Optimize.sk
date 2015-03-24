@@ -1,0 +1,24 @@
+options:
+	p: &8[Sweep] &8
+
+on script load:
+	broadcast "{@p}Cleaning chunks from RAM in 5 seconds"
+	wait 5 seconds
+	broadcast "{@p}Cleaning"
+	#loop all worlds:
+	#	broadcast "{@p}Optimizing world %loop-world%"
+	#	execute console command "/mvm set memory false %loop-world%"
+	#broadcast "{@p}Cleaned all %size of all worlds% worlds"
+	broadcast "{@p}Post-clean GC"
+	execute console command "/lagg gc"
+	broadcast "{@p}Enabling caching for all hub worlds"
+	#execute console command "/mvm set memory true Hub"
+	broadcast "{@p}On-load Optimize finished"
+	stop
+
+every 15 minutes:
+	broadcast "{@p}System sweep in 3 seconds"
+	wait 3 seconds
+	execute console command "/lagg gc"
+	stop
+

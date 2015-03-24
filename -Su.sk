@@ -1,0 +1,59 @@
+options:
+	p: &8[Superuser] &8
+
+on join:
+	if player has permission "adminchat.adminchat":
+		player doesn't have permission "su.on"
+		wait 2 seconds
+		deop the player
+		execute console command "/pex user %player% group set Halfstaff"
+		message "{@p}Welcome back, %player%!"
+		message "{@p}A new system called &lsuperuser &bis now active."
+		message "{@p}Normally, you will only have player permissions."
+		message "{@p}When someone asks for help, do &l/su &bto get admin permissions."
+		message "{@p}When done helping, do /su again to deactivate superuser mode."
+		stop
+	{su.%player%.active} is true
+	set {su.%player%.active} to false
+	execute console command "/pex user %player% group set Halfstaff"
+	stop
+
+on quit:
+	{su.%player%.active} is true
+	set {su.%player%.active} to false
+	execute console command "/pex user %player% group set Halfstaff"
+
+command /superuser:
+	permission: su.use
+	aliases: su
+	trigger:
+		if player has permission "su.on":
+			message "{@p}You have infinite root permissions"
+			stop
+		if {su.%player%.active} is true:
+			log "[-] %player%" to "su/access.log"
+			set {su.%player%.active} to false
+			execute console command "/pex user %player% group set Halfstaff"
+			message "{@p}Superuser mode disabled."
+			broadcast "{@p}%player%&8 disabled staff mode."
+		else:
+			log "[+] %player%" to "su/access.log"
+			set {su.%player%.active} to true
+			if {su.%player%.session} is not set:
+				set {su.%player%.session} to 1
+			else:
+				add 1 to {su.%player%.session}
+			set {_i} to {su.%player%.session}
+			execute console command "/pex user %player% group set Admin"
+			broadcast "{@p}%player%&8 enabled staff mode."
+			message "{@p}Superuser mode enabled."
+			wait 10 minutes
+			{su.%player%.active} is true
+			{su.%player%.session} is {_i}
+			set {su.%player%.active} to false
+			log "[=] %player%" to "su/access.log"
+			execute console command "/pex user %player% group set Halfstaff"
+			message "{@p}Superuser mode auto-disabled after 10 minutes."
+			broadcast "{@p}%player%&8's staffmode time expired."
+		stop
+

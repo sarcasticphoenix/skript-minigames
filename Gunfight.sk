@@ -1,0 +1,229 @@
+options:
+	p: &7[&3Gunfight&7] &3
+	e: &c[Gunfight] &c
+
+on script load:
+	{Gunfight.data.killstreak.high} is not set
+	set {Gunfight.data.killstreak.high} to 2
+	set {Gunfight.data.killstreak.player} to "aaa"
+	stop
+	
+on click holding iron hoe:
+	world is "Gunfight"
+	if player doesn't contain 1 iron ingot:
+		message "{@e}Out of ammo"
+		stop
+	cancel event
+	remove 1 iron ingot from player
+	if player doesn't contain 1 iron ingot:
+		message "{@p}You've ran out of ammo."
+	make player shoot an arrow at speed 4.5
+	stop
+
+on click holding gold hoe:
+	world is "Gunfight"
+	if player doesn't contain 1 gold nugget:
+		message "{@e}Out of ammo"
+		stop
+	cancel event
+	remove 1 gold nugget from the player
+	if player doesn't contain 1 gold nugget:
+		message "{@p}You've ran out of ammo."
+	make player shoot an arrow at speed 3
+	wait 1 tick
+	make player shoot an arrow at speed 3
+	wait 1 tick
+	make player shoot an arrow at speed 3
+	stop
+
+on click holding stone hoe:
+	world is "Gunfight"
+	if player doesn't contain 1 tnt:
+		message "{@e}Out of ammo"
+		stop
+	cancel event
+	remove 1 TNT from the player
+	if player doesn't contain 1 tnt:
+		message "{@p}You've ran out of ammo."
+	make player shoot a snowball at speed 3
+	stop
+
+on click holding wood hoe:
+	world is "Gunfight"
+	if player doesn't contain 1 fire charge:
+		message "{@e}Out of ammo"
+		stop
+	cancel event
+	remove 1 fire charge from the player
+	if player doesn't contain 1 fire charge:
+		message "{@p}You've ran out of ammo."
+	make player shoot an arrow at speed 3
+	stop
+
+on click holding diamond hoe:
+	world is "Gunfight"
+	if player doesn't contain 1 diamond:
+		message "{@e}Out of ammo"
+		stop
+	cancel event
+	remove 1 diamond from the player
+	if player doesn't contain 1 diamond:
+		message "{@p}You've ran out of ammo."
+	apply slowness 127 to the player for 1 second
+	wait 0.75 seconds
+	make player shoot an arrow at speed 6
+	stop
+
+
+on shoot:
+	shooter is a player
+	world is "Gunfight"
+	if tool of shooter is wooden hoe:
+		ignite projectile for 1 day
+	stop
+
+every 10 seconds:
+	clear all arrows in world "Gunfight"
+	stop
+
+on right click on sign:
+	world is "Gunfight"
+	line 2 of clicked block is "[Gunfight]"
+	if line 3 of clicked block is "&8Play":
+		wait 1 tick
+		show "s;3;i;wood hoe;n;Flamethrower;l;Flaming bullets - Low damage;c;gunkit %player% wood;s;4;i;stone hoe;n;RPG;l;Use this to get rid of campers/spawnkillers;c;gunkit %player% stone;s;5;i;iron hoe;n;AK47;l;Normal damage;c;gunkit %player% iron;s;6;i;gold hoe;n;Rapidfire gun;l;3 bullets at once - Low damage;c;gunkit %player% gold;s;7;i;diamond hoe;n;Sniper;l;Slow reload - High damage;c;gunkit %player% diamond" with 1 row named "Choose weapon" to player
+	else if line 3 of clicked block is "Fight":
+		if leggings of player isn't leather leggings:
+			message "{@e}Not equipped."
+			stop
+		set {_i} to a random number between 1 and 6
+		set {_j} to rounded {_i}
+		teleport player to {Gunfight.spawn.%{_j}%}
+		message "{@p}Deployed at spawn %{_j}%."
+	stop
+
+#on any movement:
+#	world is "Gunfight"
+#	target is set
+#	make player shoot an arrow at speed 3
+#	remove 1 iron block from player
+#	stop
+
+#on projectile hit:
+#	projectile is snowball
+#	world is "Gunfight"
+#	create a fake explosion at location of projectile
+#	loop all players in radius 3 of location of projectile:
+#		if block below loop-player is not double stone slab:
+#			push loop-player backwards at speed 1
+#	stop
+
+command /gunspawn <player> <text>:
+	permission: adm
+	executable by: console
+	trigger:
+		teleport arg 1 to {Gunfight.spawn.%arg 2%}
+	
+command /gunkit <player> <text>:
+	permission: adm
+	executable by: console
+	trigger:
+		clear inventory of arg 1
+		wait 1 tick
+		heal arg 1
+		equip arg 1 with all leather armor
+		set helmet of arg 1 to locked chest
+		dye chestplate of arg 1 white
+		dye leggings of arg 1 white
+		dye boots of arg 1 white
+		set data value of helmet of arg 1 to rounded random number between 0 and 15
+		if arg 2 is "wood":
+			set tool of arg 1 to wood hoe named "Flamethrower"
+			give 128 fire charge named "Flamethrower Ammo" to arg 1
+		else if arg 2 is "stone":
+			set tool of arg 1 to stone hoe named "RPG"
+			give 4 tnt named "RPG Ammo" to arg 1
+		else if arg 2 is "iron":
+			set tool of arg 1 to iron hoe named "AK47"
+			give 128 iron ingots named "AK47 Ammo" to arg 1
+		else if arg 2 is "gold":
+			set tool of arg 1 to gold hoe named "Rapidfire Gun"
+			give 64 gold nuggets named "Rapidfire Ammo" to arg 1
+		else if arg 2 is "diamond":
+			set tool of arg 1 to diamond hoe named "Sniper"
+			give 64 diamonds named "Sniper Ammo" to arg 1
+		wait 5 ticks
+		show "s;2;i;cyan wool;n;Random spawn;c;gunspawn %arg 1% %rounded random number between 1 and 6%;s;3;i;light gray wool;n;Spawn 1;c;gunspawn %arg 1% 1;s;4;i;light gray wool;n;Spawn 2;c;gunspawn %arg 1% 2;s;5;i;light gray wool;n;Spawn 3;c;gunspawn %arg 1% 3;s;6;i;light gray wool;n;Spawn 4;c;gunspawn %arg 1% 4;s;7;i;light gray wool;n;Spawn 5;c;gunspawn %arg 1% 5;s;8;i;light gray wool;n;Spawn 6;c;gunspawn %arg 1% 6" with 1 rows named "Choose spawn" to arg 1
+		stop
+
+command /setgunspawn <number>:
+	permission: adm
+	trigger:
+		set {Gunfight.spawn.%arg 1%} to location of player
+		message "{@p}Spawn %arg 1% set"
+		stop
+		
+command /setgunboard:
+	permission: adm
+	trigger:
+		set {Gunfight.data.board} to location of player
+		message "{@p}Set."
+		stop
+
+on command "/mvs":
+	world is "Gunfight"
+	set {Gunfight.userdata.%player%.killstreak} to 0
+	stop
+
+on death of player:
+	world is "Gunfight"
+	set {Gunfight.userdata.%uuid of victim%.killstreak} to 0
+	attacker is a player
+	execute console command "/eco give %attacker% 750"
+	add 5 to health of attacker
+	wait 3 ticks
+	clear all dropped items in "Gunfight"
+	clear all arrows in "Gunfight"
+	add 16 iron ingot named "AK47 Ammo" to attacker
+	add 16 fire charge named "Flamethrower Ammo" to attacker
+	add 16 diamond named "Sniper Ammo" to attacker
+	add 16 gold nuggets named "Rapidfire Ammo" to attacker
+	send "{@p}Gunned down %victim%. Got 5 hearts and 16 ammo." to attacker
+	set {Gunfight.userdata.<none>.killstreak} to 0
+	if attacker is not set:
+		stop
+	if {Gunfight.userdata.%uuid of attacker%.killstreak} is not set:
+		set {Gunfight.userdata.%uuid of attacker%.killstreak} to 1
+	else:
+		add 1 to {Gunfight.userdata.%uuid of attacker%.killstreak}
+		if {Gunfight.userdata.%uuid of attacker%.killstreak} is greater than 1:
+			broadcast "{@p}%attacker%'s killstreak: %{Gunfight.userdata.%uuid of attacker%.killstreak}%" to "Gunfight"
+			if {Gunfight.userdata.%attacker%.killstreak} is greater than {Gunfight.data.killstreak.high}:
+				set {Gunfight.data.killstreak.high} to {Gunfight.userdata.%uuid of attacker%.killstreak}
+				set {Gunfight.data.killstreak.player} to "%attacker%"
+				set line 2 of block at {Gunfight.data.board} to "%{Gunfight.data.killstreak.player}%"
+				set line 3 of block at {Gunfight.data.board} to "&8%{Gunfight.data.killstreak.high}% kills"
+	stop
+
+on damage:
+	world is "Gunfight"
+	damage cause is fall
+	set {_i} to damage * 0.25
+	push victim upwards at speed {_i}
+	stop
+
+on step on water:
+	world is "Gunfight"
+	push player up at speed 0.5
+	stop
+
+on spawn of skeleton:
+	world is "Gunfight"
+	chance of 80%:
+		cancel event
+		stop
+	apply speed 3 to the skeleton for 1000000 days
+	apply invisibility 5 to the skeleton for 1000000 days
+	ignite the skeleton for 1000000 days
+	enchant tool of the skeleton with power 3
+	stop

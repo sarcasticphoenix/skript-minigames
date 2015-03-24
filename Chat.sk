@@ -1,0 +1,63 @@
+command /me <text>:
+	permission: sc.me
+	trigger:
+		stop
+
+#========================
+#Simple script to facepalm, to respond "dafuq", and to rage and ragequit
+#By Sarc
+#========================
+#
+#
+#command /facepalm:
+#	permission: facepalm.normal
+#	aliases: fp
+#	trigger:
+#		if difference between now and {actioncmd.%uuid of player%} is less than 15 seconds:
+#			message "&c[Actions] Cannot spam actions"
+#			stop
+#		set {actioncmd.%uuid of player%} to now
+#		broadcast "&7[Facepalm] %player's display name%&7 facepalmed hard."
+#		stop
+#		
+#command /majorfacepalm:
+#	permission: facepalm.major
+#	aliases: mfp
+#	trigger:
+#		if difference between now and {actioncmd.%uuid of player%} is less than 15 seconds:
+#			message "&c[Actions] Cannot spam actions"
+#			stop
+#		set {actioncmd.%uuid of player%} to now
+#		broadcast "&7[Facepalm] %player's display name%&7 facepalmed extremely hard."
+#		stop
+#		
+#command /rage:
+#	permission: rage.normal
+#	aliases: fuck
+#	trigger:
+#		if difference between now and {actioncmd.%uuid of player%} is less than 15 seconds:
+#			message "&c[Actions] Cannot spam actions"
+#			stop
+#		set {actioncmd.%uuid of player%} to now
+#		broadcast "&7[Rage] %player's display name%&7 raged hard!"
+#		create explosion of force 0 at player
+#		message "<cyan>To ragequit, do /ragequit or /rq!"
+#		stop
+#		
+command /ragequit:
+	permission: rage.normal
+	aliases: rq
+	trigger:
+		kick the player due to "%player% ragequitted"
+		stop
+		
+#command /dafuq:
+#	permission: facepalm.normal
+#	aliases: df
+#	trigger:
+#		if difference between now and {actioncmd.%uuid of player%} is less than 15 seconds:
+#			message "&c[Actions] Cannot spam actions"
+#			stop
+#		set {actioncmd.%uuid of player%} to now
+#		broadcast "%player's display name% Dafuq?"
+#		stop

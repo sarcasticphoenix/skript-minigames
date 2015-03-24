@@ -1,0 +1,35 @@
+command /enum <text>:
+	trigger:
+		if arg 1 is "particle":
+			#message "%all enum values of particle%"
+			stop
+		else if arg 1 is "itemtype":
+			message "%all enum values of itemtype%"
+		else if arg 1 is "displayslot":
+			message "%all enum values of displayslot%"
+		else if arg 1 is "sound":
+			message "%all enum values of sound%"
+		else if arg 1 is "fireworktype":
+			message "%all enum values of fireworktype%"
+		else if arg 1 is "inventorytype":
+			message "%all enum values of inventorytype%"
+		stop
+
+on explosion:
+	spawn 25 of particle lava offset by 1, 1, 1 at location of entity
+	stop
+
+on death:
+	spawn 25 of particle explode:1 offset by 1, 1, 1 at location of victim
+	stop
+
+on shoot:
+	if projectile is snowball:
+		trail projectile with particle fireworks spark
+	else if projectile is arrow:
+		trail projectile with particle witch magic
+
+on damage:
+	victim is a zombie
+	if attacker is a player:
+		spawn 25 of particle slime:1 offset by 0, 1, 0 at location of victim		

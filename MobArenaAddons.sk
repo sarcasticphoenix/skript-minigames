@@ -1,0 +1,257 @@
+options:
+	p: &a[MobArena] &f
+	
+on right click on sign:
+	#wait 1 tick
+	world is "MobArena"
+	wait 1 tick
+	if helmet of player is iron helmet: #Valkyrie ----------------------------------------------------
+		clear inventory of player
+		set helmet of player to iron helmet named "&aHelm (Valkyrie Class)"
+		enchant helmet of player with protection 15, fire protection 10, blast protection 10, and projectile protection 10
+		set chestplate of player to iron chestplate named "&aVest (Valkyrie Class)"
+		enchant chestplate of player with protection 15, fire protection 10, blast protection 10, and projectile protection 10
+		set leggings of player to iron leggings named "&aLegguards (Valkyrie Class)"
+		enchant leggings of player with protection 15, fire protection 10, blast protection 10, and projectile protection 10
+		set boots of player to iron boots named "&aWinged Warboots (Valkyrie Class)"
+		enchant boots of player with protection 15, fire protection 10, blast protection 10, and projectile protection 10
+		add 1 diamond sword of sharpness 7 named "&aBlade of Justice (Valkyrie Class)" to the player
+		message "{@p}Right click attacks at 10, 25, and 50 gold."
+		message "{@p}10 gold - Attack 1 target"
+		message "{@p}25 gold - Attack radius 5"
+		message "{@p}50 gold - Attack radius 10"
+		add 1 feather of sharpness 1 named "&aWings of Flight (Hold and toggle sprint to fly)" to the player
+		message "{@p}To propel yourself forward, hold the feather and sprint."
+	else if helmet of player is chain helmet: #Archer ----------------------------------------------------
+		clear inventory of player
+		set name of helmet of player to "&aProtective Hood (Archer Class)"
+		set name of chestplate of player to "&aCloak (Archer Class)"
+		set name of leggings of player to "&aKilt (Archer Class)"
+		set name of boots of player to "&aWinged Boots (Archer Class)"
+		add 1 bow of power 3 and punch 1 and infinity 1 named "&aSharpshooter Longbow (Archer Class)" to the player
+		message "{@p}To zoom and rapidfire, right click with the bow. (25 gold)"
+		add 1 stone sword named "&aShort Dagger (Archer Class)" to the player
+		add 64 arrows to the player
+		add 1 feather of sharpness 1 named "&aWings of Flight (Hold and toggle sprint to fly)" to the player
+		message "{@p}To propel yourself forward, hold the feather and sprint."
+	else if helmet of player is gold helmet: #Priest ----------------------------------------------------
+		clear inventory of player
+		set name of helmet of player to "&aCrested Helmet (Priest Class)"
+		set name of chestplate of player to "&aCloak (Priest Class)"
+		set name of leggings of player to "&aLegguards (Priest Class)"
+		set name of boots of player to "&aWinged Boots (Priest Class)"
+		add 1 iron sword of sharpness 3 and knockback 2 named "&aBroadsword (Priest Class)" to the player
+		add 1 blaze rod of sharpness 1 named "&aStaff of Healing (Priest Class)" to the player
+		message "{@p}To heal players in a radius, right click with the staff. (10 gold)"
+		add 1 feather of sharpness 1 named "&aWings of Flight (Hold and toggle sprint to fly)" to the player
+		message "{@p}To propel yourself forward, hold the feather and sprint."
+	else if helmet of player is diamond helmet: #Archangel ----------------------------------------------------
+		clear inventory of player
+		set name of helmet of player to "&ePolished helm (Archangel Class)"
+		set name of chestplate of player to "&eGlistering Chestplate (Archangel Class)"
+		set name of leggings of player to "&eLegplates of Honor (Archangel Class)"
+		set name of boots of player to "&eWinged Warboots (Archangel Class)"
+		add 1 diamond sword of sharpness 7 named "&aBlade of Justice (Valkyrie Class)" to the player
+		add 1 bow of power 3 and punch 1 and infinity 1 named "&aSharpshooter Longbow (Archer Class)" to the player
+		add 1 blaze rod of sharpness 1 named "&eStaff of Healing (Priest Class)" to the player
+		add 64 arrows to the player
+		add 1 feather of sharpness 1 named "&aWings of Flight (Hold and toggle sprint to fly)" to the player
+		message "{@p}To propel yourself forward, hold the feather and sprint."
+	stop
+
+command /setmalobby:
+	permission: a.a.a.a.a
+	trigger:
+		set {MobArena.LobbyReady} to location of player
+		message "{@p}Set lobby ready location."
+		stop
+		
+on damage of creeper or skeleton or spider or zombie or blaze or wither or ghast or witch or enderman or slime:
+	world is "MobArena"
+	attacker is a player
+	drop 1 gold nugget at location of victim
+	stop
+	
+on right click holding blaze rod:
+	name of tool of player contains "Staff of Healing"
+	cancel event
+	if player contains 100 gold nuggets:
+		remove 75 gold nugget from the player
+		loop all players in world "MobArena":
+			heal loop-player by 20 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal Extreme&f!" to "MobArena"
+		stop
+	else if player contains 50 gold nuggets:
+		remove 50 gold nugget from the player
+		loop all players in radius 10 of location of player:
+			heal loop-player by 7 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal III&f!" to "MobArena"
+		stop
+	else if player contains 25 gold nuggets:
+		remove 25 gold nugget from the player
+		loop all players in radius 7 of location of player:
+			heal loop-player by 5 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal II&f!" to "MobArena"
+		stop
+	else if player contains 10 gold nuggets:
+		remove 10 gold nugget from the player
+		loop all players in radius 5 of location of player:
+			heal loop-player by 3 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal I&f!" to "MobArena"
+		stop
+	else:
+		message "{@p}100 Gold - Heal Extreme"
+		message "{@p}50 Gold - Heal III"
+		message "{@p}25 Gold - Heal II"
+		message "{@p}10 Gold - Heal I"
+		stop
+	
+on right click holding any sword:
+	world is "MobArena"
+	if name of tool of player is "&aBlade of Justice (Valkyrie Class)":
+		if player contains 100 gold nuggets:
+			remove 100 gold nuggets from the player
+			play mobspawner flames on player
+			strike lightning effect at player
+			apply blindness to all players in "MobArena" for 1 second
+			wait 1 second
+			loop all entities in world "MobArena":
+				if loop-entity isn't a player:
+					play mobspawner flames on loop-entity
+					damage loop-entity by 25 hearts
+					ignite loop-entity for 5 seconds
+					push loop-entity backwards at speed 3
+			broadcast "{@p}%player% used ability: &cHoly Energy Outburst&f!" to "MobArena"
+		if player contains 50 gold nuggets:
+			remove 50 gold nuggets from the player
+			play mobspawner flames on player
+			strike lightning effect at player
+			loop all entities in radius 10 of location of player:
+				if loop-entity isn't a player:
+					play mobspawner flames on loop-entity
+					chance of 50%:
+						drop 1 gold nugget at location of loop-entity
+					damage loop-entity by 10 hearts
+					ignite loop-entity for 3 seconds
+					push loop-entity backwards at speed 2
+			broadcast "{@p}%player% used ability: &cEnergy Explosion&f!" to "MobArena"
+		else if player contains 25 gold nuggets:
+			remove 25 gold nuggets from the player
+			play mobspawner flames on player
+			loop all entities in radius 5 of location of player:
+				if loop-entity isn't a player:
+					play mobspawner flames on loop-entity
+					drop 1 gold nugget at location of loop-entity
+					damage loop-entity by 5 hearts
+					ignite loop-entity for 1 seconds
+					push loop-entity backwards at speed 1
+			broadcast "{@p}%player% used ability: &cRadial Burst&f!" to "MobArena"
+		else if player contains 10 gold nuggets:
+			set {_s} to target entity
+			if {_s} is a player:
+				message "{@p}Cannot attack players"
+				stop
+			else if {_s} is not set:
+				message "{@p}Look at a target"
+				stop
+			remove 10 gold nuggets from the player
+			play mobspawner flames on target
+			damage target entity by 10 hearts
+			broadcast "{@p}%player% used ability: &cSupersonic&f!" to "MobArena"
+		else:
+			message "{@p}100 Gold - Holy Energy Outburst"
+			message "{@p}50 Gold - Energy Explosion"
+			message "{@p}25 Gold - Radial Burst"
+			message "{@p}10 Gold - Supersonic"
+			stop
+		
+on left click holding bow:
+	if name of tool of player is "&aSharpshooter Longbow (Archer Class)":
+		cancel event
+		if player contains 100 gold nugget:
+			remove 100 gold nuggets from the player
+			broadcast "{@p}%player% used ability: &cArchon Rayfall&f!" to "MobArena"
+			loop all entities in world "MobArena":
+				if loop-entity isn't a player:
+					play mobspawner flames on loop-entity
+					push loop-entity backwards at speed 5
+					damage loop-entity by 15 hearts
+			stop
+		else if player contains 50 gold nugget:
+			remove 50 gold nuggets from the player
+			message "{@p}Raining death for 5 seconds."
+			play mobspawner flames on player
+			loop 50 times:
+				make player shoot an arrow at speed 15
+				wait 0.1 seconds
+			play mobspawner flames on player
+			broadcast "{@p}%player% used ability: &cExtreme Arrow Rapidfire&f!" to "MobArena"
+			stop
+		else if player contains 25 gold nugget:
+			remove 25 gold nuggets from the player
+			message "{@p}Raining death for 3 seconds."
+			play mobspawner flames on player
+			loop 30 times:
+				make player shoot an arrow at speed 15
+				wait 0.1 seconds
+			play mobspawner flames on player
+			broadcast "{@p}%player% used ability: &cArrow Rapidfire&f!" to "MobArena"
+			stop
+		else if player contains 10 gold nugget:
+			remove 10 gold nuggets from the player
+			play mobspawner flames on player
+			make player shoot an arrow at speed 15
+			broadcast "{@p}%player% used ability: &cFastbow&f!" to "MobArena"
+			stop
+		else:
+			message "{@p}100 Gold - Holy Energy Outburst"
+			message "{@p}50 Gold - Energy Explosion"
+			message "{@p}25 Gold - Radial Burst"
+			message "{@p}10 Gold - Supersonic"
+			stop
+		
+on death:
+	world is "MobArena"
+	if victim is creeper or skeleton or spider or zombie or blaze or wither or ghast or witch or enderman or slime:
+		drop 1 gold nuggets at location of victim
+		stop
+	else if victim is player:
+		drop 20 gold nuggets at location of victim
+		stop
+		
+on damage of player:
+	world is "MobArena"
+	#broadcast "%damage cause%"
+	damage causes is fall
+	#name of boots of victim is "&aWinged Warboots (Valkyrie Class)" or "&aWinged Boots (Archer Class)" or "&aWinged Boots (Priest Class)" or "&aWinged Warboots (Archangel Class)"
+	chance of 50%:
+		cancel event
+	else:
+		set damage to 2
+		message "{@p}You damage your feet upon landing."
+	stop
+
+on sprint toggle:
+	world is "MobArena"
+	wait 1 tick
+	player is sprinting
+	tool of player is feather named "&aWings of Flight (Hold and toggle sprint to fly)"
+	name of boots of player is "&aWinged Warboots (Valkyrie Class)" or "&aWinged Boots (Archer Class)" or "&aWinged Boots (Priest Class)" or "&aWinged Warboots (Archangel Class)"
+	push player forwards at speed 1.6
+	stop
+
+every 15 seconds:
+	loop all players in "MobArena":
+		loop all entities in "MobArena":
+			if loop-entity-2 is an arrow:
+				clear loop-entity-2
+		stop
+	stop

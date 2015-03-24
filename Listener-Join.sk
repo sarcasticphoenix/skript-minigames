@@ -1,0 +1,18 @@
+on join:
+	if player has permission "adminchat.adminchat":
+		set join message to ""
+		message "&7[&aJoin&7]&f Silently Joined."
+	else:
+		set join message to "&7[&a++&7]&f %player% connected."
+	wait 0.1 seconds
+	#set display name of player to "&7%player%"
+	message "&7[&aJoin&7] &fHello, %player%!"
+	stop	
+
+on quit:
+	if player has permission "adminchat.adminchat":
+		set leave message to ""
+		stop
+	else:
+		set leave message to "&7[&c--&7] %player% disconnected."
+		stop

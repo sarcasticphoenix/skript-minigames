@@ -1,0 +1,271 @@
+options:
+	p: &7[&aMaze&7] &f
+	e: &c[Maze] &c
+
+command /setmazepoint <number>:
+	permission: maze.admin
+	trigger:
+		set {Maze.coord.%arg 1%} to location of player
+		message "{@p}Coordinate %arg 1% set."
+		stop
+
+command /genmaze:
+	permission: maze.admin
+	trigger:
+		loop blocks within {Maze.coord.1} to {Maze.coord.2}:
+			chance of 35%:
+				if chance of 92%:
+					set loop-block to 1:4
+				else:
+					set loop-block to glowstone
+		loop blocks within {Maze.coord.3} to {Maze.coord.4}:
+			if block below loop-block isn't air:
+				set loop-block to block below loop-block
+		loop blocks within {Maze.coord.5} to {Maze.coord.6}:
+			if block below loop-block isn't air:
+				set loop-block to block below loop-block
+		stop
+
+command /clearmaze:
+	permission: maze.admin
+	trigger:
+		loop blocks within {Maze.coord.9} to {Maze.coord.10}:
+			set loop-block to 166
+		message "{@p}MazeGen 3.0 - Cleared"
+		stop
+
+
+command /fillmaze:
+	permission: maze.admin
+	trigger:
+		loop blocks within {Maze.coord.9} to {Maze.coord.10}:
+			set loop-block to air
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 10%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 11%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 13%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 14%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 17%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 20%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 25%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 33%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				chance of 50%:
+					set loop-block to air
+		wait 0.1 seconds
+		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
+			if loop-block isn't air:
+				set loop-block to air
+		message "{@p}MazeGen 3.0 - Filled"
+		stop
+
+command /midentify <number>:
+	permission: maze.admin
+	trigger:
+		set block at {Maze.coord.%arg 1%} to glowstone
+		stop
+
+command /startmaze:
+	permission: maze.admin
+	trigger:
+		execute console command "/genmaze"
+		broadcast "{@p}Maze lasts for 35 seconds!"
+		wait 35 seconds
+		execute console command "/fillmaze"
+		broadcast "{@p}Time's up!"
+		wait 7 seconds
+		execute console command "/clearmaze"
+		wait 1 tick
+		if {Maze.cancel} is true:
+			broadcast "{@p}Maze paused"
+			stop
+		else:
+			execute console command "/startmaze"
+		stop
+
+command /pausemaze:
+	trigger:
+		set {Maze.cancel} to true
+		wait 45 seconds
+		delete {Maze.cancel}
+		stop
+
+on right click on sign:
+	world is "Maze"
+	line 2 of clicked block is "[Maze]"
+	cancel event
+	if line 3 of clicked block is "&8Join":
+		make player execute command "/maze join"
+		stop
+	else if line 3 of clicked block is "&8Start":
+
+		execute console command "/mazeconsole start"
+		stop
+
+on script load:
+	set {Maze.can} to true
+	set {Maze.active} to false
+	stop
+
+command /mazeconsole <text>:
+	executable by: console
+	permission: sajdklajldasjl
+	trigger:
+		if arg 1 is "start":
+			if {Maze.active} is true:
+				stop
+			if {Maze.can} is false:
+				stop
+			size of {Maze.temp.players::*} is greater than 0
+			set {_s} to 10
+			set {Maze.can} to false
+			while {_s} is greater than 0:
+				broadcast "{@p}Maze starting in %{_s}%" to "Maze"
+				subtract 1 from {_s}
+				wait 1 second
+			set {Maze.active} to true
+			if size of {Maze.temp.players::*} is less than 1:
+				delete {Maze.temp.players::*}
+				set {Maze.can} to true
+				set {Maze.active} to false
+				stop
+			while size of {Maze.temp.players::*} is greater than 0:
+				execute console command "/genmaze"
+				loop {Maze.temp.players::*}:
+					set {Maze.%uuid of loop-value%.ingame} to false
+					teleport loop-value to {Maze.begin}
+					set {Maze.%uuid of loop-value%.ingame} to true
+				set {_s} to 35
+				while {_s} is greater than 0:
+					broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+					subtract 1 from {_s}
+					wait 1 second
+				execute console command "/fillmaze"
+				broadcast "{@p}Time's up!" to "Maze"
+				wait 5 seconds
+				execute console command "/clearmaze"
+				wait 1 tick
+				loop {Maze.temp.players::*}:
+					if loop-value isn't online:
+						remove loop-value from {Max.temp.players::*}
+					else:
+						execute console command "/eco give %loop-value% 250"
+			set {Maze.can} to true
+			set {Maze.active} to false
+			stop
+		else if arg 1 is "stop":
+			loop {Maze.temp.players::*}:
+				set {Maze.%uuid of loop-value%.ingame} to false
+				make loop-value execute command "/mvs"
+				wait 1 tick
+				extinguish the loop-value
+			delete {Maze.temp.players::*}
+			broadcast "{@p}Game over." to "Maze"
+			set {Maze.can} to true
+			set {Maze.active} to false
+			stop
+
+on command:
+	command isn't "/maze" or "maze"
+	{Maze.%uuid of player%.ingame} is true
+	cancel event
+	message "{@e}Cannot run commands other than /maze in maze."
+	stop
+
+on player teleport:
+	{Maze.%uuid of player%.ingame} is true
+	cancel event
+	stop
+
+on quit:
+	{Maze.%uuid of player%.ingame} is true
+	set {Maze.%uuid of player%.ingame} to false
+	make player execute command "/mvs"
+	remove player from {Maze.temp.players::*}
+	stop
+
+on damage:
+	victim is a player
+	#damage causes is lava or fire or burning
+	world is "Maze"
+	{Maze.%uuid of victim%.ingame} is true
+	cancel event
+	set {Maze.%uuid of victim%.ingame} to false
+	remove victim from {Maze.temp.players::*}
+	make victim execute command "/mvs"
+	wait 1 tick
+	extinguish the victim
+	broadcast "{@p}%victim% didn't complete the maze in time!" to "Maze"
+	if size of {Maze.temp.players::*} is greater than 0:
+		broadcast "{@p}%size of {Maze.temp.players::*}% players left!" to "Maze"
+		stop
+	else:
+		execute console command "/mazeconsole stop"
+		stop
+
+command /maze <text = "help">:
+	permission: maze.commands
+	trigger:
+		if player has permission "maze.admin":
+			if arg 1 is "help":
+				message "{@p}/maze setlobby|setsafe|setbegin|join|leave"
+				stop
+			else if arg 1 is "setsafe":
+				set {Maze.safe} to location of player
+				message "{@p}Set safe point"
+				stop
+			else if arg 1 is "setbegin":
+				set {Maze.begin} to location of player
+				message "{@p}Set begin location"
+				stop
+			else if arg 1 is "setlobby":
+				set {Maze.lobby} to location of player
+				message "{@p}Point set"
+				stop
+		if arg 1 is "join":
+			if {Maze.active} is true:
+				message "{@p}Game in progress"
+				stop
+			teleport player to {Maze.lobby}
+			set {Maze.%uuid of player%.ingame} to true
+			add player to {Maze.temp.players::*}
+			broadcast "{@p}%player% joined maze." to "Maze"
+			stop
+		else if arg 1 is "leave":
+			set {Maze.%uuid of player%.ingame} to false
+			remove player from {Maze.temp.players::*}
+			broadcast "{@p}%player% left maze." to "Maze"
+			make player execute command "/mvs"
+			stop

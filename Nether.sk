@@ -1,0 +1,99 @@
+options:
+	p: &7[&6Nether&7] &f
+	e: &c[Nether] &c
+
+command /nether <text="help">:
+	trigger:
+		if arg 1 is "send":
+			if world isn't "Nether":
+				message "{@e}You can only send items from the nether"
+				stop
+			if player has space for 2304 cobblestone:
+				message "{@e}No items to send."
+				stop
+			loop items in the player's inventory:
+				add loop-item to {Nether.%uuid of player%::*}
+				message "{@p}Sending %loop-item%"
+			message "{@p}%{Nether.%uuid of player%::*}% sent and stored in the cloud."
+			wait 1 tick
+			remove all items from the player
+		else if arg 1 is "receive":
+			if world of player isn't "RegularSurvival" or "skyworld":
+				message "{@e}You can only receive items at survival or skyblock"
+				stop
+			if {Nether.%uuid of player%::*} is not set:
+				message "{@e}You haven't sent any items from the nether."
+				stop
+			loop {Nether.%uuid of player%::*}:
+				add loop-value to the player
+				send "{@p}Receiving %loop-value%" to the player
+			message "{@p}Successfully received all items from the cloud."
+			delete {Nether.%uuid of player%::*}
+			stop
+		else:
+			message "{@e}/nether send|receive"
+			stop
+
+on portal create:
+	world is "nether"
+	cancel event
+	stop
+
+on portal enter:
+	player is online
+	if world is "skyworld" or "RegularSurvival":
+		execute console command "/mvtp %player% nether"
+		stop
+	else if world is "nether":
+		execute console command "/mvtp %player% hub"
+		stop
+	stop
+
+on damage of zombie pigman:
+	world is "nether"
+	attacker is a player
+	chance of 5%
+	send "&7We've caught a criminal dealing violence to our citizens! Banish him!"
+	set {_z} to location of block 5 blocks above location of victim
+	spawn 1 zombies at {_z}
+	stop
+
+on spawn of zombie:
+	world is "nether"
+	equip the zombie with all chain armor
+	set the tool of the zombie to diamond sword
+	enchant tool of zombie with knockback 3
+	enchant tool of zombie with sharpness 5
+	apply invisibility to the zombie for 1000000000 days
+	apply speed 3 to the zombie for 1000000000 days
+	ignite the zombie for 100 days
+	stop
+
+on spawn of skeleton:
+	world is "nether"
+	equip the skeleton with all chain armor
+	set the tool of the skeleton to bow
+	enchant tool of skeleton with power 25
+	enchant tool of skeleton with punch 5
+	apply invisibility to the skeleton for 1000000000 days
+	apply speed 5 to the skeleton for 1000000000 days
+	ignite the skeleton for 100 days
+	stop
+
+on break of nether quartz ore:
+	chance of 2%
+	message "&7Thief! We've caught a thief stealing our precious quartz!"
+	set {_z} to location of block 5 blocks above block
+	spawn 3 zombies at {_z}
+	stop
+
+on death of zombie:
+	world is "nether"
+	attacker is a player
+	chance of 5%
+	send "&7Soldier down! Send reinforcements immediately!" to attacker
+	set {_z} to location of block 5 blocks above location of attacker
+	spawn 5 skeletons at {_z}
+	stop
+
+

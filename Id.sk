@@ -1,0 +1,29 @@
+command /id <item=%tool%>:
+	description: Find the ID of the item you're holding, or any given one.
+	usage: /id [type]
+	executable by: players
+	trigger:
+		message "&7[&aID&7] &aID of %arg 1%: %id of arg 1%:%data value of arg 1%"
+		stop
+
+command /tid:
+	description: Find the ID of the target block
+	usage: /tid
+	executable by: players
+	trigger:
+		set {_z} to target block
+		if {_z} is not set:
+			message "&7[&aID&7] &aID of air: 0:-1"
+			stop
+		message "&7[&aID&7] &aID of %target block%: %id of target block%:%data value of target block%"
+		stop
+
+command /identify:
+	description: Mark all items you own with IDs
+	executable by: players
+	trigger:
+		loop items in player's inventory:
+			
+			set name of loop-item to "&f%id of loop-item%:%data value of loop-item%"
+		message "&7[&aIdentify&7] &aIdentified all your shit"
+		stop

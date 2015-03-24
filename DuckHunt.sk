@@ -1,0 +1,249 @@
+on script load:
+	loop {Duck.players::*}:
+		clear loop-value's inventory
+		teleport loop-value to {Duck.spawnpoint}
+		send "&8[Duck Hunt] Force reset by admin." to loop-value
+		set {Duck.userdata.%loop-value%.active} to false
+	clear {Duck.players::*}
+	set {Duck.active} to false
+	set {Duck.canStart} to true
+	if {Duck.highscore} is not set:
+		set {Duck.highscore} to 0
+	if {Duck.bestplayer.player} is not set:
+		set {Duck.bestplayer.player} to "sarcasticphoenix"
+		set {Duck.bestplayer.score} to "3"
+	if {Duck.bestplayer2.player} is not set:
+		set {Duck.bestplayer2.player} to "sarcasticphoenix"
+		set {Duck.bestplayer2.score} to "2"
+	if {Duck.bestplayer.player} is not set:
+		set {Duck.bestplayer3.player} to "sarcasticphoenix"
+		set {Duck.bestplayer3.score} to "1"
+	stop
+
+on right click on sign:
+	line 1 of clicked block is "[Duck]"
+	line 2 of clicked block is "Join"
+	{Duck.active} is false
+	set the gamemode of the player to survival
+	add player to {Duck.players::*}
+	teleport player to {Duck.gamepoint}
+	set {Duck.userdata.%player%.active} to true
+	if {Duck.userdata.%player%.kills} is not set:
+		set {Duck.userdata.%player%.kills} to 0
+	if {fastbow.%player%} is true:
+		set {fastbow.%player%} to false
+	message "&8[Duck Hunt] Ready."
+	remove all items from the player
+	set the tool of the player to bow
+	enchant the tool of the player with power 127
+	enchant the tool of the player with unbreaking 127
+	enchant the tool of the player with infinity 1
+	set the name of tool of the player to "&fSniper Rifle"
+	add 128 arrows to the player
+	if the player has permission "donor.gold":
+		add 5 cookies to the player
+	else:
+		add 1 cookies to the player
+	stop
+
+on join:
+	{Duck.userdata.%player%.active} is true
+	set {Duck.userdata.%player%.active} to false
+	teleport player to {Duck.spawnpoint}
+	remove all items from the player
+	stop
+
+on command:
+	{Duck.userdata.%player%.active} is true
+	command is not "leaveduck" or "startduck" or "/leaveduck" or "/startduck"
+	cancel event
+	message "&8[Duck Hunt] Only /leaveduck and /startduck is permitted in Duck Hunt."
+	stop
+
+command /leaveduck:
+	permission: duck.commands
+	trigger:
+		if {Duck.userdata.%player%.active} is not true:
+			message "&8[Duck Hunt] You aren't playing."
+			stop
+		set {Duck.userdata.%player%.active} to false
+		remove all items from the player
+		remove player from {Duck.players::*}
+		teleport player to {Duck.spawnpoint}
+		if size of {Duck.players::*} is 0:
+			set {Duck.canStart} to true
+			set {Duck.active} to false
+			broadcast "&8[Duck Hunt] Game %{Duck.playcount}% ended with %{Duck.kills}% kills."
+
+command /startduck:
+	permission: duck.commands
+	trigger:
+		{Duck.canStart} is true
+		if {Duck.userdata.%player%.active} is not true:
+			message "&8[Duck Hunt] You aren't playing."
+			stop
+		if {Duck.playcount} is not set:
+			set {Duck.playcount} to 0
+		add 1 to {Duck.playcount}
+		set {Duck.canStart} to false
+		broadcast "&8[Duck Hunt] Starting in 10 seconds!" to "DuckHunt"
+		wait 5 seconds
+		if size of {Duck.players::*} is 0:
+			stop
+		broadcast "&8[Duck Hunt] Starting in 5 seconds!" to "DuckHunt"
+		wait 5 seconds
+		set {Duck.kills} to 0
+		set {Duck.active} to true
+		broadcast "&8[Duck Hunt] Game %{Duck.playcount}% started." to "DuckHunt"
+		broadcast "&3[Duck Hunt] Round 1 starting in 3 seconds!" to "DuckHunt"
+		wait 3 seconds
+		set {Duck.wave} to 1
+		broadcast "&3[Duck Hunt] Round 1 starting!" to "DuckHunt"
+		while {Duck.active} is true:
+			if {Duck.wave} is less than or equal to 2:
+				spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
+				broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
+				wait 0.5 seconds
+				spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
+				broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
+			else:
+				loop {Duck.wave} times:
+					spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
+					broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
+					wait 0.5 seconds
+				chance of 10%:
+					broadcast "&3[Duck Hunt] Cow spawning! Kill for instant $3200!" to "DuckHunt"
+					wait 3 seconds
+					spawn 1 cow at {Duck.mobpoint.%random integer from 1 to 13%}
+			wait 7 seconds
+			if {Duck.active} is false:
+				stop
+			add 1 to {Duck.wave}
+			broadcast "&3[Duck Hunt] Round %{Duck.wave}% starting in 3 seconds!" to "DuckHunt"
+			wait 3 seconds
+			loop {Duck.players::*}:
+				send "&8[Duck Hunt] Survived another round." to loop-value
+			broadcast "&3[Duck Hunt] Round %{Duck.wave}% starting!" to "DuckHunt"
+		stop
+
+on damage of chicken:
+	world is "DuckHunt"
+	if attacker is a player:
+		execute console command "/eco give %attacker% 100"
+		set damage to 1000
+		add 1 to {Duck.kills}
+		add 1 to {Duck.userdata.%attacker%.kills}
+		send "&8[Duck Hunt] Your total kills: %{Duck.userdata.%attacker%.kills}%" to the attacker
+		broadcast "&8[Duck Hunt] Total kills: %{Duck.kills}%." to "DuckHunt"
+	set {_z} to "%damage cause%"
+	{_z} is "lava" or "fire" or "burning"
+	set damage to 1000
+	loop {Duck.players::*}:
+		clear loop-value's inventory
+		set {Duck.userdata.%loop-value%.active} to false
+		send "&c[Duck Hunt] Oh no!" to loop-value
+	clear {Duck.players::*}
+	loop all chickens in "DuckHunt":
+		kill the loop-entity
+	wait 1 seconds
+	execute console command "/ducklose"
+	broadcast "&8[Duck Hunt] Game %{Duck.playcount}% ended with %{Duck.kills}% kills." to "DuckHunt"
+	if {Duck.highscore} is less than {Duck.kills}:
+		set {Duck.highscore} to {Duck.kills}
+		broadcast "&8[Duck Hunt] New high score!"
+		set line 3 of block at {Duck.sign} to "%{Duck.highscore}%"
+		set line 2 of block at {Duck.sign} to "##%{Duck.playcount}%"
+	wait 0.5 second
+	set {Duck.active} to false
+	set {Duck.canStart} to true
+
+on damage of cow:
+	world is "DuckHunt"
+	attacker is a player
+	execute console command "/eco give %attacker% 1000"
+	broadcast "&b[Duck Hunt] %attacker% shot down a cow!" to "DuckHunt"
+
+command /duck <text> [<number>]:
+	permission: duck.admin
+	trigger:
+		if arg 1 is "setgame":
+			set {Duck.gamepoint} to location of player
+			message "&8[Duck Hunt] Set."
+		else if arg 1 is "setspawn":
+			set {Duck.spawnpoint} to location of player
+			message "&8[Duck Hunt] Set."
+		else if arg 1 is "setmob":
+			set {_int} to arg 2
+			if {_int} is not set:
+				message "&c[Duck Hunt] /duck setmob [1-4]"
+				stop
+			set {Duck.mobpoint.%{_int}%} to location of player
+			message "&8[Duck Hunt] Set."
+		else if arg 1 is "setsign":
+			set {Duck.sign} to location of player
+			message "&8[Duck Hunt] Set."
+		else if arg 1 is "resethighs":
+			delete {Duck.highscore}
+			message "&8[Duck Hunt] Set."
+		else if arg 1 is "forcestart":
+			loop {Duck.players::*}:
+				make loop-value execute command "/startduck"
+				stop
+		else if arg 1 is "forceend":
+			broadcast "&c[Duck Hunt] Game was forced to end by %player%." to "DuckHunt"
+			loop {Duck.players::*}:
+				clear loop-value's inventory
+				set {Duck.userdata.%loop-value%.active} to false
+				send "&c[Duck Hunt] Oh noes!" to loop-value
+			clear {Duck.players::*}
+			wait 1 seconds
+			broadcast "&8[Duck Hunt] Game %{Duck.playcount}% ended with %{Duck.kills}% kills."
+			if {Duck.highscore} is less than {Duck.kills}:
+				set {Duck.highscore} to {Duck.kills}
+				broadcast "&8[Duck Hunt] New high score!" to "DuckHunt"
+				set line 3 of block at {Duck.sign} to "%{Duck.highscore}%"
+				set line 2 of block at {Duck.sign} to "##%{Duck.playcount}%"
+			wait 0.5 second
+			set {Duck.active} to false
+			set {Duck.canStart} to true
+		stop
+
+on right click holding a cookie:
+	world is "DuckHunt"
+	cancel event
+	make the player shoot a snowball
+	remove 1 cookie from the player
+	stop
+
+on projectile hit:
+	projectile is a snowball
+	world is "DuckHunt"
+	loop entities in radius 3 of location of projectile:
+		loop-entity is a chicken
+		damage loop-entity by 5 hearts
+		send "" to shooter
+	create an explosion of force 0 at location of projectile
+	stop
+
+on right click on grass block holding a fish:
+	player has permission "duck.admin"
+	world is "DuckHunt"
+	set {_l} to location of clicked block
+	add {_l} to {DuckHunt.fall::*}
+	message "&8[DuckHunt] Location set."
+
+
+
+command /ducklose:
+	executable by: console
+	trigger:
+		loop {DuckHunt.fall::*}:
+			set block at loop-value to air
+		wait 3 seconds
+		loop {DuckHunt.fall::*}:
+			set block at loop-value to grass			
+	
+command /duckclear:
+	permission: adminchat.adminchat
+	trigger:
+		clear {DuckHunt.fall::*}		

@@ -1,0 +1,94 @@
+options:
+	p: &7[&aTopbar&7] &a
+	e: &c[Topbar] &c
+
+on script load:
+	set {Topbar.ticker} to 1
+
+every 5 seconds:
+	if {Topbar.temp.BC} is set:
+		loop all players:
+			set boss bar of loop-player to "%{Topbar.temp.BC}%"
+		stop
+	loop all players:
+		set boss bar of loop-player to "&b%{Topbar.%{Topbar.ticker}%}%"
+	add 1 to {Topbar.ticker}
+	if {Topbar.%{Topbar.ticker}%} is not set:
+		set {Topbar.ticker} to 1
+	wait 0.1 seconds
+	stop
+
+command /topbroadcast <text>:
+	permission: topbar.broadcast
+	trigger:
+		set {Topbar.temp.BC} to "&c%arg 1%"
+		loop all players:
+			set boss bar of loop-player to "&c%arg 1%"
+		wait 9.9 seconds
+		delete {Topbar.temp.BC}
+		stop
+
+command /topadmin <text = "help"> [<text>]:
+	permission: topbar.admin
+	trigger:
+		if arg 1 is "help":
+			message "{@p}/topadmin list|add|delete"
+			stop
+		else if arg 1 is "list":
+			set {_i} to 1
+			set {_l} to true
+			while {_l} is true:
+				if {Topbar.%{_i}%} is not set:
+					message "{@p}End of messages list"
+					set {_l} to false
+					stop
+				message "{@p}Entry %{_i}%: %{Topbar.%{_i}%}%"
+				add 1 to {_i}
+			set {_l} to false
+			stop
+		else if arg 1 is "add":
+			if arg 2 is not set:
+				message "{@e}No message given"
+				stop
+			set {_i} to 1
+			set {_l} to true
+			while {_l} is true:
+				if {Topbar.%{_i}%} is not set:
+					set {Topbar.%{_i}%} to arg 2
+					message "{@p}ID %{_i}% set to '%arg 2%'"
+					set {_l} to false
+					stop
+				message "{@p}Scanning for open slots..."
+				add 1 to {_i}
+				wait 1 tick
+			set {_l} to false
+			stop
+		else if arg 1 is "delete":
+			if arg 2 is not set:
+				message "{@e}No ID given"
+				stop
+			set {_i} to arg 2 parsed as integer
+			if parse error is set:
+				message "{@e}Parse error"
+				stop
+			if {Topbar.%{_i}%} is not set:
+				message "{@e}Message doesn't exist"
+				stop
+			delete {Topbar.%{_i}%}
+			message "{@p}Deleted ID %{_i}%"
+			set {_j} to {_i} + 1
+			set {_l} to true
+			while {_l} is true:
+				if {Topbar.%{_j}%} is set:
+					set {Topbar.%{_i}%} to {Topbar.%{_j}%}
+					delete {Topbar.%{_j}%}
+					add 1 to {_i}
+					add 1 to {_j}
+					message "{@p}Cleaning up..."
+				else:
+					message "{@p}Successfully cleaned up the list of messages as well."
+					set {_l} to false
+					stop
+			set {_l} to false
+			stop
+

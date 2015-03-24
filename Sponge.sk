@@ -1,0 +1,28 @@
+on step on sponge:
+	wait 1 tick
+	if data value of block is 1:
+		push the player upwards at speed 0.3
+		stop
+	else:
+		push the player upwards at speed 1.5
+		stop
+
+on damage:
+	block below victim is sponge
+	damage cause is fall
+	cancel event
+	stop
+
+#on right click on grass with shears:
+#	player has permission "adminchat.adminchat"
+#	add clicked block to {Escape.test.Blocks::*}
+#	message "Block added."
+
+#command /setskull:
+#	permission: adminchat.adminchat
+#	trigger:
+#		loop {Escape.test.Blocks::*}:
+#			if block at loop-value is grass:
+#				set block at loop-value to floor head
+
+

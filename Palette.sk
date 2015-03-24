@@ -1,0 +1,69 @@
+#
+# Palette
+# Developed by Switchbladed
+#
+
+options:
+	Prefix: &7[&1Palette&7]&f
+	NoPermission: &cYou do not have permission to perform this command.
+	SelectName: You did not select a name.
+	NotExists: This palette does not exist.
+	
+command /palette <text> [<text>]:
+	aliases: /pal
+	usage: /palette <create/delete/list/open> <name>
+	trigger:
+		if argument 1 is "create" or "set" or "save":
+			if player has permission "palette.create":
+				if argument 2 is set:
+					if size of items in player's inventory is greater than 0:
+						if {palette::%arg 2%} is set:
+							message "{@Prefix} &a%arg 2% &fhas been overwritten with your current inventory." to player
+						else:
+							message "{@Prefix} &a%arg 2% &fhas been set to your current inventory." to player
+						set {palette::%arg 2%} to serialized inventory of player
+					else:
+						message "{@Prefix} You don't have any items in your inventory." to player
+				else:
+					message "{@Prefix} {@SelectName}" to player
+			else:
+				message "{@NoPermission}" to player
+		else if argument 1 is "delete" or "clear" or "remove":
+			if player has permission "palette.delete":
+				if argument 2 is set:
+					if {palette::%arg 2%} is set:
+						delete {palette::%arg 2%}
+						message "{@Prefix} &a%arg 2% &fhas been deleted."
+					else:
+						message "{@Prefix} {@NotExists}" to player
+				else:
+					message "{@Prefix} {@SelectName}" to player
+			else:
+				message "{@NoPermission}" to player
+		else if argument 1 is "list":
+			if player has permission "palette.list":
+				if size of {palette::*} is greater than 0:
+					loop {palette::*}:
+						if {_list} is not set:
+							set {_list} to "%loop-index%"
+						else:
+							set {_list} to "%{_list}%, %loop-index%"
+					message "{@Prefix} &aPalettes: &f%{_list}%"
+				else:
+					message "{@Prefix} There are no palettes set." to player
+			else:
+				message "{@NoPermission}" to player
+		else if argument 1 is "open" or "load":
+			if player has permission "palette.open":
+				if argument 2 is set:
+					if {palette::%arg 2%} is set:
+						restore inventory of player from {palette::%arg 2%}
+						message "{@Prefix} Your inventory has been set to &a%arg 2%&f." to player
+					else:
+						message "{@Prefix} {@NotExists}" to player
+				else:
+					message "{@Prefix} {@SelectName}" to player
+			else:
+				message "{@NoPermission}" to player
+		else:
+			message "{@Prefix} Correct usage: /palette <create/delete/list/open> <name>" to player

@@ -1,0 +1,10 @@
+options:
+	p: &7[&aEscape&7] &f
+
+on sign change:
+	line 1 of event-block is "[Escape]"
+	player doesn't have permission "escape.signs.create"
+
+on right click on sign:
+	line 1 of clicked block is "[Escape]"
+

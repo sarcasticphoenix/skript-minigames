@@ -1,0 +1,6 @@
+on chat:
+	if message is "sarc" or "s.arc" or "sa.rc" or "sar.c" or "!sarc" or "sarc!" or "sarc!!" or "sarc!!!" or "sarc!!!!" or "sarc!!!!!" or "sarcasticphoenix" or "sarcasticpheonix" or "s@rc" or "sarc." or "sarc.." or "sarc..." or "&bsarc" or "&bs.arc" or "&bsa.rc" or "&bsar.c" or "&b!sarc" or "&bsarc!" or "&bsarc!!" or "&bsarc!!!" or "&bsarc!!!!" or "&bsarc!!!!!" or "&bsarcasticphoenix" or "&bsarcasticpheonix" or "&bs@rc" or "&bsarc." or "$arc" or "$@rc" or  "&bsarc.." or "&bsarc...":
+		cancel event
+		message "&cPlease use a subject and predicate in your chat messages for any staff member."
+		message "&aAllowed: Sarc, how are you today?"
+		message "&4Not allowed: Sarc"

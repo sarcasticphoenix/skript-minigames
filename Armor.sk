@@ -1,0 +1,51 @@
+options:
+	blah: blah
+
+command /nanosuit:
+	permission: adminchat.adminchat
+	trigger:
+		message "&8[Nanosuit] Equip 0%%"
+		equip the player with all iron armor
+		wait 0.1 seconds
+		message "&8[Nanosuit] Equip 25%%"
+		set the helmet of the player to locked chest
+		wait 0.1 seconds
+		message "&8[Nanosuit] Equip 50%%"
+		enchant the chestplate of the player with protection 7
+		enchant the chestplate of the player with thorns 7
+		enchant the leggings of the player with protection 7
+		enchant the leggings of the player with thorns 7
+		enchant the boots of the player with protection 7
+		enchant the boots of the player with thorns 7
+		enchant the boots of the player with feather falling 7
+		enchant the helmet of the player with protection 7
+		enchant the helmet of the player with thorns 7
+		enchant the helmet of the player with respiration 7
+		enchant the helmet of the player with aqua affinity 7
+		wait 0.1 seconds
+		message "&8[Nanosuit] Equip 75%%"
+		set the name of the helmet of the player to "&fNanoHelmet"
+		set the name of the chestplate of the player to "&fNanoPlate"
+		set the name of the leggings of the player to "&fNanoPants"
+		set the name of the boots of the player to "&fNanoBoots"
+		message "&8[Nanosuit] Equip 100%%"
+		stop
+
+on damage:
+	victim is a player
+	damage cause is fall
+	name of boots of victim is "&aMoonwalk"
+	cancel event
+	if damage is greater than 5:
+		set damage to 5
+	set {_z} to damage * 0.21
+	push victim upwards at speed {_z}
+	stop
+
+on sprint toggle:
+	name of boots of player is "&aMoonwalk"
+	wait 1 tick
+	player is sprinting
+	push player forwards at speed 1
+	push player upwards at speed 0.7
+

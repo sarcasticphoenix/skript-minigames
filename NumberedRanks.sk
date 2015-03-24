@@ -1,0 +1,287 @@
+
+options:
+	p: &7[&fChat&7] &f
+	e: &c[Chat] &c
+	r: &7[&aRanks&7] &f
+	cb: &7[&1%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
+	cp: &7[&3%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
+	cs: &7[&b%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
+	cd: &&[&f%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
+	bb: &6[&1%{NR.%uuid of player%.rank}%&6] &7%display name of player%:&7 %message%
+	bp: &6[&3%{NR.%uuid of player%.rank}%&6] &7%display name of player%:&7 %message%
+	bs: &6[&b%{NR.%uuid of player%.rank}%&6] &7%display name of player%:&7 %message%
+	bd: &6[&f%{NR.%uuid of player%.rank}%&6] &7%display name of player%:&7 %message%
+	gb: &e[&1%{NR.%uuid of player%.rank}%&e] &7%display name of player%:&7 %message%
+	gp: &e[&3%{NR.%uuid of player%.rank}%&e] &7%display name of player%:&7 %message%
+	gs: &e[&b%{NR.%uuid of player%.rank}%&e] &7%display name of player%:&7 %message%
+	gd: &e[&f%{CC.userdata.%uuid of player%}%&e][&f%{NR.%uuid of player%.rank}%&e] &7%display name of player%:&7 %message%
+	db: &7[&1%{CC.userdata.%uuid of player%}%&7][&6VIP&7:&1%{NR.%uuid of player%.rank}%&7] %display name of player%&1:&f %message%
+	ds: &7[&b%{CC.userdata.%uuid of player%}%&7][&6VIP&7:&b%{NR.%uuid of player%.rank}%&7] %display name of player%&b:&f %message%
+	dp: &7[&3%{CC.userdata.%uuid of player%}%&7][&6VIP&7:&3%{NR.%uuid of player%.rank}%&7] %display name of player%&3:&f %message%
+	dd: &7[&f%{CC.userdata.%uuid of player%}%&7][&6VIP&7:&f%{NR.%uuid of player%.rank}%&7] %display name of player%&f:&f %message%
+	sp: &f[&3%{CC.userdata.%uuid of player%}%&f][&3Staff&f:&3%{Ticket.staff.%player%.score}%&f] &3&l%display name of player%&7: &f%message%
+	ss: &f[&b%{CC.userdata.%uuid of player%}%&f][&bStaff&f:&b%{Ticket.staff.%player%.score}%&f] &b&l%display name of player%&f: %message%
+	sb: &f[&1%{CC.userdata.%uuid of player%}%&f][&1Staff&f:&1%{Ticket.staff.%player%.score}%&f] &1&l%display name of player%&f: %message%
+	sd: &f[&7%{CC.userdata.%uuid of player%}%&f][&7Staff&f:&7%{Ticket.staff.%player%.score}%&f] &f&l%display name of player%&7: &f%message%
+	wb: "Building" or "DefaultPlot" or "Freebuild" or "PlayerPlot" or "ProPlot" or "ProWorld" or "Emporium"
+	wm: "Minigames" or "DuckHunt" or "MobArena" or "Parkour" or "Spleef" or "Survival Games" or "PVP" or "Maze" or "KingOfTheLadder" or "Escape" or "Gunfight"
+	ws: "skygrid" or "survival" or "SkyGrid" or "skyworld" or "Nether"
+
+on join:
+	#if player has permission "su.use":
+	#	set {Chat.userdata.%player%.channel} to "staff"
+	#	wait 1 seconds
+	#	message "{@p}Your channel was set to 'staff'. Chatting with all channels."
+	#	{Ticket.staff.%player%.score} is not set
+	#	set {Ticket.staff.%player%.score} to 0
+	#else:
+	#	set {Chat.userdata.%player%.channel} to "global"
+	#	wait 1 seconds
+	#	message "{@p}Your chat channel is now 'global'."
+	#	message "{@p}To switch channels, try /chat channel."
+	if {NR.%uuid of player%.rank} is not set:
+		if {NR.%player%.rank} is set:
+			set {NR.%uuid of player%.rank} to {NR.%player%.rank}
+			message "{@p}Your rank was converted to UUID save format."
+	{NR.%uuid of player%.rank} is not set
+	if player has permission "NR.1100":
+		set {NR.%uuid of player%.rank} to 1100
+	else if player has permission "NR.1000":
+		set {NR.%uuid of player%.rank} to 1000
+	else if player has permission "NR.900":
+		set {NR.%uuid of player%.rank} to 900
+	else if player has permission "NR.800":
+		set {NR.%uuid of player%.rank} to 800
+	else if player has permission "NR.700":
+		set {NR.%uuid of player%.rank} to 700
+	else if player has permission "NR.600":
+		set {NR.%uuid of player%.rank} to 600
+	else if player has permission "NR.500":
+		set {NR.%uuid of player%.rank} to 500
+	else if player has permission "NR.400":
+		set {NR.%uuid of player%.rank} to 400
+	else if player has permission "NR.300":
+		set {NR.%uuid of player%.rank} to 300
+	else if player has permission "NR.200":
+		set {NR.%uuid of player%.rank} to 200
+	else if player has permission "NR.100":
+		set {NR.%uuid of player%.rank} to 100
+	else:
+		set {NR.%uuid of player%.rank} to 1
+
+command /setrank <offline player> <number>:
+	permission: ranks.manage
+	trigger:
+		set {NR.%uuid of arg 1%.rank} to arg 2
+		message "%arg 1%'s rank set to %arg 2%"
+		stop
+
+on chat:
+	#if player has permission "adminchat.adminchat":
+	#	replace all "fuck", "bitch", "nigga", "faggot", "shit", "nigger", "cunt", "dick", "twat", "whore", "yellowjacket", "wanker", "pussy", "penis", "vagina" and "slut" with "&8&m----&f" in the message
+	#else:
+	#	if message contains "fuck", "bitch", "nigga", "faggot", "shit", "nigger", "cunt", "dick", "twat", "whore", "yellowjacket", "wanker", "pussy", "penis", "vagina" or "slut":
+	#		replace all "fuck", "bitch", "nigga", "faggot", "shit", "nigger", "cunt", "dick", "twat", "whore", "yellowjacket", "wanker", "pussy", "penis", "vagina" and "slut" with "&8&m----&7" in the message
+	#		cancel event
+	#		add 1 to {Chat.strikes.%player%}
+	#		send "{@e}Please do not use that language. You have {Chat.strikes.%player%} strikes."
+	#		wait 1 second
+	#		if {Chat.strikes.%player%} is greater than 3:
+	#			kick the player due to "Kicked for repeated profanity."
+	#			set {Chat.strikes.%player%} to 0
+	cancel event
+	if {chat.global} is 1:
+		message "<cyan>Chat has been disabled globally!"
+		stop
+	else:
+		if player has permission "adminchat.adminchat":
+			set {_META} to "Staff"
+		else if player has permission "donor.perms":
+			set {_META} to "&6VIP &7| "
+		else:
+			set {_META} to ""
+		if player has permission "chat.color":
+			replace all "&" in message with "§"
+		#replace all "&0" in message with "§0"
+		#replace all "&1" in message with "§1"
+		#replace all "&2" in message with "§2"
+		#replace all "&3" in message with "§3"
+		#replace all "&4" in message with "§4"
+		#replace all "&5" in message with "§5"
+		#replace all "&6" in message with "§6"
+		#replace all "&7" in message with "§7"
+		#replace all "&8" in message with "§8"
+		#replace all "&9" in message with "§9"
+		#replace all "&a" in message with "§a"
+		#replace all "&b" in message with "§b"
+		#replace all "&c" in message with "§c"
+		#replace all "&d" in message with "§d"
+		#replace all "&e" in message with "§e"
+		#replace all "&f" in message with "§f"
+		#replace all "&m" in message with "§m"
+		#replace all "&n" in message with "§n"
+		#replace all "&l" in message with "§l"
+		#replace all "&k" in message with "§k"
+		#replace all "&o" in message with "§o"
+		
+		if player has permission "adminchat.adminchat":
+			broadcast "[&bStaff&f] &b%display name of player%&7:&f %message%"
+		else if {NR.%uuid of player%.rank} is greater than 2500:
+			broadcast "&7[&3%{NR.%uuid of player%.rank}%&7] %{_META}%&3%display name of player%&7: %message%"
+		else if {NR.%uuid of player%.rank} is greater than 1000:
+			broadcast "&7[&f%{NR.%uuid of player%.rank}%&7] %{_META}%&f%display name of player%&7: %message%"
+		else:
+			broadcast "&8[&7%{NR.%uuid of player%.rank}%&8] %{_META}%&7%display name of player%&7: %message%"
+
+command /rankup [<text>]:
+	permission: quiz.bypass
+	trigger:
+		if player has permission "adminchat.adminchat":
+			message "&c[Ranks] You're staff. Rank up by completing tickets."
+			stop
+		if arg 1 is set:
+			if arg 1 is not "max":
+				message "&c[Ranks] Either /rankup or /rankup max"
+				stop
+			set {_looping} to true
+			set {_counter} to 0
+			while {_looping} is true:
+				set {_b} to the player's money
+				set {_n} to {NR.%uuid of player%.rank} * 7
+				set {_a} to {_n} + 250
+				if {_b} is greater than or equal to {_a}:
+					remove {_a} from player's balance
+					add 1 to {NR.%uuid of player%.rank}
+					add 1 to {_counter}
+					message "&7[&aRanks&7] &a%player% just ranked up to rank %{NR.%uuid of player%.rank}%"
+					if {NR.%uuid of player%.rank} is 200:
+						execute console command "/pex user %player% group set Player"
+					else if {NR.%uuid of player%.rank} is 300:
+						execute console command "/pex user %player% group set Talented"
+					else if {NR.%uuid of player%.rank} is 400:
+						execute console command "/pex user %player% group set Skilled"
+					else if {NR.%uuid of player%.rank} is 500:
+						execute console command "/pex user %player% group set Pro"
+					else if {NR.%uuid of player%.rank} is 600:
+						execute console command "/pex user %player% group set Elite"
+					else if {NR.%uuid of player%.rank} is 700:
+						execute console command "/pex user %player% group set Ultimate"
+					else if {NR.%uuid of player%.rank} is 800:
+						execute console command "/pex user %player% group set Billionaire"
+					else if {NR.%uuid of player%.rank} is 900:
+						execute console command "/pex user %player% group set Trillionaire"
+					else if {NR.%uuid of player%.rank} is 1000:
+						execute console command "/pex user %player% group set Contributor"
+					wait 0.05 seconds
+					if {_counter} is 25:
+						message "&7[&aRanks&7] &aRanked up 25 times. To rank up further, send the command again."
+						set {_looping} to false
+						stop
+				else:
+					message "&7[&aRanks&7] &aRanked up to rank %{NR.%uuid of player%.rank}%."
+					set {_looping} to false
+					stop
+			set {_looping} to false
+			stop
+		set {_b} to the player's money
+		set {_r} to {NR.%uuid of player%.rank}
+		set {_z} to {_r} * 7
+		set {_a} to {_z} + 250
+		if {_b} is greater than or equal to {_a}:
+			remove {_a} from player's balance
+			add 1 to {NR.%uuid of player%.rank}
+			message "&7[&aRanks&7] &a%player% just ranked up to rank %{NR.%uuid of player%.rank}%"
+			message "&7[&aRanks&7] &aTry /rankup max!"
+			if {NR.%uuid of player%.rank} is 200:
+				execute console command "/pex user %player% group set Player"
+			else if {NR.%uuid of player%.rank} is 300:
+				execute console command "/pex user %player% group set Talented"
+			else if {NR.%uuid of player%.rank} is 400:
+				execute console command "/pex user %player% group set Skilled"
+			else if {NR.%uuid of player%.rank} is 500:
+				execute console command "/pex user %player% group set Pro"
+			else if {NR.%uuid of player%.rank} is 600:
+				execute console command "/pex user %player% group set Elite"
+			else if {NR.%uuid of player%.rank} is 700:
+				execute console command "/pex user %player% group set Ultimate"
+			else if {NR.%uuid of player%.rank} is 800:
+				execute console command "/pex user %player% group set Billionaire"
+			else if {NR.%uuid of player%.rank} is 900:
+				execute console command "/pex user %player% group set Trillionaire"
+			else if {NR.%uuid of player%.rank} is 1000:
+				execute console command "/pex user %player% group set Contributor"
+			stop
+		else:
+			message "&c[Ranks] Not enough money"
+			stop
+
+command /rank:
+	trigger:
+		message "{@r}Info on &a%player%"
+		message "{@r}Your rank: &a%{NR.%uuid of player%.rank}%"
+		if player has permission "adminchat.adminchat":
+			set {_B1} to "&f["
+			set {_B2} to "&f]"
+		else if {NR.%uuid of player%.rank} is greater than 2500:
+			set {_B1} to "&e["
+			set {_B2} to "&e]"
+		else if {NR.%uuid of player%.rank} is greater than 1000:
+			set {_B1} to "&6["
+			set {_B2} to "&6]"
+		else:
+			set {_B1} to "&7["
+			set {_B2} to "&7]"
+		if {NR.%uuid of player%.rank} is greater than or equal to 2500:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|||||%{_B2}% &7(You are past rank 2500)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 2400:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e||||&0|%{_B2}% &7(96%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 2300:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|||&0||%{_B2}% &7(92%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 2200:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e||&0|||%{_B2}% &7(88%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 2100:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|&0||||%{_B2}% &7(84%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 2000:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&0|||||%{_B2}% &7(80%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1900:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6||||&0||||||%{_B2}% &7(76%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1800:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||&0|||||||%{_B2}% &7(72%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1700:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6||&0||||||||%{_B2}% &7(68%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1600:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|&0|||||||||%{_B2}% &7(64%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1500:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&0||||||||||%{_B2}% &7(60%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1400:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f||||&0|||||||||||%{_B2}% &7(56%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1300:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|||&0||||||||||||%{_B2}% &7(52%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1200:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f||&0|||||||||||||%{_B2}% &7(48%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1100:
+			set {_META} to "%{_B1}%&8|||||&7|||||&f|&0||||||||||||||%{_B2}% &7(44%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 1000:
+			set {_META} to "%{_B1}%&8|||||&7|||||&0|||||||||||||||%{_B2}% &7(40%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 900:
+			set {_META} to "%{_B1}%&8|||||&7||||&0||||||||||||||||%{_B2}% &7(36%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 800:
+			set {_META} to "%{_B1}%&8|||||&7|||&0|||||||||||||||||%{_B2}% &7(32%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 700:
+			set {_META} to "%{_B1}%&8|||||&7||&0||||||||||||||||||%{_B2}% &7(28%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 600:
+			set {_META} to "%{_B1}%&8|||||&7|&0|||||||||||||||||||%{_B2}% &7(24%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 500:
+			set {_META} to "%{_B1}%&8|||||&0||||||||||||||||||||%{_B2}% &7(20%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 400:
+			set {_META} to "%{_B1}%&8||||&0|||||||||||||||||||||%{_B2}% &7(16%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 300:
+			set {_META} to "%{_B1}%&8|||&0||||||||||||||||||||||%{_B2}% &7(12%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 200:
+			set {_META} to "%{_B1}%&8||&0|||||||||||||||||||||||%{_B2}% &7(8%%)"
+		else if {NR.%uuid of player%.rank} is greater than or equal to 100:
+			set {_META} to "%{_B1}%&8|&0||||||||||||||||||||||||%{_B2}% &7(48%%)"
+		else:
+			set {_META} to "%{_B1}%&0|||||||||||||||||||||||||%{_B2}% &7(0%%)"
+		message "{@r}Progress: %{_META}%"
+		
