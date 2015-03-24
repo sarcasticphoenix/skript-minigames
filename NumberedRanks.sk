@@ -1,7 +1,7 @@
 
 options:
-	p: &7[&fChat&7] &f
-	e: &c[Chat] &c
+	p: &7[&aChat&7] &f
+	e: &7[&aChat&7] &f
 	r: &7[&aRanks&7] &f
 	cb: &7[&1%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
 	cp: &7[&3%{NR.%uuid of player%.rank}%&7] %display name of player%:&7 %message%
@@ -137,11 +137,11 @@ command /rankup [<text>]:
 	permission: quiz.bypass
 	trigger:
 		if player has permission "adminchat.adminchat":
-			message "&c[Ranks] You're staff. Rank up by completing tickets."
+			message "{@e} You're staff. Rank up by completing tickets."
 			stop
 		if arg 1 is set:
 			if arg 1 is not "max":
-				message "&c[Ranks] Either /rankup or /rankup max"
+				message "{@e} Either /rankup or /rankup max"
 				stop
 			set {_looping} to true
 			set {_counter} to 0
@@ -153,7 +153,7 @@ command /rankup [<text>]:
 					remove {_a} from player's balance
 					add 1 to {NR.%uuid of player%.rank}
 					add 1 to {_counter}
-					message "&7[&aRanks&7] &a%player% just ranked up to rank %{NR.%uuid of player%.rank}%"
+					message "&7[&aRanks&7] &fYour rank: %{NR.%uuid of player%.rank}%"
 					if {NR.%uuid of player%.rank} is 200:
 						execute console command "/pex user %player% group set Player"
 					else if {NR.%uuid of player%.rank} is 300:
@@ -174,11 +174,11 @@ command /rankup [<text>]:
 						execute console command "/pex user %player% group set Contributor"
 					wait 0.05 seconds
 					if {_counter} is 25:
-						message "&7[&aRanks&7] &aRanked up 25 times. To rank up further, send the command again."
+						message "&7[&aRanks&7] &fRanked up 25 times. To rank up further, send the command again."
 						set {_looping} to false
 						stop
 				else:
-					message "&7[&aRanks&7] &aRanked up to rank %{NR.%uuid of player%.rank}%."
+					message "&7[&aRanks&7] &fRanked up to rank %{NR.%uuid of player%.rank}%."
 					set {_looping} to false
 					stop
 			set {_looping} to false
@@ -190,8 +190,8 @@ command /rankup [<text>]:
 		if {_b} is greater than or equal to {_a}:
 			remove {_a} from player's balance
 			add 1 to {NR.%uuid of player%.rank}
-			message "&7[&aRanks&7] &a%player% just ranked up to rank %{NR.%uuid of player%.rank}%"
-			message "&7[&aRanks&7] &aTry /rankup max!"
+			message "&7[&aRanks&7] &fYour rank: %{NR.%uuid of player%.rank}%"
+			message "&7[&aRanks&7] &fUse /rankup max to rankup up to 25 times at once."
 			if {NR.%uuid of player%.rank} is 200:
 				execute console command "/pex user %player% group set Player"
 			else if {NR.%uuid of player%.rank} is 300:
@@ -212,8 +212,16 @@ command /rankup [<text>]:
 				execute console command "/pex user %player% group set Contributor"
 			stop
 		else:
-			message "&c[Ranks] Not enough money"
+			message "&7[&aRanks&7]&f Not enough money"
 			stop
+
+on join:
+	wait 0.1 seconds
+	if player has permission "adminchat.adminchat":
+		set player's tablist name to "&b&l%display name of player%"
+	else:
+		set player's tablist name to "&b%name of player%"
+	stop
 
 command /rank:
 	trigger:
