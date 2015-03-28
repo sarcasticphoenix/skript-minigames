@@ -2,5 +2,5 @@ on damage:
 	if attacker is a player:
 		wait 0.01 seconds
 		health of victim is not 10
-		send "&8[&7Damage&8]&7 Damaged victim by %damage%. %victim%'s health: %health of victim%/%max health of victim%" to the attacker
+		send "&8[&7Damage&8]&7 Dealt %damage% damage. %victim%'s health: %health of victim%/%max health of victim%" to the attacker
 	stop

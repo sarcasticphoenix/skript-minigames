@@ -152,8 +152,8 @@ command /gunkit <player> <text>:
 		else if arg 2 is "diamond":
 			set tool of arg 1 to diamond hoe named "Sniper"
 			give 64 diamonds named "Sniper Ammo" to arg 1
-		wait 5 ticks
-		show "s;2;i;cyan wool;n;Random spawn;c;gunspawn %arg 1% %rounded random number between 1 and 6%;s;3;i;light gray wool;n;Spawn 1;c;gunspawn %arg 1% 1;s;4;i;light gray wool;n;Spawn 2;c;gunspawn %arg 1% 2;s;5;i;light gray wool;n;Spawn 3;c;gunspawn %arg 1% 3;s;6;i;light gray wool;n;Spawn 4;c;gunspawn %arg 1% 4;s;7;i;light gray wool;n;Spawn 5;c;gunspawn %arg 1% 5;s;8;i;light gray wool;n;Spawn 6;c;gunspawn %arg 1% 6" with 1 rows named "Choose spawn" to arg 1
+		execute console command "/gunspawn %arg 1% %rounded random number between 1 and 6%"
+		#show "s;2;i;cyan wool;n;Random spawn;c;gunspawn %arg 1% %rounded random number between 1 and 6%;s;3;i;light gray wool;n;Spawn 1;c;gunspawn %arg 1% 1;s;4;i;light gray wool;n;Spawn 2;c;gunspawn %arg 1% 2;s;5;i;light gray wool;n;Spawn 3;c;gunspawn %arg 1% 3;s;6;i;light gray wool;n;Spawn 4;c;gunspawn %arg 1% 4;s;7;i;light gray wool;n;Spawn 5;c;gunspawn %arg 1% 5;s;8;i;light gray wool;n;Spawn 6;c;gunspawn %arg 1% 6" with 1 rows named "Choose spawn" to arg 1
 		stop
 
 command /setgunspawn <number>:
@@ -173,6 +173,11 @@ command /setgunboard:
 on command "/mvs":
 	world is "Gunfight"
 	set {Gunfight.userdata.%player%.killstreak} to 0
+	clear inventory of player
+	set helmet of player to air
+	set chestplate of player to air
+	set leggings of player to air
+	set boots of player to air
 	stop
 
 on death of player:

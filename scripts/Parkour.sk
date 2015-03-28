@@ -19,14 +19,14 @@
 #============================================#
 
 options:
-	reward-command: "/eco give %player% 1000"
+	reward-command: "/eco give %player% 800"
 	parkour-world: "Parkour"
 
 on sign change:
 	line 1 of event-block is "[Parkour]"
 	player does not have permission "parkour.admin"
 	cancel event
-	message "&c[Parkour] You may not place parkour signs!"
+	message "&7[&aParkour&7]&f You may not place parkour signs!"
 	stop
 
 on right click on sign:
@@ -40,7 +40,7 @@ on right click on sign:
 			set {Parkour.userdata.isPlaying.%player%} to true
 			make player execute command "/swp"
 		set {Parkour.userdata.isPlaying.%player%} to true
-		message "&8[Parkour] Active. Do /leaveparkour to leave."
+		message "&7[&aParkour&7]&f Active. Do /leaveparkour to leave."
 		stop
 	else if line 2 of clicked block parsed as text is "Finish":
 		heal the player
@@ -48,29 +48,29 @@ on right click on sign:
 		set {_int} to line 3 of clicked block parsed as integer
 		add 1 to {_int}
 		if block below player is not obsidian:
-			message "&8[Parkour] You must stand on obsidian to click this sign."
+			message "&7[&aParkour&7]&f You must stand on obsidian to click this sign."
 			stop
 		set {Parkour.userdata.level.%player%} to {_int}
 		if {Parkour.level.%{_int}%} is not set:
 			make player execute command "/swp"
 			make player execute command "/leaveparkour"
-			message "&8[Parkour] You have finished all existing levels."
-			message "&8[Parkour] Your progress has been saved."
-			message "&8[Parkour] Come back once more levels have been added..."
+			message "&7[&aParkour&7]&f You have finished all existing levels."
+			message "&7[&aParkour&7]&f Your progress has been saved."
+			message "&7[&aParkour&7]&f Come back once more levels have been added..."
 			stop
 		else:
 			set {Parkour.score.%player%} to {_int}
 			teleport player to {Parkour.level.%{_int}%}
 			make player execute command "/swp"
 			execute console command {@reward-command}
-			message "&8[Parkour] Now on level %{_int}%."
+			message "&7[&aParkour&7]&f Now on level %{_int}%."
 			stop
 
 on command:
 	{Parkour.userdata.isPlaying.%player%} is true
-	command parsed as text is not "swp" or "wp" or "leaveparkour":
+	command parsed as text is not "swp" or "wp" or "leaveparkour" or "parkour" or "parkour leave":
 		cancel event
-		message "&8[Parkour] Only /swp, /wp, and /leaveparkour are permitted in Parkour."
+		message "&7[&aParkour&7]&f Only /swp, /wp, and /parkour leave are permitted in Parkour."
 
 on damage:
 	world is {@parkour-world}
@@ -92,15 +92,38 @@ command /swp:
 	trigger:
 		player is in {@parkour-world}
 		if {Parkour.userdata.isPlaying.%player%} is true:
-			if block below player is lava, water, sign, fire, or air:
-				message "&8[Parkour] You cannot set waypoints on lava, water, sign, fire, or air."
+			if block below location of player is air:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block below location of player is flowing lava:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block below location of player is stationary lava:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block below location of player is flowing water:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block below location of player is stationary water:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block below location of player is sign:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block at location of player is flowing lava:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
+				stop
+			else if block at location of player is stationary lava:
+				message "&7[&aParkour&7]&f You cannot set waypoints on lava, water, sign, fire, or air."
 				stop
 			else:
+				message "%block below location of player%"
+				message "%block at location of player%"
 				set {Parkour.userdata.waypoints.%player%} to location of player
-				message "&8[Parkour] Progress saved."
+				message "&7[&aParkour&7]&f Progress saved."
 				stop
 		else:
-			message "&8[Parkour] You aren't playing parkour."
+			message "&7[&aParkour&7]&f You aren't playing parkour."
 			stop
 
 command /wp:
@@ -111,20 +134,20 @@ command /wp:
 			teleport player to {Parkour.userdata.waypoints.%player%}
 			stop
 		else:
-			message "&8[Parkour] You aren't playing parkour."
+			message "&7[&aParkour&7]&f You aren't playing parkour."
 			stop
 
 command /leaveparkour:
 	permission: parkour.commands
 	trigger:
 		player is in {@parkour-world}
-		{Parkour.userdata.isPlaying.%player%} is true:
+		if {Parkour.userdata.isPlaying.%player%} is true:
 			make player execute command "/swp"
 			teleport player to {Parkour.lobby}
 			set {Parkour.userdata.isPlaying.%player%} to false
 			stop
 		else:
-			message "&8[Parkour] You aren't playing parkour."
+			message "&7[&aParkour&7]&f You aren't playing parkour."
 			stop
 
 command /parkour <text> [<text>]:
@@ -132,17 +155,26 @@ command /parkour <text> [<text>]:
 	trigger:
 		if arg 1 is "setlobby":
 			set {Parkour.lobby} to location of player
-			message "&8[Parkour] Set."
+			message "&7[&aParkour&7]&f Set."
 		else if arg 1 is "setjoin":
 			set {Parkour.join} to location of player
-			message "&8[Parkour] Set."
+			message "&7[&aParkour&7]&f Set."
 		else if arg 1 is "setlevel":
 			set {_lvl} to arg 2
 			if {_lvl} is not set:
-				message "&8[Parkour] Arg 2 needed"
+				message "&7[&aParkour&7]&f Arg 2 needed"
 			else:
 				set {Parkour.level.%{_lvl}%} to location of player
-				message "&8[Parkour] Set."
+				message "&7[&aParkour&7]&f Set."
+		else if arg 1 is "leave":
+			if {Parkour.userdata.isPlaying.%player%} is true:
+				make player execute command "/swp"
+				teleport player to {Parkour.lobby}
+				set {Parkour.userdata.isPlaying.%player%} to false
+				stop
+			else:
+				message "&7[&aParkour&7]&f You aren't playing parkour."
+				stop
 		else if arg 1 is "fix":
 			set {_p} to arg 2
 			if {_p} isn't online:

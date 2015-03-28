@@ -10,13 +10,13 @@ on script load:
 	if {Duck.highscore} is not set:
 		set {Duck.highscore} to 0
 	if {Duck.bestplayer.player} is not set:
-		set {Duck.bestplayer.player} to "sarcasticphoenix"
+		set {Duck.bestplayer.player} to "Sarcasticphoenix"
 		set {Duck.bestplayer.score} to "3"
 	if {Duck.bestplayer2.player} is not set:
-		set {Duck.bestplayer2.player} to "sarcasticphoenix"
+		set {Duck.bestplayer2.player} to "Sarcasticphoenix"
 		set {Duck.bestplayer2.score} to "2"
 	if {Duck.bestplayer.player} is not set:
-		set {Duck.bestplayer3.player} to "sarcasticphoenix"
+		set {Duck.bestplayer3.player} to "Sarcasticphoenix"
 		set {Duck.bestplayer3.score} to "1"
 	stop
 
@@ -67,7 +67,7 @@ command /leaveduck:
 			message "&8[Duck Hunt] You aren't playing."
 			stop
 		set {Duck.userdata.%player%.active} to false
-		remove all items from the player
+		clear inventory of player
 		remove player from {Duck.players::*}
 		teleport player to {Duck.spawnpoint}
 		if size of {Duck.players::*} is 0:
@@ -232,7 +232,15 @@ on right click on grass block holding a fish:
 	add {_l} to {DuckHunt.fall::*}
 	message "&8[DuckHunt] Location set."
 
-
+on shoot:
+	world is "DuckHunt"
+	broadcast "@Debug: %shooter% fired a %projectile%"
+	stop
+	
+on damage:
+	world is "DuckHunt"
+	broadcast "@Debug: %victim% attacked by %attacker%"
+	stop
 
 command /ducklose:
 	executable by: console

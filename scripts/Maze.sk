@@ -42,51 +42,6 @@ command /fillmaze:
 			set loop-block to air
 		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
 			if loop-block isn't air:
-				chance of 10%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 11%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 13%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 14%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 17%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 20%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 25%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 33%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
-				chance of 50%:
-					set loop-block to air
-		wait 0.1 seconds
-		loop blocks within {Maze.coord.1} to {Maze.coord.6}:
-			if loop-block isn't air:
 				set loop-block to air
 		message "{@p}MazeGen 3.0 - Filled"
 		stop
@@ -130,7 +85,6 @@ on right click on sign:
 		make player execute command "/maze join"
 		stop
 	else if line 3 of clicked block is "&8Start":
-
 		execute console command "/mazeconsole start"
 		stop
 
@@ -139,6 +93,12 @@ on script load:
 	set {Maze.active} to false
 	stop
 
+command /test:
+	trigger:
+		message "Active: %{Maze.active}%"
+		message "Can: %{Maze.can}%"
+		stop
+	
 command /mazeconsole <text>:
 	executable by: console
 	permission: sajdklajldasjl
@@ -156,7 +116,7 @@ command /mazeconsole <text>:
 				subtract 1 from {_s}
 				wait 1 second
 			set {Maze.active} to true
-			if size of {Maze.temp.players::*} is less than 1:
+			if size of {Maze.temp.players::*} is less than or equal to 0:
 				delete {Maze.temp.players::*}
 				set {Maze.can} to true
 				set {Maze.active} to false
@@ -169,9 +129,12 @@ command /mazeconsole <text>:
 					set {Maze.%uuid of loop-value%.ingame} to true
 				set {_s} to 35
 				while {_s} is greater than 0:
-					broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
-					subtract 1 from {_s}
-					wait 1 second
+					if size of {Maze.temp.players::*} is greater than 0:
+						broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						subtract 1 from {_s}
+						wait 1 second
+					else:
+						set {_s} to 0
 				execute console command "/fillmaze"
 				broadcast "{@p}Time's up!" to "Maze"
 				wait 5 seconds
@@ -268,4 +231,7 @@ command /maze <text = "help">:
 			remove player from {Maze.temp.players::*}
 			broadcast "{@p}%player% left maze." to "Maze"
 			make player execute command "/mvs"
+			stop
+		else if arg 1 is "help":
+			message "{@p}/maze join|leave"
 			stop

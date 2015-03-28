@@ -239,10 +239,6 @@ on damage of player:
 	world is "KingOfTheLadder"
 	if {KOTL.userdata.%victim%.playing} is true:
 		set damage to 0
-		if damage cause is burning:
-			set {KOTL.userdata.%victim%.playing} to false
-			teleport victim to {KOTL.arena}
-			set {KOTL.userdata.%victim%.playing} to true
 		heal the victim
 		extinguish the victim
 		set food bar of victim to 20

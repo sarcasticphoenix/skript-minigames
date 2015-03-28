@@ -1,7 +1,5 @@
 options:
 	p: &7[&aSarcaCraft&7] &f
-	mr1: s;3;i;feather;n;&fDuck Hunt;l;&7Shoot down the feathered army;c;fancytp %player% duckhunt;s;4;i;iron helmet;n;&fEscape;l;&7Can you escape?;c;fancytp %player% escape;s;5;i;rotten flesh;n;&fMobArena;l;&7Waves after waves of mobs;c;fancytp %player% mobarena;s;6;i;obsidian;n;&fParkour;l;&7Jump high, travel far;c;fancytp %player% parkour;s;7;i;diamond shovel;n;&fSpleef;l;&7Dig your way to victory;c;fancytp %player% spleef;
-	mr2: s;12;i;bow;n;&fSurvival Games;l;&7Be the last one standing;c;fancytp %player% survivalgames;s;13;i;diamond sword;n;&fPVP;l;&7Bash down enemies;c;fancytp %player% pvp;s;14;i;bookshelf;n;&fMaze;l;&7Pathfinding at work;c;fancytp %player% maze;s;15;i;ladder;n;&fKing of the Ladder;l;&7Climb to victory;c;fancytp %player% kingoftheladder;s;16;i;iron hoe;n;&fGunfight;l;&7Gun down your enemies;c;fancytp %player% gunfight;
 
 on click on sign:
 	line 1 of clicked block is "&1=&3=&b=&3=&1="
@@ -9,7 +7,12 @@ on click on sign:
 	line 2 of clicked block is "Click to warp"
 	line 3 of clicked block is "to hub"
 	cancel event
+	apply slowness 127 to player for 0.25 seconds
+	wait 0.25 seconds
 	teleport player to {Hub.spawnpoint}
+	wait 1 tick
+	apply slowness 127 to the player for 0.5 seconds
+	apply blindness to the player for 1.5 seconds
 	message "&7[&aSarcaCraft&7] &fTeleporting to hub."
 	stop
 
@@ -56,11 +59,8 @@ command /worldkey [<text>]:
 command /fancytp <player> <text>:
 	trigger:
 		arg 1 is online
-		push player-arg upwards at speed 1.5
-		apply invisibility to the player-arg for 0.5 seconds
-		apply slowness 127 to the player-arg for 0.5 seconds
-		apply nausea to the player-arg for 0.5 seconds
-		wait 0.5 seconds
+		apply slowness 127 to the player-arg for 0.25 seconds
+		wait 0.25 seconds
 		execute console command "/mvtp %arg 1% %arg 2%"
 		wait 1 tick
 		apply blindness to the player-arg for 1.5 seconds
@@ -76,26 +76,9 @@ command /fancytp <player> <text>:
 #		message "&7[&fAds&7] &f%arg 1% set."
 #		stop
 
-on player teleport:
-	player is in world "Hub"
-	tool of player is iron ingot
-	#if block below player is not stone brick:
-	#	cancel event
-	#	message "&7[&aSarcaCraft&7] &fYou must stand on stone brick to use the teleporter."
-	#	stop
-	remove 1 iron ingot from the player
-	wait 0.1 seconds
-	apply blindness to the player for 1.5 seconds
-	stop
 on damage:
 	world is "hub"
 	cancel event
-
-every 5 minutes:
-	execute console command "/time noon Spleef"
-	execute console command "/time noon PVP"
-	#execute console command "/time noon hub"
-	stop
 
 command /sethubspawn:
 	permission: staff.staff
@@ -114,7 +97,12 @@ on click on blue wool:
 	block below clicked block is iron block
 	cancel event
 	wait 1 tick
-	show "s;2;i;green rug;n;&fDefault Plot World;l;&7Large plots to build in;c;fancytp %player% defaultplot;s;3;i;dark oak sapling;n;&fFreebuild;l;&7Use the terrain wisely;c;fancytp %player% freebuild;s;4;i;light green rug;n;&fPlayer Plot World;l;&7Rank 200+;c;fancytp %player% playerplot;s;5;i;blue rug;n;&fPro Plot World;l;&7Rank 400+ Plot world;c;fancytp %player% proplot;s;6;i;rail;n;&fPro Flat World;l;&7Rank 400+ Infinite world;c;fancytp %player% proworld;s;7;i;sandstone:1;n;&fEmporium;l;&7Showcase of good builds;c;fancytp %player% emporium" with 1 rows named "&1Build Worlds" to the player
+	open chest with 1 rows named "&1&lBuild Worlds" to the player
+	format slot 2 of player with green rug named "&f&lDefault Plot World" with lore "&7Large plots to build in" to close then run "fancytp %player% defaultplot"
+	format slot 3 of player with grass block named "&f&lFreebuild" with lore "&7Build in regular terrain" to close then run "fancytp %player% freebuild"
+	format slot 4 of player with light green rug named "&b&l200+ Plot World" with lore "&7Plot world reserved for||&7ranks 200 and above" to close then run "fancytp %player% playerplot"
+	format slot 5 of player with light blue rug named "&b&l400+ Plot World" with lore "&7Huge plots reserved for||&7ranks 400 and above" to close then run "fancytp %player% proplot"
+	format slot 6 of player with compass named "&b&l400+ Infinite World" with lore "&7Infinite flat world reserved||&7for ranks 400 and above" to close then run "fancytp %player% proworld"
 	make player see clicked block as active redstone lamp
 	wait 0.5 seconds
 	make player see clicked block as blue wool
@@ -124,7 +112,12 @@ on click on light blue wool:
 	block below clicked block is iron block
 	cancel event
 	wait 1 tick
-	show "s;3;i;wooden pick;n;&fSurvival;l;&7Regular faction survival;c;fancytp %player% RegularSurvival;s;4;i;locked chest;n;&fSkyGrid;l;&7Floating blocks everywhere!;c;fancytp %player% SkyGrid;s;5;i;white wool;n;&fSkyblock;l;&7Survival in the sky;c;fancytp %player% skyworld;s;6;i;netherrack;n;&fNether;l;&7Fire, Lava, Nether police all included;c;fancytp %player% nether;s;9;i;166;n;&fOld Survival;l;&7Please switch to the new one;c;fancytp %player% survival;" with 1 rows named "&bSurvival Worlds" to the player
+	open chest with 1 rows named "&1&lSurvival Worlds" to the player
+	format slot 2 of player with stone pick named "&f&lSurvival" with lore "&7Regular SarcaCraft,||&7SarcaCraft style." to close then run "fancytp %player% RegularSurvival"
+	format slot 3 of player with feather named "&f&lSkyGrid" with lore "&7Floating blocks everywhere!" to close then run "fancytp %player% SkyGrid"
+	format slot 4 of player with white wool named "&f&lSkyBlock" with lore "&7Survival of the skies" to close then run "fancytp %player% skyworld"
+	format slot 6 of player with netherrack named "&f&lNether" with lore "&7Enter death's realm" to close then run "fancytp %player% nether"
+	format slot 8 of player with 166 named "&c&lOld Survival" with lore "&cOnly use to go fetch old||&cstuff from the old world.||&7If you are new here, please||&7use the new one instead." to close then run "fancytp %player% survival"
 	make player see clicked block as active redstone lamp
 	wait 0.5 seconds
 	make player see clicked block as light blue wool
@@ -134,7 +127,18 @@ on click on cyan wool:
 	block below clicked block is iron block
 	cancel event
 	wait 1 tick
-	show "{@mr1}{@mr2}" with 2 rows named "&3Minigame Worlds" to the player
+	open chest with 2 rows named "&1&lMinigame Worlds" to the player
+	format slot 2 of player with feather named "&c&lDuck Hunt" with lore "&cBroke with 1.8.3||&cFix in progress." to close#named "&f&lDuck Hunt" with lore "&7War against a feathered army." to close then run "fancytp %player% duckhunt"
+	format slot 3 of player with iron helmet named "&f&lEscape" with lore "&7The challenge to survive." to close then run "fancytp %player% escape"
+	format slot 4 of player with rotten flesh named "&f&lMobArena" with lore "&7Team up and fight waves of mobs." to close then run "fancytp %player% mobarena"
+	format slot 5 of player with obsidian named "&f&lParkour" with lore "&7Jump high, travel far." to close then run "fancytp %player% parkour"
+	format slot 6 of player with diamond shovel named "&f&lSpleef" with lore "&7Dig your way to victory." to close then run "fancytp %player% spleef"
+	format slot 11 of player with bow named "&f&lSurvival Games" with lore "&7Be the last one standing." to close then run "fancytp %player% survivalgames"
+	format slot 12 of player with diamond sword named "&f&lPVP" with lore "&7You against the world." to close then run "fancytp %player% pvp"
+	format slot 13 of player with bookshelf named "&f&lMaze" with lore "&7Pathfinding at work." to close then run "fancytp %player% maze"
+	format slot 14 of player with ladder named "&f&lKing of the Ladder" with lore "&7Climb to victory." to close then run "fancytp %player% kingoftheladder"
+	format slot 15 of player with iron hoe named "&f&lGunfight" with lore "&7The modern style of battle." to close then run "fancytp %player% gunfight"
+	format slot 17 of player with gray wool named "&8Parallel Universe" with lore "&8Coming someday." to close #then run "fancytp %player% parallel"
 	make player see clicked block as active redstone lamp
 	wait 0.5 seconds
 	make player see clicked block as cyan wool

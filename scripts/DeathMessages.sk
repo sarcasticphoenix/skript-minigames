@@ -1,5 +1,5 @@
 options:
-	p: &7[&4Death&7] &7
+	p: &7[&4Death&7] &f
 
 on death:
 	victim is a player

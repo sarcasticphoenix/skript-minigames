@@ -1,4 +1,3 @@
-
 options:
 	p: &7[&aChat&7] &f
 	e: &7[&aChat&7] &f
@@ -128,10 +127,8 @@ on chat:
 			broadcast "[&bStaff&f] &b%display name of player%&7:&f %message%"
 		else if {NR.%uuid of player%.rank} is greater than 2500:
 			broadcast "&7[&3%{NR.%uuid of player%.rank}%&7] %{_META}%&3%display name of player%&7: %message%"
-		else if {NR.%uuid of player%.rank} is greater than 1000:
-			broadcast "&7[&f%{NR.%uuid of player%.rank}%&7] %{_META}%&f%display name of player%&7: %message%"
 		else:
-			broadcast "&8[&7%{NR.%uuid of player%.rank}%&8] %{_META}%&7%display name of player%&7: %message%"
+			broadcast "&7[&f%{NR.%uuid of player%.rank}%&7] &f%{_META}%&f%display name of player%&7: %message%"
 
 command /rankup [<text>]:
 	permission: quiz.bypass
@@ -153,7 +150,7 @@ command /rankup [<text>]:
 					remove {_a} from player's balance
 					add 1 to {NR.%uuid of player%.rank}
 					add 1 to {_counter}
-					message "&7[&aRanks&7] &fYour rank: %{NR.%uuid of player%.rank}%"
+					message "&7[&aRanks&7] &fPaid $$%{_a}% for rank %{NR.%uuid of player%.rank}%."
 					if {NR.%uuid of player%.rank} is 200:
 						execute console command "/pex user %player% group set Player"
 					else if {NR.%uuid of player%.rank} is 300:
@@ -178,7 +175,7 @@ command /rankup [<text>]:
 						set {_looping} to false
 						stop
 				else:
-					message "&7[&aRanks&7] &fRanked up to rank %{NR.%uuid of player%.rank}%."
+					message "&7[&aRanks&7] &fRanked up %{_counter}% times to rank %{NR.%uuid of player%.rank}%."
 					set {_looping} to false
 					stop
 			set {_looping} to false
@@ -190,7 +187,7 @@ command /rankup [<text>]:
 		if {_b} is greater than or equal to {_a}:
 			remove {_a} from player's balance
 			add 1 to {NR.%uuid of player%.rank}
-			message "&7[&aRanks&7] &fYour rank: %{NR.%uuid of player%.rank}%"
+			message "&7[&aRanks&7] &fPaid $$%{_a}% for rank %{NR.%uuid of player%.rank}%."
 			message "&7[&aRanks&7] &fUse /rankup max to rankup up to 25 times at once."
 			if {NR.%uuid of player%.rank} is 200:
 				execute console command "/pex user %player% group set Player"
@@ -212,7 +209,7 @@ command /rankup [<text>]:
 				execute console command "/pex user %player% group set Contributor"
 			stop
 		else:
-			message "&7[&aRanks&7]&f Not enough money"
+			message "&7[&aRanks&7]&f Not enough money. Next rank is $$%{_a}%"
 			stop
 
 on join:
@@ -220,7 +217,7 @@ on join:
 	if player has permission "adminchat.adminchat":
 		set player's tablist name to "&b&l%display name of player%"
 	else:
-		set player's tablist name to "&b%name of player%"
+		set player's tablist name to "&f%name of player%"
 	stop
 
 command /rank:

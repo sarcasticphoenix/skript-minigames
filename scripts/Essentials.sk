@@ -5,6 +5,34 @@
 command /list:
 	aliases: ls, online
 	trigger:
+		set {_x} to player
+		if {_x} is set:
+			set {_r1} to number of players
+			if {_r1} is less than or equal to 9:
+				set {_r2} to 1
+			else if {_r1} is between 10 and 18:
+				set {_r2} to 2
+			else if {_r1} is between 19 and 27:
+				set {_r2} to 3
+			else if {_r1} is between 28 and 36:
+				set {_r2} to 4
+			else if {_r1} is between 37 and 45:
+				set {_r2} to 5
+			else if {_r1} is greater than 45:
+				set {_r2} to 6
+			open chest with {_r2} rows named "Online Players: %number of players%" to player
+			set {_i} to 0
+			loop all players:
+				if {_i} is 53:
+					set {_j} to number of players - 53
+					format slot {_i} of player with chest named "%{_j}% more players unlisted" to be unstealable
+					stop
+				if loop-player has permission "adminchat.adminchat":
+					format slot {_i} of player with skull of loop-player named "&b&l%display name of loop-player%" with lore "&7Staff" to be unstealable
+				else:
+					format slot {_i} of player with skull of loop-player named "&f&l%display name of loop-player%" with lore "&7Rank: %{NR.%uuid of loop-player%.rank}%" to be unstealable
+				add 1 to {_i}
+			stop
 		if size of all players is 0:
 			message "&7[&aList&7]&f Online Players: 0"
 			stop

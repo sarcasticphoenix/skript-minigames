@@ -6,7 +6,7 @@ command /solarblade:
 	executable by: players
 	trigger:
 		set {_n} to player
-		if {_n} isn't "sarcasticphoenix":
+		if {_n} isn't "Sarcasticphoenix":
 			message "{@p}You fail to summon the blade from thin air."
 			stop
 		set tool of player to gold sword named "&6Solar Blade"
@@ -28,7 +28,7 @@ command /solarblade:
 on right click holding gold sword:
 	name of tool of player is "&6Solar Blade"
 	set {_n} to player
-	if {_n} isn't "sarcasticphoenix":
+	if {_n} isn't "Sarcasticphoenix":
 		set health of player to 1
 		spawn 500 of particle lava offset by 5, 5, 5 at location of player
 		set tool of player to air

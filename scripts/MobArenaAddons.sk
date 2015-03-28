@@ -1,7 +1,7 @@
 options:
 	p: &a[MobArena] &f
 	
-on right click on sign:
+on click on sign:
 	#wait 1 tick
 	world is "MobArena"
 	wait 1 tick
@@ -130,15 +130,13 @@ on right click holding any sword:
 					ignite loop-entity for 5 seconds
 					push loop-entity backwards at speed 3
 			broadcast "{@p}%player% used ability: &cHoly Energy Outburst&f!" to "MobArena"
-		if player contains 50 gold nuggets:
+		else if player contains 50 gold nuggets:
 			remove 50 gold nuggets from the player
 			play mobspawner flames on player
 			strike lightning effect at player
 			loop all entities in radius 10 of location of player:
 				if loop-entity isn't a player:
 					play mobspawner flames on loop-entity
-					chance of 50%:
-						drop 1 gold nugget at location of loop-entity
 					damage loop-entity by 10 hearts
 					ignite loop-entity for 3 seconds
 					push loop-entity backwards at speed 2
@@ -149,7 +147,6 @@ on right click holding any sword:
 			loop all entities in radius 5 of location of player:
 				if loop-entity isn't a player:
 					play mobspawner flames on loop-entity
-					drop 1 gold nugget at location of loop-entity
 					damage loop-entity by 5 hearts
 					ignite loop-entity for 1 seconds
 					push loop-entity backwards at speed 1
@@ -164,7 +161,10 @@ on right click holding any sword:
 				stop
 			remove 10 gold nuggets from the player
 			play mobspawner flames on target
-			damage target entity by 10 hearts
+			set {_s} to target
+			push {_s} backwards at speed 2
+			wait 1 tick
+			damage {_s} by 10 hearts
 			broadcast "{@p}%player% used ability: &cSupersonic&f!" to "MobArena"
 		else:
 			message "{@p}100 Gold - Holy Energy Outburst"
@@ -193,7 +193,7 @@ on left click holding bow:
 				make player shoot an arrow at speed 15
 				wait 0.1 seconds
 			play mobspawner flames on player
-			broadcast "{@p}%player% used ability: &cExtreme Arrow Rapidfire&f!" to "MobArena"
+			broadcast "{@p}%player% used ability: &cExtreme Arrow Turret&f!" to "MobArena"
 			stop
 		else if player contains 25 gold nugget:
 			remove 25 gold nuggets from the player
@@ -212,20 +212,20 @@ on left click holding bow:
 			broadcast "{@p}%player% used ability: &cFastbow&f!" to "MobArena"
 			stop
 		else:
-			message "{@p}100 Gold - Holy Energy Outburst"
-			message "{@p}50 Gold - Energy Explosion"
-			message "{@p}25 Gold - Radial Burst"
-			message "{@p}10 Gold - Supersonic"
+			message "{@p}100 Gold - Archon Rayfall"
+			message "{@p}50 Gold - Extreme Arrow Turret"
+			message "{@p}25 Gold - Arrow Rapidfire"
+			message "{@p}10 Gold - Fastbow"
 			stop
 		
 on death:
 	world is "MobArena"
-	if victim is creeper or skeleton or spider or zombie or blaze or wither or ghast or witch or enderman or slime:
-		drop 1 gold nuggets at location of victim
-		stop
-	else if victim is player:
-		drop 20 gold nuggets at location of victim
-		stop
+	victim is player
+	set {_l} to location of victim
+	loop 10 times:
+		drop 4 gold nuggets at {_l}
+		wait 1 tick
+	stop
 		
 on damage of player:
 	world is "MobArena"
@@ -244,7 +244,7 @@ on sprint toggle:
 	wait 1 tick
 	player is sprinting
 	tool of player is feather named "&aWings of Flight (Hold and toggle sprint to fly)"
-	name of boots of player is "&aWinged Warboots (Valkyrie Class)" or "&aWinged Boots (Archer Class)" or "&aWinged Boots (Priest Class)" or "&aWinged Warboots (Archangel Class)"
+	name of boots of player is "&aWinged Warboots (Valkyrie Class)" or "&aWinged Boots (Archer Class)" or "&aWinged Boots (Priest Class)" or "&eWinged Warboots (Archangel Class)"
 	push player forwards at speed 1.6
 	stop
 
