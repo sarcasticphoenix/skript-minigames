@@ -69,7 +69,8 @@ command /setmalobby:
 on damage of creeper or skeleton or spider or zombie or blaze or wither or ghast or witch or enderman or slime:
 	world is "MobArena"
 	attacker is a player
-	drop 1 gold nugget at location of victim
+	chance of 90%:
+		add 1 gold nugget to attacker
 	stop
 	
 on right click holding blaze rod:
