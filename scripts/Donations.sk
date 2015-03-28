@@ -25,12 +25,12 @@ command /donor <text> <text>:
 			broadcast "{@p}Error: Unknown argument '%arg 2%'"
 			stop
 
-command /particle [<particle>]:
-	permission: donor.perms
-	trigger:
-		if arg 1 is not set:
-			message "{@p}List of particles: %all enum values of particle%"
-			message "{@p}/particle ParticleName"
-			stop
-		spawn 10 of particle arg 1:1 offset by 0.5, 0.5, 0.5 at head location of player
-		stop
+#command /particle [<particle>]:
+#	permission: donor.perms
+#	trigger:
+#		if arg 1 is not set:
+#			message "{@p}List of particles: %all enum values of particle%"
+#			message "{@p}/particle ParticleName"
+#			stop
+#		spawn 10 of particle arg 1:1 offset by 0.5, 0.5, 0.5 at head location of player
+#		stop

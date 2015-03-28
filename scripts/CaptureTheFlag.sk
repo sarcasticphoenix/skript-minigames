@@ -1,1 +1,5 @@
-aa
+command /ctf <text = "help">:
+	permission: ctf.use
+	trigger:
+		if arg 1 is "join":
+			

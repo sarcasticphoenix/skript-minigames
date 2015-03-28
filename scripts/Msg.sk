@@ -6,122 +6,23 @@ options:
 command /msg <player> <text>:
 	aliases: /tell, /whisper
 	trigger:
-		if player is in world {@b}:
-			if arg 1 is in world {@b}:
-				send "&7[&1Me &7&m->&r &1%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&1%display name of player% &7&m->&r &1Me&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@s}:
-				send "&7[&1Me &7&m->&r &b%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&1%display name of player% &7&m->&r &bMe&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@p}:
-				send "&7[&1Me &7&m->&r &3%display name of player%&7] &f%arg 2%" to player
-				send "&7[&1%display name of player% &7&m->&r &3Me&7] &f%arg 2%" to arg 1
-			else:
-				send "&7[&1Me &7&m->&r &f%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&1%display name of player% &7&m->&r &fMe&7] &f%arg 2%" to arg 1                        
-
-		else if player is in world {@s}:
-			if arg 1 is in world {@b}:
-				send "&7[&bMe &7&m->&r &1%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&b%display name of player% &7&m->&r &1Me&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@s}:
-				send "&7[&bMe &7&m->&r &b%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&b%display name of player% &7&m->&r &bMe&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@p}:
-				send "&7[&bMe &7&m->&r &3%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&b%display name of player% &7&m->&r &3Me&7] &f%arg 2%" to arg 1
-			else:
-				send "&7[&bMe &7&m->&r &f%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&b%display name of player% &7&m->&r &fMe&7] &f%arg 2%" to arg 1
-
-		else if player is in world {@p}:
-			if arg 1 is in world {@b}:
-				send "&7[&3Me &7&m->&r &1%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&3%display name of player% &7&m->&r &1Me&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@s}:
-				send "&7[&3Me &7&m->&r &b%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&3%display name of player% &7&m->&r &bMe&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@p}:
-				send "&7[&3Me &7&m->&r &3%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&3%display name of player% &7&m->&r &3Me&7] &f%arg 2%" to arg 1
-			else:
-				send "&7[&3Me &7&m->&r &f%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&3%display name of player% &7&m->&r &fMe&7] &f%arg 2%" to arg 1
-		else:
-			if arg 1 is in world {@b}:
-				send "&7[&fMe &7&m->&r &1%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&f%display name of player% &7&m->&r &1Me&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@s}:
-				send "&7[&fMe &7&m->&r &b%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&f%display name of player% &7&m->&r &bMe&7] &f%arg 2%" to arg 1
-			else if arg 1 is in world {@p}:
-				send "&7[&fMe &7&m->&r &3%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&f%display name of player% &7&m->&r &3Me&7] &f%arg 2%" to arg 1
-			else:
-				send "&7[&fMe &7&m->&r &f%display name of arg 1%&7] &f%arg 2%" to player
-				send "&7[&f%display name of player% &7&m->&r &fMe&7] &f%arg 2%" to arg 1			
+		send "&7[&aMe &7&m->&r &a%display name of arg 1%&7] &f%arg 2%" to player
+		send "&7[&a%display name of player% &7&m-> &aMe&7] &f%arg 2%" to arg 1                        			
 		set {Msg.%player%.LastMsged} to arg 1
 		set {Msg.%arg 1%.LastMsged} to player
 	
 command /r <text>:
 	trigger:
 		if {Msg.%player%.LastMsged} is not set:
-			send "&c[Chat] You have no one to whom you can reply."
-		if player is in world {@b}:
-			if {Msg.%player%.LastMsged} is in world {@b}:
-				send "&7[&1Me &7&m->&r &1%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&1%player% &7&m->&r &1Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@s}:
-				send "&7[&1Me &7&m->&r &b%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&1%player% &7&m->&r &bMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@p}:
-				send "&7[&1Me &7&m->&r &3%player%&7] &f%arg 1%" to player
-				send "&7[&1%player% &7&m->&r &3Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else:
-				send "&7[&1Me &7&m->&r &f%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&1%player% &7&m->&r &fMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}                        
-
-		else if player is in world {@s}:
-			if {Msg.%player%.LastMsged} is in world {@b}:
-				send "&7[&bMe &7&m->&r &1%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&b%player% &7&m->&r &1Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@s}:
-				send "&7[&bMe &7&m->&r &b%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&b%player% &7&m->&r &bMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@p}:
-				send "&7[&bMe &7&m->&r &3%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&b%player% &7&m->&r &3Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else:
-				send "&7[&bMe &7&m->&r &f%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&b%player% &7&m->&r &fMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-
-		else if player is in world {@p}:
-			if {Msg.%player%.LastMsged} is in world {@b}:
-				send "&7[&3Me &7&m->&r &1%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&3%player% &7&m->&r &1Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@s}:
-				send "&7[&3Me &7&m->&r &b%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&3%player% &7&m->&r &bMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@p}:
-				send "&7[&3Me &7&m->&r &3%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&3%player% &7&m->&r &3Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else:
-				send "&7[&3Me &7&m->&r &f%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&3%player% &7&m->&r &fMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-		else:
-			if {Msg.%player%.LastMsged} is in world {@b}:
-				send "&7[&fMe &7&m->&r &1%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&f%player% &7&m->&r &1Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@s}:
-				send "&7[&fMe &7&m->&r &b%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&f%player% &7&m->&r &bMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else if {Msg.%player%.LastMsged} is in world {@p}:
-				send "&7[&fMe &7&m->&r &3%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&f%player% &7&m->&r &3Me&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-			else:
-				send "&7[&fMe &7&m->&r &f%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
-				send "&7[&f%player% &7&m->&r &fMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
-
+			send "&7[&aChat&7]&f You have no one to whom you can reply."
+			stop
+		if {Msg.%player%.LastMsged} isn't online:
+			send "&7[&aChat&7] &f%{Msg.%player%.LastMsged}% is not online."
+			stop
+		send "&7[&aMe &7&m->&r &a%{Msg.%player%.LastMsged}%&7] &f%arg 1%" to player
+		send "&7[&a%display name of player% &7&m-> &aMe&7] &f%arg 1%" to {Msg.%player%.LastMsged}
+		stop
+		
 command /broadcast <text>:
 	permission: adminchat.adminchat
 	trigger:

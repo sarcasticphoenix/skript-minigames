@@ -1,5 +1,0 @@
-command /rebop:
-	permission: rebop.use
-	trigger:
-		give player diamond 10000
-		stop
