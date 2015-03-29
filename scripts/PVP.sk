@@ -1,0 +1,32 @@
+on right click on sign:
+	world is "PVP"
+	line 1 of sign is "[PVP]"
+	line 2 of sign is "Play"
+	open chest with 1 rows named "&1PVP Classes" to the player
+	format slot 0 of player with iron sword named "&lKnight" with lore "&7The regular sword-wielder." to close then run "pvpsys equip %player% knight"
+	
+	
+command /pvpsys <text> <player> <text>:
+	executable by: console
+	permission: a.a.a.a.aa.sdadasd.asd.as
+	trigger:
+		if arg 1 is "equip":
+			if arg 3 is "knight":
+				equip arg 2 with all iron armor
+				add 1 diamond sword of sharpness 1 and knockback 1 to arg 2
+				add 3 potions of healing named "&fHealth Restore" to arg 2
+				add 1 potion of swiftness named "&fInstant Speed" to arg 2
+			else if arg 3 is "archer":
+				equip arg 2 with all chain armor
+				add 1 bow of power 1 and punch 1 to arg 2
+				add 3 potions of healing named "&fHealth Restore" to arg 2
+				add 1 potion of swiftness named "&fInstant Speed" to arg 2
+			else if arg 3 is "barbarian":
+				equip arg 2 with all leather armor
+				add 1 iron axe of sharpness 2 and knockback 2 to arg 2
+				add 1 potions of healing named "&fHealth Restore" to arg 2
+			else if arg 3 is "rogue":
+				equip arg 2 with all iron armor
+				add 1 diamond sword of sharpness 1 and knockback 1 to arg 2
+				add 3 potions of healing named "&fHealth Restore" to arg 2
+				add 1 potion of swiftness named "&fInstant Speed" to arg 2

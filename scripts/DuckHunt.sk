@@ -30,8 +30,6 @@ on right click on sign:
 	set {Duck.userdata.%player%.active} to true
 	if {Duck.userdata.%player%.kills} is not set:
 		set {Duck.userdata.%player%.kills} to 0
-	if {fastbow.%player%} is true:
-		set {fastbow.%player%} to false
 	message "&8[Duck Hunt] Ready."
 	remove all items from the player
 	set the tool of the player to bow
