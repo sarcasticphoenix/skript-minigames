@@ -130,7 +130,8 @@ command /mazeconsole <text>:
 				set {_s} to 35
 				while {_s} is greater than 0:
 					if size of {Maze.temp.players::*} is greater than 0:
-						broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						if {_s} is 35, 30, 25, 20, 15, 10, 5, 4, 3, 2, or 1:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
 						subtract 1 from {_s}
 						wait 1 second
 					else:
@@ -156,6 +157,7 @@ command /mazeconsole <text>:
 				extinguish the loop-value
 			delete {Maze.temp.players::*}
 			broadcast "{@p}Game over." to "Maze"
+			wait 7 seconds
 			set {Maze.can} to true
 			set {Maze.active} to false
 			stop
