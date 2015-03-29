@@ -128,7 +128,7 @@ on click on cyan wool:
 	cancel event
 	wait 1 tick
 	open chest with 2 rows named "&1&lMinigame Worlds" to the player
-	format slot 2 of player with feather named "&c&lDuck Hunt" with lore "&cBroke with 1.8.3||&cFix in progress." to close#named "&f&lDuck Hunt" with lore "&7War against a feathered army." to close then run "fancytp %player% duckhunt"
+	format slot 2 of player with feather named "&f&lDuck Hunt" with lore "&7War against a feathered army." to close then run "fancytp %player% duckhunt"
 	format slot 3 of player with iron helmet named "&f&lEscape" with lore "&7The challenge to survive." to close then run "fancytp %player% escape"
 	format slot 4 of player with rotten flesh named "&f&lMobArena" with lore "&7Team up and fight waves of mobs." to close then run "fancytp %player% mobarena"
 	format slot 5 of player with obsidian named "&f&lParkour" with lore "&7Jump high, travel far." to close then run "fancytp %player% parkour"

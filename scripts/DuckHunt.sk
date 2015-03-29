@@ -230,14 +230,11 @@ on right click on grass block holding a fish:
 	add {_l} to {DuckHunt.fall::*}
 	message "&8[DuckHunt] Location set."
 
-on shoot:
-	world is "DuckHunt"
-	broadcast "@Debug: %shooter% fired a %projectile%"
-	stop
-	
 on damage:
 	world is "DuckHunt"
-	broadcast "@Debug: %victim% attacked by %attacker%"
+	attacker is a player
+	victim is a player
+	cancel event
 	stop
 
 command /ducklose:
