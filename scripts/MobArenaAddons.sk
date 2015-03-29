@@ -119,35 +119,36 @@ on right click holding any sword:
 	world is "MobArena"
 	if name of tool of player is "&aBlade of Justice (Valkyrie Class)":
 		open chest with 1 row named "&1Valkyrie Attack Selection" to the player
-			if player contains 200 gold nuggets:
-				format slot 6 of player with nether star named "&e&lSurge" with lore "&7World target||&725 damage" to close then run [add 1 nether star named "&e&lSurge" to the player]
-			else:
-				format slot 6 of player with gray wool named "&fLocked - 200 gold" to be unstealable
-			if player contains 100 gold nuggets:
-				format slot 5 of player with nether star named "&6&lCosmic Vortex" with lore "&Single target||&7100 damage" to close then run [add 1 nether star named "&6&lCosmic Vortex" to the player]
-			else:
-				format slot 5 of player with gray wool named "&fLocked - 100 gold" to be unstealable
-			if player contains 50 gold nuggets:
-				format slot 4 of player with nether star named "&fEnergy Explosion" with lore "&7Large area target||&710 damage" to close then run [add 1 nether star named "&fEnergy Explosion" to the player]
-			else:
-				format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
-			if player contains 25 gold nuggets:
-				format slot 3 of player with nether star named "&fSupersonic" with lore "&7Single target||&725 damage" to close then run [add 1 nether star named "&fSupersonic" to the player]
-			else:
-				format slot 3 of player with gray wool named "&fLocked - 25 gold" to be unstealable
-			if player contains 25 gold nuggets:
-				format slot 2 of player with nether star named "&fTempest" with lore "&7Medium area target||&78 damage" to close then run [add 1 nether star named "&fTempest" to the player]
-			else:
-				format slot 2 of player with gray wool named "&fLocked - 25 gold" to be unstealable
-			if player contains 10 gold nuggets:
-				format slot 1 of player with nether star named "&fFastblade" with lore "&7Single target||&710 damage" to close then run [add 1 nether star named "&fFastblade" to the player]
-			else:
-				format slot 1 of player with gray wool named "&fLocked - 25 gold" to be unstealable
-			if player contains 10 gold nuggets:
-				format slot 0 of player with nether star named "&fWhirlwind" with lore "&7Small area target||&7Throw mobs" to close then run [add 1 nether star named "&fWhirlwind" to the player]
-			else:
-				format slot 0 of player with gray wool named "&fLocked - 10 gold" to be unstealable
-
+		if player contains 200 gold nuggets:
+			format slot 6 of player with nether star named "&e&lSurge" with lore "&7World target||&725 damage" to close then run [add 1 nether star named "&e&lSurge" to the player]
+		else:
+			format slot 6 of player with gray wool named "&fLocked - 200 gold" to be unstealable
+		if player contains 100 gold nuggets:
+			format slot 5 of player with nether star named "&6&lCosmic Vortex" with lore "&Single target||&7100 damage" to close then run [add 1 nether star named "&6&lCosmic Vortex" to the player]
+		else:
+			format slot 5 of player with gray wool named "&fLocked - 100 gold" to be unstealable
+		if player contains 50 gold nuggets:
+			format slot 4 of player with nether star named "&fEnergy Explosion" with lore "&7Large area target||&710 damage" to close then run [add 1 nether star named "&fEnergy Explosion" to the player]
+		else:
+			format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
+		if player contains 25 gold nuggets:
+			format slot 3 of player with nether star named "&fSupersonic" with lore "&7Single target||&725 damage" to close then run [add 1 nether star named "&fSupersonic" to the player]
+		else:
+			format slot 3 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+		if player contains 25 gold nuggets:
+			format slot 2 of player with nether star named "&fTempest" with lore "&7Medium area target||&78 damage" to close then run [add 1 nether star named "&fTempest" to the player]
+		else:
+			format slot 2 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+		if player contains 10 gold nuggets:
+			format slot 1 of player with nether star named "&fFastblade" with lore "&7Single target||&710 damage" to close then run [add 1 nether star named "&fFastblade" to the player]
+		else:
+			format slot 1 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+		if player contains 10 gold nuggets:
+			format slot 0 of player with nether star named "&fWhirlwind" with lore "&7Small area target||&7Throw mobs" to close then run [add 1 nether star named "&fWhirlwind" to the player]
+		else:
+			format slot 0 of player with gray wool named "&fLocked - 10 gold" to be unstealable
+		stop
+			
 on right click holding nether star:
 	world is "MobArena"
 	if name of tool of player is "&e&lSurge":
