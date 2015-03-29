@@ -118,61 +118,124 @@ on right click holding blaze rod:
 on right click holding any sword:
 	world is "MobArena"
 	if name of tool of player is "&aBlade of Justice (Valkyrie Class)":
-		if player contains 100 gold nuggets:
-			remove 100 gold nuggets from the player
-			play mobspawner flames on player
+		open chest with 1 row named "&1Valkyrie Attack Selection" to the player
+			if player contains 200 gold nuggets:
+				format slot 6 of player with nether star named "&e&lSurge" with lore "&7World target||&725 damage" to close then run [add 1 nether star named "&e&lSurge" to the player]
+			else:
+				format slot 6 of player with gray wool named "&fLocked - 200 gold" to be unstealable
+			if player contains 100 gold nuggets:
+				format slot 5 of player with nether star named "&6&lCosmic Vortex" with lore "&Single target||&7100 damage" to close then run [add 1 nether star named "&6&lCosmic Vortex" to the player]
+			else:
+				format slot 5 of player with gray wool named "&fLocked - 100 gold" to be unstealable
+			if player contains 50 gold nuggets:
+				format slot 4 of player with nether star named "&fEnergy Explosion" with lore "&7Large area target||&710 damage" to close then run [add 1 nether star named "&fEnergy Explosion" to the player]
+			else:
+				format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
+			if player contains 25 gold nuggets:
+				format slot 3 of player with nether star named "&fSupersonic" with lore "&7Single target||&725 damage" to close then run [add 1 nether star named "&fSupersonic" to the player]
+			else:
+				format slot 3 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+			if player contains 25 gold nuggets:
+				format slot 2 of player with nether star named "&fTempest" with lore "&7Medium area target||&78 damage" to close then run [add 1 nether star named "&fTempest" to the player]
+			else:
+				format slot 2 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+			if player contains 10 gold nuggets:
+				format slot 1 of player with nether star named "&fFastblade" with lore "&7Single target||&710 damage" to close then run [add 1 nether star named "&fFastblade" to the player]
+			else:
+				format slot 1 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+			if player contains 10 gold nuggets:
+				format slot 0 of player with nether star named "&fWhirlwind" with lore "&7Small area target||&7Throw mobs" to close then run [add 1 nether star named "&fWhirlwind" to the player]
+			else:
+				format slot 0 of player with gray wool named "&fLocked - 10 gold" to be unstealable
+
+on right click holding nether star:
+	world is "MobArena"
+	if name of tool of player is "&e&lSurge":
+		remove 1 nether star named "&e&lSurge" from the player
+		play mobspawner flames on player
+		loop 10 times:
 			strike lightning effect at player
-			apply blindness to all players in "MobArena" for 1 second
-			wait 1 second
-			loop all entities in world "MobArena":
-				if loop-entity isn't a player:
-					push loop-entity backwards at speed 5
-					play mobspawner flames on loop-entity
-					damage loop-entity by 25 hearts
-					ignite loop-entity for 5 seconds
-			broadcast "{@p}%player% used ability: &cHoly Energy Outburst&f!" to "MobArena"
-		else if player contains 50 gold nuggets:
-			remove 50 gold nuggets from the player
-			play mobspawner flames on player
-			strike lightning effect at player
-			loop all entities in radius 10 of location of player:
-				if loop-entity isn't a player:
-					play mobspawner flames on loop-entity
-					push loop-entity backwards at speed 4
-					damage loop-entity by 10 hearts
-					ignite loop-entity for 3 seconds
-			broadcast "{@p}%player% used ability: &cEnergy Explosion&f!" to "MobArena"
-		else if player contains 25 gold nuggets:
-			remove 25 gold nuggets from the player
-			play mobspawner flames on player
-			loop all entities in radius 5 of location of player:
-				if loop-entity isn't a player:
-					push loop-entity backwards at speed 2
-					play mobspawner flames on loop-entity
-					damage loop-entity by 5 hearts
-					ignite loop-entity for 1 seconds
-			broadcast "{@p}%player% used ability: &cRadial Burst&f!" to "MobArena"
-		else if player contains 10 gold nuggets:
-			set {_s} to target entity
-			if {_s} is a player:
-				message "{@p}Cannot attack players"
-				stop
-			else if {_s} is not set:
-				message "{@p}Look at a target"
-				stop
-			remove 10 gold nuggets from the player
-			play mobspawner flames on target
-			set {_s} to target
-			push {_s} backwards at speed 2
-			wait 1 tick
-			damage {_s} by 10 hearts
-			broadcast "{@p}%player% used ability: &cSupersonic&f!" to "MobArena"
-		else:
-			message "{@p}100 Gold - Holy Energy Outburst"
-			message "{@p}50 Gold - Energy Explosion"
-			message "{@p}25 Gold - Radial Burst"
-			message "{@p}10 Gold - Supersonic"
+		apply blindness to all players in "MobArena" for 1 second
+		wait 1 second
+		loop all entities in world "MobArena":
+			if loop-entity isn't a player:
+				push loop-entity backwards at speed 5
+				play mobspawner flames on loop-entity
+				strike lightning effect at loop-entity
+				damage loop-entity by 25 hearts
+				ignite loop-entity for 5 seconds
+		broadcast "{@p}%player% used ability: &cSurge&f!" to "MobArena"
+	else if name of tool of player is "&6&lCosmic Vortex":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
 			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&6&lCosmic Vortex" from the player
+		loop 10 times:
+			strike lightning effect at {_s}
+		push {_s} backwards at speed 5
+		wait 1 tick
+		damage {_s} by 100 hearts
+		broadcast "{@p}%player% used ability: &cCosmic Vortex&f!" to "MobArena"
+	else if name of tool of player is "&fEnergy Explosion":
+		remove 1 nether star named "&fEnergy Explosion" from the player
+		play mobspawner flames on player
+		strike lightning effect at player
+		loop all entities in radius 10 of location of player:
+			if loop-entity isn't a player:
+				play mobspawner flames on loop-entity
+				push loop-entity backwards at speed 4
+				damage loop-entity by 10 hearts
+				ignite loop-entity for 3 seconds
+		broadcast "{@p}%player% used ability: &cEnergy Explosion&f!" to "MobArena"
+	else if name of tool of player is "&fSupersonic":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
+			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&fSupersonic" from the player
+		strike lightning effect at {_s}
+		push {_s} backwards at speed 5
+		wait 1 tick
+		damage {_s} by 25 hearts
+		broadcast "{@p}%player% used ability: &cSupersonic&f!" to "MobArena"
+	else if name of tool of player is "&fTempest":
+		remove 1 nether star named "&fTempest" from the player
+		play mobspawner flames on player
+		loop all entities in radius 6 of location of player:
+			if loop-entity isn't a player:
+				play mobspawner flames on loop-entity
+				push loop-entity backwards at speed 2
+				damage loop-entity by 8 hearts
+				ignite loop-entity for 2 seconds
+		broadcast "{@p}%player% used ability: &cTempest&f!" to "MobArena"
+	else if name of tool of player is "&fFastblade":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
+			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&fFastblade" from the player
+		push {_s} backwards at speed 2
+		wait 1 tick
+		damage {_s} by 10 hearts
+		broadcast "{@p}%player% used ability: &cFastblade&f!" to "MobArena"
+	else if name of tool of player is "&fWhirlwind":
+		remove 1 nether star named "&fWhirlwind" from the player
+		play mobspawner flames on player
+		loop all entities in radius 4 of location of player:
+			if loop-entity isn't a player:
+				play mobspawner flames on loop-entity
+				push loop-entity backwards at speed 5
+		broadcast "{@p}%player% used ability: &cWhirlwind&f!" to "MobArena"
 		
 on left click holding bow:
 	if name of tool of player is "&aSharpshooter Longbow (Archer Class)":
