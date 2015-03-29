@@ -128,7 +128,7 @@ on right click holding any sword:
 		else:
 			format slot 5 of player with gray wool named "&fLocked - 100 gold" to be unstealable
 		if player contains 50 gold nuggets:
-			format slot 4 of player with nether star named "&fEnergy Explosion" with lore "&7Large area target||&710 damage" to close then run [do[add 1 nether star named "&fEnergy Explosion" to the player]->[remove 50 gold nuggets from the player]]
+			format slot 4 of player with nether star named "&fEnergy Explosion" with lore "&7Large area target||&710 damage" to close then run [do [add 1 nether star named "&fEnergy Explosion" to the player]->[remove 50 gold nuggets from the player]]
 		else:
 			format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
 		if player contains 25 gold nuggets:
