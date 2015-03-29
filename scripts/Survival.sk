@@ -32,10 +32,6 @@ on break of locked chest:
 	drop 1 locked chest at {_z}
 	stop
 
-on damage of creeper:
-	attacker is a player
-	create a fake explosion at the victim
-
 command /eexmax:
 	permission: enchant.all
 	trigger:

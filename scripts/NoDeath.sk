@@ -86,11 +86,6 @@ on death of villager:
 	spawn a zombie at the victim
 	stop
 
-on death of creeper:
-	attacker is set
-	create a safe explosion of force 4 at location of victim
-	stop
-
 on right click on sign:
 	line 2 of clicked block is "[Kit]"
 	if line 3 of clicked block is "&8Sapling":

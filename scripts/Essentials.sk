@@ -69,3 +69,19 @@ command //wand:
 		add 1 wooden axe of fortune 3 named "&f%player%'s WorldEdit Wand" to the player
 		message "&dLeft click: select pos ##1; Right click: select pos ##2"
 		stop
+
+command /hat [<player>]:
+	permission: donor.perms
+	trigger:
+		if arg 1 is set:
+			if player doesn't have permission "adminchat.adminchat":
+				message "&7[&aHat&7] &fYou can't hat other players."
+				stop
+			set {_s} to arg 1
+		else:
+			set {_s} to player
+		set {_i} to helmet of {_s}
+		set helmet of {_s} to tool of player
+		set tool of player to {_i}
+		message "&7[&aHat&7] &f%{_s}%'s hat set"
+		stop
