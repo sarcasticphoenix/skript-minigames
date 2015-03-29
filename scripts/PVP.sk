@@ -13,17 +13,17 @@ command /pvpsys <text> <player> <text>:
 		if arg 1 is "equip":
 			if arg 3 is "knight":
 				equip arg 2 with all iron armor
-				add 1 diamond sword of sharpness 1 and knockback 1 to arg 2
+				give arg 2 a diamond sword of sharpness 1 and knockback 1
 				add 3 potions of healing named "&fHealth Restore" to arg 2
 				add 1 potion of swiftness named "&fInstant Speed" to arg 2
 			else if arg 3 is "archer":
 				equip arg 2 with all chain armor
-				add 1 bow of power 1 and punch 1 to arg 2
+				give arg 2 a bow of power 1 and punch 1
 				add 3 potions of healing named "&fHealth Restore" to arg 2
 				add 1 potion of swiftness named "&fInstant Speed" to arg 2
 			else if arg 3 is "barbarian":
 				equip arg 2 with all leather armor
-				add 1 iron axe of sharpness 2 and knockback 2 to arg 2
+				give arg 2 a iron axe of sharpness 2 and knockback 2
 				add 1 potions of healing named "&fHealth Restore" to arg 2
 			else if arg 3 is "rogue":
 				equip arg 2 with all leather armor
@@ -35,6 +35,6 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				add 1 iron sword of sharpness 1 to arg 2
+				give arg 2 an iron sword of sharpness 1 
 				add 3 potions of healing named "&fHealth Restore" to arg 2
 				add 1 potion of swiftness named "&fInstant Speed" to arg 2
