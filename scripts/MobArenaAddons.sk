@@ -28,7 +28,7 @@ on click on sign:
 		set name of chestplate of player to "&aCloak (Archer Class)"
 		set name of leggings of player to "&aKilt (Archer Class)"
 		set name of boots of player to "&aWinged Boots (Archer Class)"
-		add 1 bow of power 3 and punch 1 and infinity 1 named "&aSharpshooter Longbow (Archer Class)" to the player
+		add 1 bow of power 5 and punch 1 and infinity 1 named "&aSharpshooter Longbow (Archer Class)" to the player
 		message "{@p}To zoom and rapidfire, right click with the bow. (25 gold)"
 		add 1 stone sword named "&aShort Dagger (Archer Class)" to the player
 		add 64 arrows to the player
@@ -126,10 +126,10 @@ on right click holding any sword:
 			wait 1 second
 			loop all entities in world "MobArena":
 				if loop-entity isn't a player:
+					push loop-entity backwards at speed 5
 					play mobspawner flames on loop-entity
 					damage loop-entity by 25 hearts
 					ignite loop-entity for 5 seconds
-					push loop-entity backwards at speed 3
 			broadcast "{@p}%player% used ability: &cHoly Energy Outburst&f!" to "MobArena"
 		else if player contains 50 gold nuggets:
 			remove 50 gold nuggets from the player
@@ -138,19 +138,19 @@ on right click holding any sword:
 			loop all entities in radius 10 of location of player:
 				if loop-entity isn't a player:
 					play mobspawner flames on loop-entity
+					push loop-entity backwards at speed 4
 					damage loop-entity by 10 hearts
 					ignite loop-entity for 3 seconds
-					push loop-entity backwards at speed 2
 			broadcast "{@p}%player% used ability: &cEnergy Explosion&f!" to "MobArena"
 		else if player contains 25 gold nuggets:
 			remove 25 gold nuggets from the player
 			play mobspawner flames on player
 			loop all entities in radius 5 of location of player:
 				if loop-entity isn't a player:
+					push loop-entity backwards at speed 2
 					play mobspawner flames on loop-entity
 					damage loop-entity by 5 hearts
 					ignite loop-entity for 1 seconds
-					push loop-entity backwards at speed 1
 			broadcast "{@p}%player% used ability: &cRadial Burst&f!" to "MobArena"
 		else if player contains 10 gold nuggets:
 			set {_s} to target entity
@@ -233,7 +233,7 @@ on damage of player:
 	#broadcast "%damage cause%"
 	damage causes is fall
 	#name of boots of victim is "&aWinged Warboots (Valkyrie Class)" or "&aWinged Boots (Archer Class)" or "&aWinged Boots (Priest Class)" or "&aWinged Warboots (Archangel Class)"
-	chance of 50%:
+	chance of 90%:
 		cancel event
 	else:
 		set damage to 2
