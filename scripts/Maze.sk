@@ -130,7 +130,27 @@ command /mazeconsole <text>:
 				set {_s} to 35
 				while {_s} is greater than 0:
 					if size of {Maze.temp.players::*} is greater than 0:
-						if {_s} is 35, 30, 25, 20, 15, 10, 5, 4, 3, 2, or 1:
+						if {_s} is 35:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 30:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 25:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 20:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 15:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 10:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 5:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 4:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 3:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 2:
+							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
+						else if {_s} is 1:
 							broadcast "{@p}Maze disintegrates in &c%{_s}% seconds&f!" to "Maze"
 						subtract 1 from {_s}
 						wait 1 second
