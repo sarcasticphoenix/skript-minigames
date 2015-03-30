@@ -36,7 +36,7 @@ on right click on sign:
 	format slot 29 of player with wooden door named "&fArchitect" with lore "&7Usually designs houses." to close then run "pvpsys equip %player% architect"
 	format slot 30 of player with diamond hoe named "&fFarmer" with lore "&7Poisonous potatoes found||&7a role." to close then run "pvpsys equip %player% farmer"
 	format slot 31 of player with book named "&fMathematician" with lore "&7(Number) Crunching time." to close then run "pvpsys equip %player% mathematician"
-	format slot 32 of player with book'n'quill named "&fPencil Sharpener" with lore "&7Yes, this actually exists.||&7Sharpens pencils to a||&7perfect point for||&7pro artists." to close then run "pvpsys equip %player% pencilsharpener"
+	format slot 32 of player with stick named "&fPencil Sharpener" with lore "&7Yes, this actually exists.||&7Sharpens pencils to a||&7perfect point for||&7pro artists." to close then run "pvpsys equip %player% pencilsharpener"
 	format slot 33 of player with bucket named "&fJanitor" with lore "&7Clean the world of enemies." to close then run "pvpsys equip %player% janitor"
 	format slot 34 of player with wooden axe named "&fJudge" with lore "&7Time to decide who is the enemy." to close then run "pvpsys equip %player% judge"
 	format slot 35 of player with iron hoe named "&fReporter" with lore "&7How are you doing today?" to close then run "pvpsys equip %player% reporter"
@@ -439,7 +439,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg a book'n'quill of sharpness 3 named "&fPencil"
+				give player-arg a stick of sharpness 3 named "&fPencil"
 				give player-arg stone sword of sharpness 1 and knockback 1 named "&fSharpening Blade"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "janitor":
