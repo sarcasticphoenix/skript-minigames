@@ -3,6 +3,7 @@ on right click on sign:
 	line 1 of event-block is "[PVP]"
 	line 2 of event-block is "Play"
 	open chest with 6 rows named "&1PVP Classes" to the player
+	wait 1 tick
 	format slot 0 of player with iron sword named "&fKnight" with lore "&7The regular sword wielder." to close then run "pvpsys equip %player% knight"
 	format slot 1 of player with bow named "&fRanger" with lore "&7The regular bow wielder." to close then run "pvpsys equip %player% ranger"
 	format slot 2 of player with iron axe named "&fBarbarian" with lore "&7High melee, low defense." to close then run "pvpsys equip %player% barbarian"
@@ -23,7 +24,7 @@ on damage:
 		ignite victim for 3 seconds
 	else if tool of attacker is blaze rod named "&fDark Staff":
 		apply blindness to the victim for 0.1 seconds
-	else if tool of attacker is redstone torch of named "&fLeech Staff":
+	else if tool of attacker is redstone torch named "&fLeech Staff":
 		heal attacker by 0.5 hearts
 		
 	stop
@@ -41,7 +42,11 @@ command /pvpsys <text> <player> <text>:
 	permission: a.a.a.a.aa.sdadasd.asd.as
 	trigger:
 		if arg 1 is "equip":
-			remove all potion effects from player-arg
+			remove strength from player-arg
+			remove swiftness from player-arg
+			remove regeneration from player-arg
+			remove invisibility from player-arg
+			remove weakness from player-arg
 			wait 1 tick
 			if arg 3 is "knight":
 				equip player-arg with all iron armor
@@ -105,7 +110,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg 1 shear of sharpness 3 named "&fAssassin's Blade"
+				set tool of player-arg to shear named "&fAssassin's Blade"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 				add 2 potion of swiftness named "&fInstant Speed" to player-arg
 				add 1 potions of invisibility named "&fVanish" to player-arg
