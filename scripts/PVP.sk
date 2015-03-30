@@ -2,28 +2,70 @@ on right click on sign:
 	world is "PVP"
 	line 1 of event-block is "[PVP]"
 	line 2 of event-block is "Play"
-	open chest with 1 rows named "&1PVP Classes" to the player
-	format slot 0 of player with iron sword named "&lKnight" with lore "&7The regular sword-wielder." to close then run "pvpsys equip %player% knight"
+	open chest with 6 rows named "&1PVP Classes" to the player
+	format slot 0 of player with iron sword named "&fKnight" with lore "&7The regular sword wielder." to close then run "pvpsys equip %player% knight"
+	format slot 1 of player with bow named "&fRanger" with lore "&7The regular bow wielder." to close then run "pvpsys equip %player% ranger"
+	format slot 2 of player with iron axe named "&fBarbarian" with lore "&7High melee, low defense." to close then run "pvpsys equip %player% barbarian"
+	format slot 3 of player with potion of swiftness named "&fRogue" with lore "&7Fast and deadly." to close then run "pvpsys equip %player% rogue"
+	format slot 4 of player with flint'n'steel named "&fPyromaniac" with lore "&7Loves fire." to close then run "pvpsys equip %player% pyromaniac"
+	format slot 5 of player with shears named "&fAssassin" with lore "&7Sneaks up on enemies." to close then run "pvpsys equip %player% ranger"
+	format slot 6 of player with potion of healing named "&fDruid" with lore "&7Strong at healing." to close then run "pvpsys equip %player% druid"
+	format slot 7 of player with blaze rod named "&fRed Mage" with lore "&7Its attacks are a bit blinding." to close then run "pvpsys equip %player% redmage"
+	format slot 8 of player with clock named "&fTime Mage" with lore "&7Sends players flying back." to close then run "pvpsys equip %player% timemage"
 	
+	
+	
+on damage:
+	world is "PVP"
+	victim is a player
+	attacker is a player
+	if tool of attacker is flint and steel:
+		ignite victim for 3 seconds
+	else if tool of attacker is blaze rod named "&fDark Staff":
+		apply blindness to the victim for 0.1 seconds
+	else if tool of attacker is redstone torch of named "&fLeech Staff":
+		heal attacker by 0.5 hearts
+		
+	stop
+		
+on right click:
+	world is "PVP"
+	if tool of player is nether star named "&fShuriken":
+		remove 1 nether star named "&fShuriken" from the player
+		make player shoot an arrow at speed 5
+		
+	stop
 	
 command /pvpsys <text> <player> <text>:
 	executable by: console
 	permission: a.a.a.a.aa.sdadasd.asd.as
 	trigger:
 		if arg 1 is "equip":
+			remove all effects from player-arg
+			wait 1 tick
 			if arg 3 is "knight":
 				equip player-arg with all iron armor
-				give player-arg a diamond sword of sharpness 1 and knockback 1 named "&fKnight's Sword"
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a diamond sword of sharpness 3 and knockback 1 named "&fKnight's Sword"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 				add 1 potion of swiftness named "&fInstant Speed" to player-arg
-			else if arg 3 is "archer":
+			else if arg 3 is "ranger":
 				equip player-arg with all chain armor
-				give player-arg a bow of power 1 and punch 1 named "&fArcher's Bow"
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a bow of power 3 and punch 1 named "&fRanger's Bow"
+				give player-arg a stone sword of knockback 1 and sharpness 1 named "&fRanger's Sword"
+				add 128 arrows to player-arg
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 				add 1 potion of swiftness named "&fInstant Speed" to player-arg
 			else if arg 3 is "barbarian":
 				equip player-arg with all leather armor
-				give player-arg a iron axe of sharpness 2 and knockback 2 named "&fBarbarian's Axe"
+				give player-arg a iron axe of sharpness 4 and knockback 2 named "&fBarbarian's Axe"
 				add 1 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "rogue":
 				equip player-arg with all leather armor
@@ -36,5 +78,165 @@ command /pvpsys <text> <player> <text>:
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
 				give player-arg an iron sword of sharpness 1 named "&fRogue Sword"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+				add 6 potion of swiftness named "&fInstant Speed" to player-arg
+			else if arg 3 is "pyromaniac":
+				equip player-arg with all leather armor
+				dye helmet of player-arg orange
+				dye chestplate of player-arg orange
+				dye leggings of player-arg orange
+				dye boots of player-arg orange
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a stone sword named "&fPyro Sword"
+				give player-arg a flint'n'steel named "&fPyro Firestarter"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 				add 1 potion of swiftness named "&fInstant Speed" to player-arg
+				add 2 potions of fire resistance named "&fFire Resistance" to player-arg
+			else if arg 3 is "assassin":
+				equip player-arg with all leather armor
+				dye helmet of player-arg black
+				dye chestplate of player-arg black
+				dye leggings of player-arg black
+				dye boots of player-arg black
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a shear of sharpness 3 named "&fAssassin's Blade"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+				add 2 potion of swiftness named "&fInstant Speed" to player-arg
+				add 1 potions of invisibility named "&fVanish" to player-arg
+			else if arg 3 is "druid":
+				equip player-arg with all gold armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg an iron sword of sharpness 1 named "&fDruid's Blade"
+				add 6 potions of healing named "&fHealth Restore" to player-arg
+				add 4 potion of regeneration named "&fQuick Regeneration" to player-arg
+			else if arg 3 is "redmage":
+				equip player-arg with all gold armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg an blaze rod of sharpness 3 named "&fDark Staff"
+				give player-arg a stick of sharpness 2 and knockback 1 named "&fLight Staff"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "timemage":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a stick of sharpness 3 and knockback 3 named "&fStaff"
+				add 5 potions of healing named "&fHealth Restore" to player-arg
+				add 2 potion of swiftness named "&fInstant Speed" to player-arg
+			else if arg 3 is "monk":
+				equip player-arg with all chain armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				apply strength 2 to the player-arg for 999 days
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "bard":
+				equip player-arg with all chain armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a tripwire hook of sharpness 3 and knockback 1 named "&fMic"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+				add 2 potion of swiftness named "&fInstant Speed" to player-arg
+			else if arg 3 is "pirate":
+				equip player-arg with all chain armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg a bow named "&fPistol"
+				add 64 arrows to player-arg
+				give player-arg a iron sword of sharpness 2 named "&fPirate's Blade"
+				add 2 potions of swiftness named "&fAlcohol" to player-arg
+			else if arg 3 is "tank":
+				equip player-arg with all diamond armor
+				apply slowness to the player-arg for 999 days
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg an iron sword of sharpness 2 named "&fTank's Sword"
+				add 3 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "bloodmage":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg red
+				dye chestplate of player-arg red
+				dye leggings of player-arg red
+				dye boots of player-arg red
+				give player-arg a redstone torch of sharpness 3 named "&fLeech Staff"
+			else if arg 3 is "necromancer":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg purple
+				dye chestplate of player-arg purple
+				dye leggings of player-arg purple
+				dye boots of player-arg purple
+				add 5 splash potions of poison to player-arg
+				add 5 splash potions of weakness to player-arg
+				give player-arg a stone sword of sharpness 2 named "&fNecromancer's Blade"
+				add 3 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "ninja":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg black
+				dye chestplate of player-arg black
+				dye leggings of player-arg black
+				dye boots of player-arg black
+				give player-arg 32 nether stars named "&fShuriken"
+				give player-arg a gold sword of sharpness 2 named "&fKatana"
+				add 3 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "geomancer":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg light green
+				dye chestplate of player-arg light green
+				dye leggings of player-arg light green
+				dye boots of player-arg light green
+				add 3 splash potions of harming to player-arg
+				give player-arg a stone sword of sharpness 2 named "&fGeomancer's Blade"
+				give player-arg a dirt block of knockback 3 named "&fTerraforce"
+				add 3 potions of healing named "&fHealth Restore" to player-arg
+				add 2 potion of swiftness named "&fInstant Speed" to player-arg
+			else if arg 3 is "chemist":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg magenta
+				dye chestplate of player-arg magenta
+				dye leggings of player-arg magenta
+				dye boots of player-arg magenta
+				add 8 splash potions of poison to player-arg
+				add 8 splash potions of harming to player-arg
+				give player-arg a wood sword of sharpness 2 named "&fNecromancer's Blade"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+				add 2 potion of swiftness named "&fInstant Speed" to player-arg
