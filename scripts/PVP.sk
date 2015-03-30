@@ -49,7 +49,7 @@ on right click on sign:
 			stop
 		open chest with 1 rows named "&1Arena Selection" to player
 		wait 1 tick
-		format slot 1 of player with oak sapling named "&fBiomes" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.biomes}
+		format slot 1 of player with oak sapling named "&fBiomes" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.biomes}]
 	stop
 	
 command /setpvparena <text>:
