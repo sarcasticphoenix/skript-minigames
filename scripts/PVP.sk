@@ -1,46 +1,84 @@
+options:
+	p: &7[&aPVP&7] &f
+
 on right click on sign:
 	world is "PVP"
-	line 1 of event-block is "[PVP]"
-	line 2 of event-block is "Play"
-	open chest with 4 rows named "&1PVP Classes" to the player
-	wait 1 tick
-	format slot 0 of player with iron sword named "&fKnight" with lore "&7The regular sword wielder." to close then run "pvpsys equip %player% knight"
-	format slot 1 of player with bow named "&fRanger" with lore "&7The regular bow wielder." to close then run "pvpsys equip %player% ranger"
-	format slot 2 of player with iron axe named "&fBarbarian" with lore "&7High melee, low defense." to close then run "pvpsys equip %player% barbarian"
-	format slot 3 of player with potion of swiftness named "&fRogue" with lore "&7Fast and deadly." to close then run "pvpsys equip %player% rogue"
-	format slot 4 of player with flint'n'steel named "&fPyromaniac" with lore "&7Loves fire." to close then run "pvpsys equip %player% pyromaniac"
-	format slot 5 of player with shears named "&fAssassin" with lore "&7Sneaks up on enemies." to close then run "pvpsys equip %player% assassin"
-	format slot 6 of player with potion of healing named "&fDruid" with lore "&7Strong at healing." to close then run "pvpsys equip %player% druid"
-	format slot 7 of player with blaze rod named "&fRed Mage" with lore "&7Its attacks are a bit blinding." to close then run "pvpsys equip %player% redmage"
-	format slot 8 of player with clock named "&fTime Mage" with lore "&7Sends players flying back." to close then run "pvpsys equip %player% timemage"
-	format slot 9 of player with potion of strength named "&fMonk" with lore "&7Punches down enemies with bare hands." to close then run "pvpsys equip %player% monk"
-	format slot 10 of player with tripwire hook named "&fBard" with lore "&7Words seem to be doing damage." to close then run "pvpsys equip %player% bard"
-	format slot 11 of player with boat named "&fPirate" with lore "&7The warrior of the seas." to close then run "pvpsys equip %player% pirate"
-	format slot 12 of player with diamond helmet named "&fTank" with lore "&7Almost too heavily armored." to close then run "pvpsys equip %player% tank"
-	format slot 13 of player with redstone torch on named "&fBlood Mage" with lore "&7Can leech health." to close then run "pvpsys equip %player% bloodmage"
-	format slot 14 of player with potion of poison named "&fNecromancer" with lore "&7Warrior of poisoning." to close then run "pvpsys equip %player% necromancer"
-	format slot 15 of player with nether star named "&fNinja" with lore "&7Ninja. What do you expect?" to close then run "pvpsys equip %player% ninja"
-	format slot 16 of player with potion of harming named "&fChemist" with lore "&7Chemistry to the battlefield." to close then run "pvpsys equip %player% chemist"
-	format slot 17 of player with grass block named "&fGeomancer" with lore "&7Warrior of the earth." to close then run "pvpsys equip %player% geomancer"
-	format slot 18 of player with bread named "&fBaker" with lore "&7Bakes stuff to fight." to close then run "pvpsys equip %player% baker"
-	format slot 19 of player with stal music disc named "&fDJ" with lore "&7Plays music to fight." to close then run "pvpsys equip %player% dj"
-	format slot 20 of player with water bucket named "&fPlumber" with lore "&7Routes water during its||&7free time." to close then run "pvpsys equip %player% plumber"
-	format slot 21 of player with magenta wool named "&fCheerleader" with lore "&7Cheers for themselves." to close then run "pvpsys equip %player% cheerleader"
-	format slot 22 of player with inactive iron weighted plate named "&fAdmin" with lore "&7Swings a banhammer and||&7a laptop." to close then run "pvpsys equip %player% admin"
-	format slot 23 of player with gold ingot named "&fCashier" with lore "&7Throws spare change." to close then run "pvpsys equip %player% cashier"
-	format slot 24 of player with stick named "&fParent" with lore "&7Makes sure the kids behave." to close then run "pvpsys equip %player% parent"
-	format slot 25 of player with book named "&fLawyer" with lore "&7Fights using the law." to close then run "pvpsys equip %player% lawyer"
-	format slot 26 of player with paper named "&fDoctor" with lore "&7Currently on vacation, so||&7it's time to fight." to close then run "pvpsys equip %player% doctor"
-	format slot 27 of player with arrow named "&fTattooist" with lore "&7Injection time." to close then run "pvpsys equip %player% tattooist"
-	format slot 28 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% dentist"
-	format slot 29 of player with wooden door item named "&fArchitect" with lore "&7Usually designs houses." to close then run "pvpsys equip %player% architect"
-	format slot 30 of player with diamond hoe named "&fFarmer" with lore "&7Poisonous potatoes found||&7a role." to close then run "pvpsys equip %player% farmer"
-	format slot 31 of player with book named "&fMathematician" with lore "&7(Number) Crunching time." to close then run "pvpsys equip %player% mathematician"
-	format slot 32 of player with stick named "&fPencil Sharpener" with lore "&7Yes, this actually exists.||&7Sharpens pencils to a||&7perfect point for||&7pro artists." to close then run "pvpsys equip %player% pencilsharpener"
-	format slot 33 of player with bucket named "&fJanitor" with lore "&7Clean the world of enemies." to close then run "pvpsys equip %player% janitor"
-	format slot 34 of player with wooden axe named "&fJudge" with lore "&7Time to decide who is the enemy." to close then run "pvpsys equip %player% judge"
-	format slot 35 of player with tripwire hook named "&fReporter" with lore "&7How are you doing today?" to close then run "pvpsys equip %player% reporter"
+	line 2 of event-block is "[PVP]"
+	if line 3 of event-block is "Class":
+		open chest with 4 rows named "&1PVP Classes" to the player
+		wait 1 tick
+		format slot 0 of player with iron sword named "&fKnight" with lore "&7The regular sword wielder." to close then run "pvpsys equip %player% knight"
+		format slot 1 of player with bow named "&fRanger" with lore "&7The regular bow wielder." to close then run "pvpsys equip %player% ranger"
+		format slot 2 of player with iron axe named "&fBarbarian" with lore "&7High melee, low defense." to close then run "pvpsys equip %player% barbarian"
+		format slot 3 of player with potion of swiftness named "&fRogue" with lore "&7Fast and deadly." to close then run "pvpsys equip %player% rogue"
+		format slot 4 of player with flint'n'steel named "&fPyromaniac" with lore "&7Loves fire." to close then run "pvpsys equip %player% pyromaniac"
+		format slot 5 of player with shears named "&fAssassin" with lore "&7Sneaks up on enemies." to close then run "pvpsys equip %player% assassin"
+		format slot 6 of player with potion of healing named "&fDruid" with lore "&7Strong at healing." to close then run "pvpsys equip %player% druid"
+		format slot 7 of player with blaze rod named "&fRed Mage" with lore "&7Its attacks are a bit blinding." to close then run "pvpsys equip %player% redmage"
+		format slot 8 of player with clock named "&fTime Mage" with lore "&7Sends players flying back." to close then run "pvpsys equip %player% timemage"
+		format slot 9 of player with potion of strength named "&fMonk" with lore "&7Punches down enemies with bare hands." to close then run "pvpsys equip %player% monk"
+		format slot 10 of player with tripwire hook named "&fBard" with lore "&7Words seem to be doing damage." to close then run "pvpsys equip %player% bard"
+		format slot 11 of player with boat named "&fPirate" with lore "&7The warrior of the seas." to close then run "pvpsys equip %player% pirate"
+		format slot 12 of player with diamond helmet named "&fTank" with lore "&7Almost too heavily armored." to close then run "pvpsys equip %player% tank"
+		format slot 13 of player with redstone torch on named "&fBlood Mage" with lore "&7Can leech health." to close then run "pvpsys equip %player% bloodmage"
+		format slot 14 of player with potion of poison named "&fNecromancer" with lore "&7Warrior of poisoning." to close then run "pvpsys equip %player% necromancer"
+		format slot 15 of player with nether star named "&fNinja" with lore "&7Ninja. What do you expect?" to close then run "pvpsys equip %player% ninja"
+		format slot 16 of player with potion of harming named "&fChemist" with lore "&7Chemistry to the battlefield." to close then run "pvpsys equip %player% chemist"
+		format slot 17 of player with grass block named "&fGeomancer" with lore "&7Warrior of the earth." to close then run "pvpsys equip %player% geomancer"
+		format slot 18 of player with bread named "&fBaker" with lore "&7Bakes stuff to fight." to close then run "pvpsys equip %player% baker"
+		format slot 19 of player with stal music disc named "&fDJ" with lore "&7Plays music to fight." to close then run "pvpsys equip %player% dj"
+		format slot 20 of player with water bucket named "&fPlumber" with lore "&7Routes water during its||&7free time." to close then run "pvpsys equip %player% plumber"
+		format slot 21 of player with magenta wool named "&fCheerleader" with lore "&7Cheers for themselves." to close then run "pvpsys equip %player% cheerleader"
+		format slot 22 of player with inactive iron weighted plate named "&fAdmin" with lore "&7Swings a banhammer and||&7a laptop." to close then run "pvpsys equip %player% admin"
+		format slot 23 of player with gold ingot named "&fCashier" with lore "&7Throws spare change." to close then run "pvpsys equip %player% cashier"
+		format slot 24 of player with stick named "&fParent" with lore "&7Makes sure the kids behave." to close then run "pvpsys equip %player% parent"
+		format slot 25 of player with book named "&fLawyer" with lore "&7Fights using the law." to close then run "pvpsys equip %player% lawyer"
+		format slot 26 of player with paper named "&fDoctor" with lore "&7Currently on vacation, so||&7it's time to fight." to close then run "pvpsys equip %player% doctor"
+		format slot 27 of player with arrow named "&fTattooist" with lore "&7Injection time." to close then run "pvpsys equip %player% tattooist"
+		format slot 28 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% dentist"
+		format slot 29 of player with wooden door item named "&fArchitect" with lore "&7Usually designs houses." to close then run "pvpsys equip %player% architect"
+		format slot 30 of player with diamond hoe named "&fFarmer" with lore "&7Poisonous potatoes found||&7a role." to close then run "pvpsys equip %player% farmer"
+		format slot 31 of player with book named "&fMathematician" with lore "&7(Number) Crunching time." to close then run "pvpsys equip %player% mathematician"
+		format slot 32 of player with stick named "&fPencil Sharpener" with lore "&7Yes, this actually exists.||&7Sharpens pencils to a||&7perfect point for||&7pro artists." to close then run "pvpsys equip %player% pencilsharpener"
+		format slot 33 of player with bucket named "&fJanitor" with lore "&7Clean the world of enemies." to close then run "pvpsys equip %player% janitor"
+		format slot 34 of player with wooden axe named "&fJudge" with lore "&7Time to decide who is the enemy." to close then run "pvpsys equip %player% judge"
+		format slot 35 of player with tripwire hook named "&fReporter" with lore "&7How are you doing today?" to close then run "pvpsys equip %player% reporter"
+	else if line 3 of event-block is "Arena":
+		if helmet of player is air:
+			message "{@p}Choose a class first."
+			stop
+		open chest with 1 rows named "&1Arena Selection" to player
+		wait 1 tick
+		format slot 1 of player with oak sapling named "&fBiomes" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.biomes}
+	stop
 	
+command /setpvparena <text>:
+	permission: dsad.das.d.adas.daas.das
+	trigger:
+		set {PVP.arena.%arg 1%} to location of player
+		message "{@p}Set arena %arg 1%."
+		stop
+	
+on death of player:
+	world is "PVP"
+	set {PVP.userdata.%victim%.killstreak} to 0
+	set helmet of victim to air
+	set chestplate of victim to air
+	set leggings of victim to air
+	set boots of victim to air
+	clear inventory of victim
+	if attacker is a player:
+		add 1 to {PVP.userdata.%attacker%.killstreak}
+	stop
+
+on command "/mvs":
+	world is "PVP"
+	set {PVP.userdata.%player%.killstreak} to 0
+	set helmet of player to air
+	set chestplate of player to air
+	set leggings of player to air
+	set boots of player to air
+	clear inventory of player
 	stop
 	
 on damage:
