@@ -92,12 +92,6 @@ on script load:
 	set {Maze.can} to true
 	set {Maze.active} to false
 	stop
-
-command /test:
-	trigger:
-		message "Active: %{Maze.active}%"
-		message "Can: %{Maze.can}%"
-		stop
 	
 command /mazeconsole <text>:
 	executable by: console
