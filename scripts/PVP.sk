@@ -55,6 +55,7 @@ command /pvpsys <text> <player> <text>:
 			remove strength from player-arg
 			remove swiftness from player-arg
 			remove regeneration from player-arg
+			remove slowness from player-arg
 			remove invisibility from player-arg
 			remove weakness from player-arg
 			wait 1 tick
@@ -214,6 +215,7 @@ command /pvpsys <text> <player> <text>:
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "ninja":
 				equip player-arg with all leather armor
+				apply speed to the player-arg for 999 days
 				enchant helmet of player with protection 1
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
