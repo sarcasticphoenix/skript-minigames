@@ -19,7 +19,7 @@ on damage:
 	world is "PVP"
 	victim is a player
 	attacker is a player
-	if tool of attacker is flint and steel:
+	if tool of attacker is flint'n'steel:
 		ignite victim for 3 seconds
 	else if tool of attacker is blaze rod named "&fDark Staff":
 		apply blindness to the victim for 0.1 seconds
@@ -41,7 +41,7 @@ command /pvpsys <text> <player> <text>:
 	permission: a.a.a.a.aa.sdadasd.asd.as
 	trigger:
 		if arg 1 is "equip":
-			remove all effects from player-arg
+			remove all potion effects from player-arg
 			wait 1 tick
 			if arg 3 is "knight":
 				equip player-arg with all iron armor
@@ -105,7 +105,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg a shear of sharpness 3 named "&fAssassin's Blade"
+				give player-arg 1 shear of sharpness 3 named "&fAssassin's Blade"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 				add 2 potion of swiftness named "&fInstant Speed" to player-arg
 				add 1 potions of invisibility named "&fVanish" to player-arg
