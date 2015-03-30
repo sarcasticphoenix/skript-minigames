@@ -23,7 +23,7 @@ on right click on sign:
 	format slot 16 of player with potion of harming named "&fChemist" with lore "&7Chemistry to the battlefield." to close then run "pvpsys equip %player% chemist"
 	format slot 17 of player with grass block named "&fGeomancer" with lore "&7Warrior of the earth." to close then run "pvpsys equip %player% geomancer"
 	format slot 18 of player with bread named "&fBaker" with lore "&7Bakes stuff to fight." to close then run "pvpsys equip %player% baker"
-	format slot 19 of player with stal music disk named "&fDJ" with lore "&7Plays music to fight." to close then run "pvpsys equip %player% dj"
+	format slot 19 of player with stal music disc named "&fDJ" with lore "&7Plays music to fight." to close then run "pvpsys equip %player% dj"
 	format slot 20 of player with water bucket named "&fPlumber" with lore "&7Routes water during its||&7free time." to close then run "pvpsys equip %player% plumber"
 	format slot 21 of player with magenta wool named "&fCheerleader" with lore "&7Cheers for themselves." to close then run "pvpsys equip %player% cheerleader"
 	format slot 22 of player with inactive iron weighted plate named "&fAdmin" with lore "&7Swings a banhammer and||&7a laptop." to close then run "pvpsys equip %player% admin"
@@ -284,7 +284,7 @@ command /pvpsys <text> <player> <text>:
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
 				give player-arg a stone sword of sharpness 2 named "&fDJ Blade"
-				give player-arg 32 stal music disk named "&fRecord"
+				give player-arg 32 stal music discs named "&fRecord"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "plumber":
 				equip player-arg with all leather armor
@@ -297,7 +297,7 @@ command /pvpsys <text> <player> <text>:
 				dye leggings of player-arg light gray
 				dye boots of player-arg light gray
 				give player-arg a stone shovel of sharpness 3 named "&fWrench"
-				give player-arg a nether brick item of sharpness 2 knockback 3 named "&fLarge Pipe"
+				give player-arg a stick of sharpness 2 knockback 3 named "&fLarge Pipe"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "cheerleader":
 				equip player-arg with all leather armor
