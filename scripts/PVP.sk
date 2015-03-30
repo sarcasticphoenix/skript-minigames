@@ -27,7 +27,7 @@ on right click on sign:
 	
 on script load:
 	loop {PVP.holos::*}:
-		delete holo "%loop-value%"
+		delete hologram "%loop-value%"
 		remove loop-value from {PVP.holos::*}
 	stop
 	
@@ -45,14 +45,14 @@ on damage:
 	create a new hologram named "%{_h}%"
 	add {_h} to {PVP.holos::*}
 	if damage is greater than 3:
-		set hologram line 1 of "%{_h}%" to "&6%damage%"
+		set hologram line 1 of "{_h} to "&6%damage%"
 	else:
-		set hologram line 1 of "%{_h}%" to "%damage%"
+		set hologram line 1 of {_h} to "%damage%"
 	move hologram to location of victim
 	wait 0.5 seconds
 	if {PVP.holos::*} contains "%{_h}%":
-		delete holo "%{_h}%"
-		remove "%{_h}%" from {PVP.holos::*
+		delete holo {_h}
+		remove "%{_h}%" from {PVP.holos::*}
 	stop
 		
 on right click:
