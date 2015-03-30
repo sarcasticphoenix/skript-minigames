@@ -119,7 +119,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				set tool of player-arg to shear named "&fAssassin's Blade"
+				give player-arg a shears of sharpness 3 named "&fAssassin's Knife"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 				add 2 potion of swiftness named "&fInstant Speed" to player-arg
 				add 1 potions of invisibility named "&fVanish" to player-arg
