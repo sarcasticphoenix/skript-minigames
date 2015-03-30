@@ -51,6 +51,7 @@ command /pvpsys <text> <player> <text>:
 	permission: a.a.a.a.aa.sdadasd.asd.as
 	trigger:
 		if arg 1 is "equip":
+			clear inventory of player-arg
 			remove strength from player-arg
 			remove swiftness from player-arg
 			remove regeneration from player-arg
