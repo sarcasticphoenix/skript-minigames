@@ -9,7 +9,7 @@ on right click on sign:
 	format slot 2 of player with iron axe named "&fBarbarian" with lore "&7High melee, low defense." to close then run "pvpsys equip %player% barbarian"
 	format slot 3 of player with potion of swiftness named "&fRogue" with lore "&7Fast and deadly." to close then run "pvpsys equip %player% rogue"
 	format slot 4 of player with flint'n'steel named "&fPyromaniac" with lore "&7Loves fire." to close then run "pvpsys equip %player% pyromaniac"
-	format slot 5 of player with shears named "&fAssassin" with lore "&7Sneaks up on enemies." to close then run "pvpsys equip %player% ranger"
+	format slot 5 of player with shears named "&fAssassin" with lore "&7Sneaks up on enemies." to close then run "pvpsys equip %player% assassin"
 	format slot 6 of player with potion of healing named "&fDruid" with lore "&7Strong at healing." to close then run "pvpsys equip %player% druid"
 	format slot 7 of player with blaze rod named "&fRed Mage" with lore "&7Its attacks are a bit blinding." to close then run "pvpsys equip %player% redmage"
 	format slot 8 of player with clock named "&fTime Mage" with lore "&7Sends players flying back." to close then run "pvpsys equip %player% timemage"
@@ -31,6 +31,8 @@ on right click on sign:
 	format slot 24 of player with stick named "&fParent" with lore "&7Makes sure the kids behave." to close then run "pvpsys equip %player% parent"
 	format slot 25 of player with book named "&fLawyer" with lore "&7Fights using the law." to close then run "pvpsys equip %player% lawyer"
 	format slot 26 of player with paper named "&fDoctor" with lore "&7Currently on vacation, so||&7it's time to fight." to close then run "pvpsys equip %player% doctor"
+	format slot 27 of player with arrow named "&fTattooist" with lore "&7Injection time." to close then run "pvpsys equip %player% doctor"
+	format slot 26 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% doctor"
 	
 	stop
 	
@@ -205,7 +207,7 @@ command /pvpsys <text> <player> <text>:
 				dye chestplate of player-arg red
 				dye leggings of player-arg red
 				dye boots of player-arg red
-				give player-arg a redstone torch of sharpness 3 named "&fLeech Staff"
+				give player-arg a redstone torch on of sharpness 3 named "&fLeech Staff"
 			else if arg 3 is "necromancer":
 				equip player-arg with all leather armor
 				enchant helmet of player with protection 1
@@ -374,4 +376,25 @@ command /pvpsys <text> <player> <text>:
 				give player-arg 32 arrows named "&fSyringe"
 				give player-arg paper of sharpness 1 and knockback 2 named "&fMedical Bill"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
-			
+			else if arg 3 is "tattooist":
+				equip player-arg with all leather armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				dye helmet of player-arg magenta
+				dye chestplate of player-arg cyan
+				dye leggings of player-arg orange
+				dye boots of player-arg light green
+				give player-arg arrow of sharpness 3 named "&fNeedle"
+				give player-arg bucket of knockback 2 named "&fInk Bucket"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
+			else if arg 3 is "dentist":
+				equip player-arg with all iron armor
+				enchant helmet of player with protection 1
+				enchant chestplate of player with protection 1
+				enchant leggings of player with protection 1
+				enchant boots of player with protection 1
+				give player-arg iron hoe of sharpness 2 named "&fToothbrush"
+				give player-arg string of knockback 3 named "&fDental Floss"
+				add 2 potions of healing named "&fHealth Restore" to player-arg
