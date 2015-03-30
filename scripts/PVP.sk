@@ -17,7 +17,7 @@ on right click on sign:
 	format slot 10 of player with tripwire hook named "&fBard" with lore "&7Words seem to be doing damage." to close then run "pvpsys equip %player% bard"
 	format slot 11 of player with boat named "&fPirate" with lore "&7The warrior of the seas." to close then run "pvpsys equip %player% pirate"
 	format slot 12 of player with diamond helmet named "&fTank" with lore "&7Almost too heavily armored." to close then run "pvpsys equip %player% tank"
-	format slot 13 of player with redstone torch named "&fBlood Mage" with lore "&7Can leech health." to close then run "pvpsys equip %player% bloodmage"
+	format slot 13 of player with redstone torch on named "&fBlood Mage" with lore "&7Can leech health." to close then run "pvpsys equip %player% bloodmage"
 	format slot 14 of player with potion of poison named "&fNecromancer" with lore "&7Warrior of poisoning." to close then run "pvpsys equip %player% necromancer"
 	format slot 15 of player with nether star named "&fNinja" with lore "&7Ninja. What do you expect?" to close then run "pvpsys equip %player% ninja"
 	format slot 16 of player with potion of harming named "&fChemist" with lore "&7Chemistry to the battlefield." to close then run "pvpsys equip %player% chemist"
