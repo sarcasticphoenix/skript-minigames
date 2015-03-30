@@ -32,7 +32,7 @@ on right click on sign:
 	format slot 25 of player with book named "&fLawyer" with lore "&7Fights using the law." to close then run "pvpsys equip %player% lawyer"
 	format slot 26 of player with paper named "&fDoctor" with lore "&7Currently on vacation, so||&7it's time to fight." to close then run "pvpsys equip %player% doctor"
 	format slot 27 of player with arrow named "&fTattooist" with lore "&7Injection time." to close then run "pvpsys equip %player% doctor"
-	format slot 26 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% doctor"
+	format slot 28 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% doctor"
 	
 	stop
 	
