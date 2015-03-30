@@ -13,8 +13,17 @@ on right click on sign:
 	format slot 6 of player with potion of healing named "&fDruid" with lore "&7Strong at healing." to close then run "pvpsys equip %player% druid"
 	format slot 7 of player with blaze rod named "&fRed Mage" with lore "&7Its attacks are a bit blinding." to close then run "pvpsys equip %player% redmage"
 	format slot 8 of player with clock named "&fTime Mage" with lore "&7Sends players flying back." to close then run "pvpsys equip %player% timemage"
+	format slot 9 of player with potion of strength named "&fMonk" with lore "&7Punches down enemies with bare hands." to close then run "pvpsys equip %player% monk"
+	format slot 10 of player with tripwire hook named "&fBard" with lore "&7Words seem to be doing damage." to close then run "pvpsys equip %player% bard"
+	format slot 11 of player with boat named "&fPirate" with lore "&7The warrior of the seas." to close then run "pvpsys equip %player% pirate"
+	format slot 12 of player with diamond helmet named "&fTank" with lore "&7Almost too heavily armored." to close then run "pvpsys equip %player% tank"
+	format slot 13 of player with redstone torch named "&fBlood Mage" with lore "&7Can leech health." to close then run "pvpsys equip %player% bloodmage"
+	format slot 14 of player with potion of poison named "&fNecromancer" with lore "&7Warrior of poisoning." to close then run "pvpsys equip %player% necromancer"
+	format slot 15 of player with nether star named "&fNinja" with lore "&7Ninja. What do you expect?" to close then run "pvpsys equip %player% ninja"
+	format slot 16 of player with potion of harming named "&fChemist" with lore "&7Chemistry to the battlefield." to close then run "pvpsys equip %player% chemist"
+	format slot 17 of player with grass block named "&fGeomancer" with lore "&7Warrior of the earth." to close then run "pvpsys equip %player% geomancer"
 	
-	
+	stop
 	
 on damage:
 	world is "PVP"
