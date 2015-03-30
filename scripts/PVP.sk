@@ -33,7 +33,7 @@ on right click on sign:
 	format slot 26 of player with paper named "&fDoctor" with lore "&7Currently on vacation, so||&7it's time to fight." to close then run "pvpsys equip %player% doctor"
 	format slot 27 of player with arrow named "&fTattooist" with lore "&7Injection time." to close then run "pvpsys equip %player% tattooist"
 	format slot 28 of player with iron hoe named "&fDentist" with lore "&7Possibly the tooth fairy." to close then run "pvpsys equip %player% dentist"
-	format slot 29 of player with wooden door named "&fArchitect" with lore "&7Usually designs houses." to close then run "pvpsys equip %player% architect"
+	format slot 29 of player with wooden door item named "&fArchitect" with lore "&7Usually designs houses." to close then run "pvpsys equip %player% architect"
 	format slot 30 of player with diamond hoe named "&fFarmer" with lore "&7Poisonous potatoes found||&7a role." to close then run "pvpsys equip %player% farmer"
 	format slot 31 of player with book named "&fMathematician" with lore "&7(Number) Crunching time." to close then run "pvpsys equip %player% mathematician"
 	format slot 32 of player with stick named "&fPencil Sharpener" with lore "&7Yes, this actually exists.||&7Sharpens pencils to a||&7perfect point for||&7pro artists." to close then run "pvpsys equip %player% pencilsharpener"
