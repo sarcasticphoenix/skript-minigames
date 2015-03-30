@@ -25,12 +25,6 @@ on right click on sign:
 	
 	stop
 	
-on script load:
-	loop {PVP.holos::*}:
-		delete hologram "%loop-value%"
-		remove loop-value from {PVP.holos::*}
-	stop
-	
 on damage:
 	world is "PVP"
 	victim is a player
@@ -41,18 +35,6 @@ on damage:
 		apply blindness to the victim for 0.1 seconds
 	else if tool of attacker is redstone torch named "&fLeech Staff":
 		heal attacker by 0.5 hearts
-	set {_h} to "PVP_%random integer between 1 and 10000%"
-	create a new hologram named "%{_h}%"
-	add {_h} to {PVP.holos::*}
-	if damage is greater than 3:
-		set hologram line 1 of "{_h} to "&6%damage%"
-	else:
-		set hologram line 1 of {_h} to "%damage%"
-	move hologram to location of victim
-	wait 0.5 seconds
-	if {PVP.holos::*} contains "%{_h}%":
-		delete holo {_h}
-		remove "%{_h}%" from {PVP.holos::*}
 	stop
 		
 on right click:
