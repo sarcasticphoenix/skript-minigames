@@ -297,7 +297,7 @@ command /pvpsys <text> <player> <text>:
 				dye leggings of player-arg light gray
 				dye boots of player-arg light gray
 				give player-arg a stone shovel of sharpness 3 named "&fWrench"
-				give player-arg a stick of sharpness 2 knockback 3 named "&fLarge Pipe"
+				give player-arg a stick of sharpness 2 and knockback 3 named "&fLarge Pipe"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "cheerleader":
 				equip player-arg with all leather armor
