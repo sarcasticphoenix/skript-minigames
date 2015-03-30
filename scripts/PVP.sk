@@ -2,7 +2,7 @@ on right click on sign:
 	world is "PVP"
 	line 1 of event-block is "[PVP]"
 	line 2 of event-block is "Play"
-	open chest with 6 rows named "&1PVP Classes" to the player
+	open chest with 4 rows named "&1PVP Classes" to the player
 	wait 1 tick
 	format slot 0 of player with iron sword named "&fKnight" with lore "&7The regular sword wielder." to close then run "pvpsys equip %player% knight"
 	format slot 1 of player with bow named "&fRanger" with lore "&7The regular bow wielder." to close then run "pvpsys equip %player% ranger"
