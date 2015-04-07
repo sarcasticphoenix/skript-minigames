@@ -21,18 +21,18 @@ on flow:
 	cancel event
 	
 on fade:
-	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	world is not "RegularSurvival" or "SkyGrid" or "nether" or "skyworld"
 	cancel event
 	
 on form:
-	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	world is not "RegularSurvival" or "SkyGrid" or "nether" or "skyworld"
 	cancel event
 
 on spread:
-	world is not "Survival" or "SkyGrid" or "SuperflatSurvival" or "skyworld"
+	world is not "RegularSurvival" or "SkyGrid" or "nether" or "skyworld"
 	cancel event
 	stop
 
 on ignition:
-	world isn't "Survival"
+	world isn't "RegularSurvival"
 	cancel event

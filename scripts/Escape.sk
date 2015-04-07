@@ -111,8 +111,10 @@ on right click on gold block:
 		set {Escape.userdata.%player%.isHolding} to true
 		set clicked block to air
 		strike lightning effect at location of clicked block
-		apply slowness to the player for 100000000 days
-		message "&8[Escape] You are burdened by the load."
+		broadcast "&8[Escape] Theft causes wrath..." to "Escape"
+		wait 1 second
+		spawn 1 adult zombie at location of clicked block
+		play mobspawner flames on last spawned entity
 		stop
 
 on right click on any stone brick:
@@ -130,7 +132,6 @@ on right click on any stone brick:
 			broadcast "&8[Escape] 14 gold left..." to "Escape"
 			wait 2 second
 			broadcast "&8[Escape] Bruce: 'How did you get here?! What terrible luck... Save yourself!'" to "Escape"
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 1000000000 days
@@ -139,7 +140,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_dsaklj} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.2} is air:
 			set block at {Escape.gold.slot.2} to gold block
 			broadcast "&8[Escape] 13 gold left..." to "Escape"
@@ -147,7 +147,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.3} to gold block
 			broadcast "&8[Escape] 12 gold left..." to "Escape"
 			wait 1 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 1000000000 days
@@ -158,7 +157,6 @@ on right click on any stone brick:
 				set {_jkdsajl} to false
 			broadcast "&8[Escape] Bruce: 'More of them are coming back... Please be careful, don't wind up like all of us...'" to "Escape"
 			wait 1 second
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 			stop
 		else if block at {Escape.gold.slot.4} is air:
 			set block at {Escape.gold.slot.4} to gold block
@@ -167,7 +165,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.5} to gold block
 			broadcast "&8[Escape] 10 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 1000000000 days
@@ -180,7 +177,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.6} to gold block
 			broadcast "&8[Escape] 9 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 10000000 days
@@ -189,7 +185,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_kldasjl} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.7} is air:
 			set block at {Escape.gold.slot.7} to gold block
 			broadcast "&8[Escape] 8 gold left..." to "Escape"
@@ -197,7 +192,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.8} to gold block
 			broadcast "&8[Escape] 7 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 10000000 days
@@ -206,7 +200,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_sadjlkaj} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.9} is air:
 			set block at {Escape.gold.slot.9} to gold block
 			broadcast "&8[Escape] 6 gold left..." to "Escape"
@@ -214,7 +207,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.10} to gold block
 			broadcast "&8[Escape] 5 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 10000000 days
@@ -223,7 +215,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_sdjkljkladj} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.11} is air:
 			set block at {Escape.gold.slot.11} to gold block
 			broadcast "&8[Escape] 4 gold left..." to "Escape"
@@ -231,7 +222,6 @@ on right click on any stone brick:
 			set block at {Escape.gold.slot.12} to gold block
 			broadcast "&8[Escape] 3 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 10000000 days
@@ -240,7 +230,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_djasklj} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.13} is air:
 			set block at {Escape.gold.slot.13} to gold block
 			broadcast "&8[Escape] 2 gold left..." to "Escape"
@@ -250,7 +239,6 @@ on right click on any stone brick:
 			wait 2 second
 			broadcast "&8[Escape] 1 gold left..." to "Escape"
 			wait 3 second
-			spawn a zombie at {Escape.other.obl}
 			loop all entities in "Escape":
 				entity is a zombie
 				apply regeneration 1000 to the loop-entity for 10000000 days
@@ -259,7 +247,6 @@ on right click on any stone brick:
 				equip the loop-entity with an iron chestplate
 				equip the loop-entity with an iron helmet
 				set {_sdklaj} to false
-			broadcast "&8[Escape] You feel a deadly presence nearby..." to "Escape"
 		else if block at {Escape.gold.slot.15} is air:
 			set block at {Escape.gold.slot.15} to gold block
 			broadcast "&8[Escape] Bruce: 'It's too late for me, but I can still save you...'" to "Escape"
@@ -270,6 +257,12 @@ on right click on any stone brick:
 	else:
 		message "&8[Escape] You aren't even carrying any gold."
 
+on right click on workbench:
+	world is "Escape"
+	set clicked block to stone
+	message "&8[Escape] Two-time use."
+	set tool of player to blaze rod
+	stop
 
 on damage of player:
 	world is "Escape"
@@ -277,6 +270,7 @@ on damage of player:
 	set {Escape.userdata.%victim%.isPlaying} to false
 	remove victim from {Escape.currentplayers::*}
 	send "&8[Escape] You died..." to the victim
+	clear inventory of victim
 	broadcast "&8[Escape] The presence of %victim% dissapears..." to "Escape"
 	if {Escape.userdata.%victim%.isHolding} is true:
 		set {Escape.userdata.%victim%.isHolding} to false
@@ -310,6 +304,14 @@ on damage of player:
 
 on damage of zombie:
 	world is "Escape"
+	if tool of attacker is blaze rod:
+		set tool of attacker to stick
+		damage victim by 10000000 hearts
+		stop
+	else if tool of attacker is stick:
+		set tool of attacker to air
+		damage victim by 10000000 hearts
+		stop
 	send "&8Vain" to attacker
 	cancel event
 
@@ -372,13 +374,11 @@ command /escape <text>:
 				remove slowness from {_temp}
 				set {_SDAKL} to false
 			loop all entities in "Escape":
-				loop-entity is a zombie
-				damage loop-entity by 1000000 hearts
-				set {_dsa} to false
+				if loop-entity is a zombie:
+					damage loop-entity by 1000000 hearts
 			loop {Escape.golddata::*}:
-				block at loop-value is gold block
-				set block at loop-value to air
-				set {_sdjakldj} to false
+				if block at loop-value is gold block:
+					set block at loop-value to air
 			clear {Escape.golddata::*}
 			clear {Escape.currentplayers::*}
 			set {Escape.isRunning} to false
@@ -390,7 +390,7 @@ command /escape <text>:
 				teleport loop-value to {Escape.spawnpoint}
 				set {Escape.userdata.%loop-value%.isPlaying} to false
 				set {Escape.userdata.%loop-value%.isHolding} to false
-				execute console command "/eco give %loop-value% 700000"
+				execute console command "/eco give %loop-value% 2500"
 				set {_temp} to loop-value
 				remove slowness from {_temp}
 				set {_djsaklj} to false
@@ -437,9 +437,12 @@ command /escape <text>:
 			set block at {Escape.gold.slot.13} to air
 			set block at {Escape.gold.slot.14} to air
 			set block at {Escape.gold.slot.15} to air
+			set block at {Escape.workbench} to workbench
 		else if arg 1 is "setjoinpoint":
 			set {Escape.joinpoint} to location of player
 			message "&8[Escape] Set."
+		else if arg 1 is "setbench":
+			set {Escape.workbench} to location of player
 		else if arg 1 is "setspawnpoint":
 			set {Escape.spawnpoint} to location of player
 			message "&8[Escape] Set."

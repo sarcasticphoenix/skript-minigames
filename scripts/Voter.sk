@@ -1,6 +1,18 @@
-command /voter <player> <text>:
+command /voter <offline player> <text>:
 	permission: a.a.a.a.a
 	trigger:
-		broadcast "&7[&aVoter&7] &f%arg 1% just voted for the server on %arg 2%! Thank you for the vote!"
-		execute console command "/eco give %arg 1% 1000"
+		if arg 2 is "MinecraftServerLand.com":
+			set {_a} to "MC Server Land"
+		else if arg 2 is "PlanetMinecraft.com":
+			set {_a} to "PMC"
+		else if arg 2 is "MCSL":
+			set {_a} to "MC Server List"
+		else:
+			set {_a} to "%arg 2%"
+		broadcast "&7[&aVoter&7] &f%arg 1% just voted for SarcaCraft at %{_a}%!"
+		if {Votecount.%uuid of arg 1%} is not set:
+			set {Votecount.%uuid of arg 1%} to 1
+		else:
+			add 1 to {Votecount.%uuid of arg 1%}
+		execute console command "/eco give %arg 1% 400"
 		stop

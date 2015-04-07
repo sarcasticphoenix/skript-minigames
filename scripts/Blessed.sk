@@ -14,15 +14,6 @@ command /solarblade:
 		enchant tool of player with sharpness 10
 		enchant tool of player with knockback 3
 		message "{@p}The blade has been summoned."
-		spawn 50 of particle fireworks spark offset by 2, 2, 2 at location of player
-		spawn 50 of particle fireworks spark:1 offset by 2, 2, 2 at location of player
-		wait 1 second
-		set {_z} to 0
-		while {_z} is less than 25:
-			spawn 10 of particle flame:1 offset by 5, 5, 5 at location of player
-			spawn 10 of particle enchantment table:1 offset by 5, 5, 5 at location of player
-			wait 0.2 seconds
-			add 1 to {_z}
 		stop
 
 on right click holding gold sword:
@@ -30,26 +21,15 @@ on right click holding gold sword:
 	set {_n} to player
 	if {_n} isn't "Sarcasticphoenix":
 		set health of player to 1
-		spawn 500 of particle lava offset by 5, 5, 5 at location of player
+		play mobspawner flames on player
 		set tool of player to air
 		stop
-	set {_p} to 10
-	loop 25 times:
-		spawn {_p} of particle flame:1 offset by 3, 3, 3 at location of player
-		spawn {_p} of particle enchantment table:1 offset by 3, 3, 3 at location of player
-		add 1 to {_p}
-		wait 0.2 seconds
-	strike lightning effect at location of player
-	spawn 2 of particle huge explosion offset by 0, 0, 0 at location of player
-	spawn 300 of particle fireworks spark:1 offset by 0.5, 0.5, 0.5 at location of player
-	spawn 300 of particle lava offset by 5, 5, 5 at location of player
-	loop entities in radius 10 of location of player:
+	loop entities in radius 5 of location of player:
 		if loop-entity isn't player:
-			damage the loop-entity by 1 heart
-			chance of 50%:
-				ignite the loop-entity
-			push the loop-entity upwards at speed 1.5
-			push the loop-entity backwards at speed 1.5
+			damage the loop-entity by 9 heart
+			ignite the loop-entity for 1 second
+			play  mobspawner flames on loop-entity
+			push the loop-entity backwards at speed 4
 	stop
 
 on mine of stone:

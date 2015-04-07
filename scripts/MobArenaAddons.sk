@@ -71,48 +71,44 @@ on damage of creeper or skeleton or spider or zombie or blaze or wither or ghast
 	attacker is a player
 	chance of 90%:
 		add 1 gold nugget to attacker
+	if {MobArena.stats.%uuid of attacker%.damage} is not set:
+		set {MobArena.stats.%uuid of attacker%.damage} to 0
+	add damage to {MobArena.stats.%uuid of attacker%.damage}
+	if {MobArena.stats.%uuid of attacker%.damage} is greater than 5000:
+		if {Achievements.trigger.ma1.%uuid of attacker%} is not set:
+			execute console command "/achsys %attacker% Deal 5000 damage in MobArena"
+			set {Achievements.trigger.ma1.%uuid of attacker%} to true
+	else if {MobArena.stats.%uuid of attacker%.damage} is greater than 50000:
+		if {Achievements.trigger.ma2.%uuid of attacker%} is not set:
+			execute console command "/achsys %attacker% Deal 50000 damage in MobArena"
+			set {Achievements.trigger.ma2.%uuid of attacker%} to true
 	stop
 	
 on right click holding blaze rod:
-	name of tool of player contains "Staff of Healing"
-	cancel event
-	if player contains 100 gold nuggets:
-		remove 75 gold nugget from the player
-		loop all players in world "MobArena":
-			heal loop-player by 20 hearts
-			play mobspawner flames on loop-player
-			send "{@p}You have been healed by %player%." to loop-player
-		broadcast "{@p}%player% used ability: &cHeal Extreme&f!" to "MobArena"
-		stop
-	else if player contains 50 gold nuggets:
-		remove 50 gold nugget from the player
-		loop all players in radius 10 of location of player:
-			heal loop-player by 7 hearts
-			play mobspawner flames on loop-player
-			send "{@p}You have been healed by %player%." to loop-player
-		broadcast "{@p}%player% used ability: &cHeal III&f!" to "MobArena"
-		stop
-	else if player contains 25 gold nuggets:
-		remove 25 gold nugget from the player
-		loop all players in radius 7 of location of player:
-			heal loop-player by 5 hearts
-			play mobspawner flames on loop-player
-			send "{@p}You have been healed by %player%." to loop-player
-		broadcast "{@p}%player% used ability: &cHeal II&f!" to "MobArena"
-		stop
-	else if player contains 10 gold nuggets:
-		remove 10 gold nugget from the player
-		loop all players in radius 5 of location of player:
-			heal loop-player by 3 hearts
-			play mobspawner flames on loop-player
-			send "{@p}You have been healed by %player%." to loop-player
-		broadcast "{@p}%player% used ability: &cHeal I&f!" to "MobArena"
-		stop
-	else:
-		message "{@p}100 Gold - Heal Extreme"
-		message "{@p}50 Gold - Heal III"
-		message "{@p}25 Gold - Heal II"
-		message "{@p}10 Gold - Heal I"
+	if name of tool of player contains "Staff of Healing":
+		cancel event
+		open chest with 1 row named "&1Priest Attack Selection" to the player
+		wait 1 tick
+		if player contains 200 gold nuggets:
+			format slot 6 of player with nether star named "&e&lPowerdrain" with lore "&7World target||&75 damage||&7Heal all max" to close then run [do [add 1 nether star named "&e&lPowerdrain" to the player]->[remove 200 gold nuggets from the player]]
+		else:
+			format slot 6 of player with gray wool named "&fLocked - 200 gold" to be unstealable
+		if player contains 100 gold nuggets:
+			format slot 5 of player with nether star named "&6Global Restore" with lore "&7World target||&7Heal all 8" to close then run [do [add 1 nether star named "&6Global Restore" to the player]->[remove 100 gold nuggets from the player]]
+		else:
+			format slot 5 of player with gray wool named "&fLocked - 100 gold" to be unstealable
+		if player contains 50 gold nuggets:
+			format slot 4 of player with nether star named "&fHeal MK3" with lore "&7Large Radius||&7Heal 6" to close then run [do [add 1 nether star named "&fHeal MK3" to the player]->[remove 50 gold nuggets from the player]]
+		else:
+			format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
+		if player contains 25 gold nuggets:
+			format slot 3 of player with nether star named "&fHeal MK2" with lore "&7Medium Radius||&7Heal 4" to close then run [do [add 1 nether star named "&fHeal MK2" to the player]->[remove 25 gold nuggets from the player]]
+		else:
+			format slot 3 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+		if player contains 10 gold nuggets:
+			format slot 2 of player with nether star named "&fHeal MK1" with lore "&7Small Radius||&7Heal 2" to close then run [do [add 1 nether star named "&fHeal MK1" to the player]->[remove 10 gold nuggets from the player]]
+		else:
+			format slot 2 of player with gray wool named "&fLocked - 10 gold" to be unstealable
 		stop
 	
 on right click holding any sword:
@@ -237,61 +233,178 @@ on right click holding nether star:
 				play mobspawner flames on loop-entity
 				push loop-entity backwards at speed 5
 		broadcast "{@p}%player% used ability: &cWhirlwind&f!" to "MobArena"
+	else if name of tool of player is "&e&lPowerdrain":
+		loop all players in world "MobArena":
+			heal loop-player by 20 hearts
+			cure loop-player from poison
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		loop all entities in world of player:
+			if loop-entity isn't a player:
+				damage loop-entity by 5 hearts
+		broadcast "{@p}%player% used ability: &cPowerdrain&f!" to "MobArena"
+		remove 1 nether star named "&e&lPowerdrain" from the player
+		stop
+	else if name of tool of player is "&6Global Restore":
+		loop all players in world "MobArena":
+			heal loop-player by 8 hearts
+			cure loop-player from poison
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cGlobal Restore&f!" to "MobArena"
+		remove 1 nether star named "&6Global Restore" from the player
+		stop
+	else if name of tool of player is "&fHeal MK3":
+		loop all players in radius 6 of location of player:
+			heal loop-player by 6 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal MK3&f!" to "MobArena"
+		remove 1 nether star named "&fHeal MK3" from the player
+		stop
+	else if name of tool of player is "&fHeal MK2":
+		loop all players in radius 4 of location of player:
+			heal loop-player by 4 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal MK2&f!" to "MobArena"
+		remove 1 nether star named "&fHeal MK2" from the player
+		stop
+	else if name of tool of player is "&fHeal MK1":
+		loop all players in radius 2 of location of player:
+			heal loop-player by 2 hearts
+			play mobspawner flames on loop-player
+			send "{@p}You have been healed by %player%." to loop-player
+		broadcast "{@p}%player% used ability: &cHeal MK1&f!" to "MobArena"
+		remove 1 nether star named "&fHeal MK1" from the player
+		stop
+	else if name of tool of player is "&e&lArchon Rayfall":
+		remove 1 nether star named "&e&lArchon Rayfall" from player
+		broadcast "{@p}%player% used ability: &cArchon Rayfall&f!" to "MobArena"
+		loop all entities in world "MobArena":
+			if loop-entity isn't a player:
+				play mobspawner flames on loop-entity
+				push loop-entity backwards at speed 5
+				damage loop-entity by 25 hearts
+		stop
+	else if name of tool of player is "&6Overdrive":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
+			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&6Overdrive" from the player
+		make player shoot an arrow at speed 100
+		broadcast "{@p}%player% used ability: &cOverdrive&f!" to "MobArena"
+	else if name of tool of player is "&fRapidfire MK3":
+		message "{@p}Raining death for 5 seconds."
+		remove 1 nether star named "&fRapidfire MK3" from the player
+		play mobspawner flames on player
+		loop 50 times:
+			make player shoot an arrow at speed 8
+			wait 0.1 seconds
+		play mobspawner flames on player
+		broadcast "{@p}%player% used ability: &cRapidfire MK3&f!" to "MobArena"
+		stop
+	else if name of tool of player is "&fQuickshot":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
+			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&fQuickshot" from the player
+		make player shoot an arrow at speed 50
+		broadcast "{@p}%player% used ability: &cQuickshot&f!" to "MobArena"
+	else if name of tool of player is "&fRapidfire MK2":
+		message "{@p}Raining death for 3 seconds."
+		remove 1 nether star named "&fRapidfire MK2" from the player
+		play mobspawner flames on player
+		loop 30 times:
+			make player shoot an arrow at speed 6
+			wait 0.1 seconds
+		play mobspawner flames on player
+		broadcast "{@p}%player% used ability: &cRapidfire MK2&f!" to "MobArena"
+		stop
+	else if name of tool of player is "&fFastbow":
+		set {_s} to target entity
+		if {_s} is a player:
+			message "{@p}Cannot attack players"
+			stop
+		else if {_s} is not set:
+			message "{@p}Look at a target"
+			stop
+		remove 1 nether star named "&fFastbow" from the player
+		make player shoot an arrow at speed 10
+		broadcast "{@p}%player% used ability: &cFastbow&f!" to "MobArena"
+	else if name of tool of player is "&fRapidfire MK1":
+		message "{@p}Raining death for 1 second."
+		remove 1 nether star named "&fRapidfire MK1" from the player
+		play mobspawner flames on player
+		loop 10 times:
+			make player shoot an arrow at speed 4
+			wait 0.1 seconds
+		play mobspawner flames on player
+		broadcast "{@p}%player% used ability: &cRapidfire MK1&f!" to "MobArena"
+	stop
 		
 on left click holding bow:
 	if name of tool of player is "&aSharpshooter Longbow (Archer Class)":
 		cancel event
-		if player contains 100 gold nugget:
-			remove 100 gold nuggets from the player
-			broadcast "{@p}%player% used ability: &cArchon Rayfall&f!" to "MobArena"
-			loop all entities in world "MobArena":
-				if loop-entity isn't a player:
-					play mobspawner flames on loop-entity
-					push loop-entity backwards at speed 5
-					damage loop-entity by 15 hearts
-			stop
-		else if player contains 50 gold nugget:
-			remove 50 gold nuggets from the player
-			message "{@p}Raining death for 5 seconds."
-			play mobspawner flames on player
-			loop 50 times:
-				make player shoot an arrow at speed 15
-				wait 0.1 seconds
-			play mobspawner flames on player
-			broadcast "{@p}%player% used ability: &cExtreme Arrow Turret&f!" to "MobArena"
-			stop
-		else if player contains 25 gold nugget:
-			remove 25 gold nuggets from the player
-			message "{@p}Raining death for 3 seconds."
-			play mobspawner flames on player
-			loop 30 times:
-				make player shoot an arrow at speed 15
-				wait 0.1 seconds
-			play mobspawner flames on player
-			broadcast "{@p}%player% used ability: &cArrow Rapidfire&f!" to "MobArena"
-			stop
-		else if player contains 10 gold nugget:
-			remove 10 gold nuggets from the player
-			play mobspawner flames on player
-			make player shoot an arrow at speed 15
-			broadcast "{@p}%player% used ability: &cFastbow&f!" to "MobArena"
-			stop
+		open chest with 1 row named "&1Archer Attack Selection" to the player
+		if player contains 200 gold nuggets:
+			format slot 7 of player with nether star named "&e&lArchon Rayfall" with lore "&7World target||&725 damage" to close then run [do [add 1 nether star named "&e&lArchon Rayfall" to the player]->[remove 200 gold nuggets from the player]]
 		else:
-			message "{@p}100 Gold - Archon Rayfall"
-			message "{@p}50 Gold - Extreme Arrow Turret"
-			message "{@p}25 Gold - Arrow Rapidfire"
-			message "{@p}10 Gold - Fastbow"
-			stop
+			format slot 7 of player with gray wool named "&fLocked - 200 gold" to be unstealable
+		if player contains 100 gold nuggets:
+			format slot 6 of player with nether star named "&6Overdrive" with lore "&7Single target||&7100 damage" to close then run [do [add 1 nether star named "&6Overdrive" to the player]->[remove 100 gold nuggets from the player]]
+		else:
+			format slot 6 of player with gray wool named "&fLocked - 100 gold" to be unstealable
+		if player contains 50 gold nuggets:
+			format slot 5 of player with nether star named "&fRapidfire MK3" with lore "&7Multiple targets||&78 damage||&75 seconds rapidfire" to close then run [do [add 1 nether star named "&fRapidfire MK3" to the player]->[remove 50 gold nuggets from the player]]
+		else:
+			format slot 5 of player with gray wool named "&fLocked - 50 gold" to be unstealable
+		if player contains 50 gold nuggets:
+			format slot 4 of player with nether star named "&fQuickshot" with lore "&7Single target||&750 damage" to close then run [do [add 1 nether star named "&fQuickshot" to the player]->[remove 50 gold nuggets from the player]]
+		else:
+			format slot 4 of player with gray wool named "&fLocked - 50 gold" to be unstealable
+		if player contains 25 gold nuggets:
+			format slot 3 of player with nether star named "&fRapidfire MK2" with lore "&7Multiple targets||&76 damage||&73 seconds rapidfire" to close then run [do [add 1 nether star named "&fRapidfire MK2" to the player]->[remove 25 gold nuggets from the player]]
+		else:
+			format slot 3 of player with gray wool named "&fLocked - 25 gold" to be unstealable
+		if player contains 10 gold nuggets:
+			format slot 2 of player with nether star named "&fFastbow" with lore "&7Single target||&710 damage" to close then run [do [add 1 nether star named "&fFastbow" to the player]->[remove 10 gold nuggets from the player]]
+		else:
+			format slot 2 of player with gray wool named "&fLocked - 10 gold" to be unstealable
+		if player contains 10 gold nuggets:
+			format slot 1 of player with nether star named "&fRapidfire MK1" with lore "&7Multiple targets||&74 damage||&71 seconds rapidfire" to close then run [do [add 1 nether star named "&fRapidfire MK1" to the player]->[remove 10 gold nuggets from the player]]
+		else:
+			format slot 1 of player with gray wool named "&fLocked - 10 gold" to be unstealable
+		stop
 		
 on death:
 	world is "MobArena"
-	victim is player
-	set {_l} to location of victim
-	loop 10 times:
-		drop 4 gold nuggets at {_l}
-		wait 1 tick
+	if victim is a player:
+		set {_l} to location of victim
+		loop 10 times:
+			drop 4 gold nuggets at {_l}
+			wait 1 tick
+		stop
+	else if victim is creeper or spider or skeleton or magma cube or slime or zombie or blaze or zombie pigman or ghast or witch or silverfish:
+		add 1 to {MobArena.totalkills}
+		set line 3 of block at {MobArena.sign} to "%{MobArena.totalkills}%"
 	stop
-		
+
+command /setmasign:
+	permission: sdad.sdad.asd.asd.ad.a.das.as
+	trigger:
+		set {MobArena.sign} to location of target block
+		message "{@p}Set"
+		stop
+	
 on damage of player:
 	world is "MobArena"
 	#broadcast "%damage cause%"

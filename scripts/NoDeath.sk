@@ -58,7 +58,7 @@ on death of player:
 		set {PVP.killstreak.%victim%} to 0
 		if attacker is a player:
 			attacker isn't victim
-			execute console command "/eco give %attacker% 1600"
+			execute console command "/eco give %attacker% 150"
 			add 1 to {PVP.killstreak.%attacker%}
 			if {PVP.killstreak.%attacker%} is greater than 1:
 				broadcast "&7[&3PVP&7] &3%attacker%'s killstreak: &l%{PVP.killstreak.%attacker%}%." to "PVP"

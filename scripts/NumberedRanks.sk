@@ -212,7 +212,30 @@ command /rankup [<text>]:
 			message "&7[&aRanks&7]&f Not enough money. Next rank is $$%{_a}%"
 			stop
 
+command /test <offline player>:
+	trigger:
+		message "%{Achievements.trigger.longtime.%uuid of arg 1%}%"
+		message "%{Achievements.%uuid of arg 1%::*}%"
+		if player has played on this server before:
+			message "True"
+		stop
+
+on first join:
+	set {Achievements.trigger.longtime.%uuid of player%} to false
+	stop
+
 on join:
+	if {Achievements.%uuid of player%::*} is not set:
+		add "Join SarcaCraft" to {Achievements.%uuid of player%::*}
+	wait 0.1 seconds
+	if {Achievements.trigger.longtime.%uuid of player%} is not set:
+		if player has played on this server before:
+			add "Pre-7.0 Player" to {Achievements.%uuid of player%::*}
+			set {Achievements.trigger.longtime.%uuid of player%} to true
+			message "{@r}Gained achievement: Pre-7.0 Player"
+			message "{@r}To see a list of achievements, do /rank."
+		else:
+			set {Achievements.trigger.longtime.%uuid of player%} to false
 	wait 0.1 seconds
 	if player has permission "adminchat.adminchat":
 		set player's tablist name to "&b&l%display name of player%"
@@ -220,73 +243,31 @@ on join:
 		set player's tablist name to "&f%name of player%"
 	stop
 
-command /rank:
+#command /rank <offline player = %player%>:
+#	trigger:
+#		message "{@r}Info on &a%arg 1%"
+#		message "{@r}Rank: &a%{NR.%uuid of arg 1%.rank}%"
+#		if size of {Achievements.%uuid of arg 1%::*} is less than 1:
+#			message "{@r}Achievements: None"
+#		else:
+#			message "{@r}Achievements: (%size of {Achievements.%uuid of arg 1%::*}%):"
+#			message "{@r}%{Achievements.%uuid of arg 1%::*}%"
+#		stop
+
+command /achsys <offline player> <text>:
+	permission: a.a.ds.dasda.dadasd.aas
 	trigger:
-		message "{@r}Info on &a%player%"
-		message "{@r}Your rank: &a%{NR.%uuid of player%.rank}%"
-		if player has permission "adminchat.adminchat":
-			set {_B1} to "&f["
-			set {_B2} to "&f]"
-		else if {NR.%uuid of player%.rank} is greater than 2500:
-			set {_B1} to "&e["
-			set {_B2} to "&e]"
-		else if {NR.%uuid of player%.rank} is greater than 1000:
-			set {_B1} to "&6["
-			set {_B2} to "&6]"
-		else:
-			set {_B1} to "&7["
-			set {_B2} to "&7]"
-		if {NR.%uuid of player%.rank} is greater than or equal to 2500:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|||||%{_B2}% &7(You are past rank 2500)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 2400:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e||||&0|%{_B2}% &7(96%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 2300:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|||&0||%{_B2}% &7(92%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 2200:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e||&0|||%{_B2}% &7(88%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 2100:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&e|&0||||%{_B2}% &7(84%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 2000:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||||&0|||||%{_B2}% &7(80%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1900:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6||||&0||||||%{_B2}% &7(76%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1800:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|||&0|||||||%{_B2}% &7(72%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1700:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6||&0||||||||%{_B2}% &7(68%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1600:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&6|&0|||||||||%{_B2}% &7(64%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1500:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||||&0||||||||||%{_B2}% &7(60%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1400:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f||||&0|||||||||||%{_B2}% &7(56%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1300:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|||&0||||||||||||%{_B2}% &7(52%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1200:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f||&0|||||||||||||%{_B2}% &7(48%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1100:
-			set {_META} to "%{_B1}%&8|||||&7|||||&f|&0||||||||||||||%{_B2}% &7(44%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 1000:
-			set {_META} to "%{_B1}%&8|||||&7|||||&0|||||||||||||||%{_B2}% &7(40%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 900:
-			set {_META} to "%{_B1}%&8|||||&7||||&0||||||||||||||||%{_B2}% &7(36%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 800:
-			set {_META} to "%{_B1}%&8|||||&7|||&0|||||||||||||||||%{_B2}% &7(32%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 700:
-			set {_META} to "%{_B1}%&8|||||&7||&0||||||||||||||||||%{_B2}% &7(28%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 600:
-			set {_META} to "%{_B1}%&8|||||&7|&0|||||||||||||||||||%{_B2}% &7(24%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 500:
-			set {_META} to "%{_B1}%&8|||||&0||||||||||||||||||||%{_B2}% &7(20%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 400:
-			set {_META} to "%{_B1}%&8||||&0|||||||||||||||||||||%{_B2}% &7(16%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 300:
-			set {_META} to "%{_B1}%&8|||&0||||||||||||||||||||||%{_B2}% &7(12%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 200:
-			set {_META} to "%{_B1}%&8||&0|||||||||||||||||||||||%{_B2}% &7(8%%)"
-		else if {NR.%uuid of player%.rank} is greater than or equal to 100:
-			set {_META} to "%{_B1}%&8|&0||||||||||||||||||||||||%{_B2}% &7(48%%)"
-		else:
-			set {_META} to "%{_B1}%&0|||||||||||||||||||||||||%{_B2}% &7(0%%)"
-		message "{@r}Progress: %{_META}%"
-		
+		add "%arg 2%" to {Achievements.%uuid of arg 1%::*}
+		send "{@r}Gained achievement: %arg 2%" to arg 1
+		send "{@r}To see a list of achievements, do /rank." to arg 1
+		stop
+
+command /delach <offline player>:
+	permission: d.adas.dasd.ad.as
+	trigger:
+		delete {Achievements.trigger.longtime.%uuid of player%}
+		delete {Achievements.trigger.timecheck.%uuid of player%}
+		clear {Achievements.%uuid of arg 1%::*}
+		delete {Achievements.%uuid of arg 1%::*}
+		message "{@r}Done"
+		stop

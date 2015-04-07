@@ -28,9 +28,9 @@ on right click on sign:
 	add player to {Duck.players::*}
 	teleport player to {Duck.gamepoint}
 	set {Duck.userdata.%player%.active} to true
-	if {Duck.userdata.%player%.kills} is not set:
-		set {Duck.userdata.%player%.kills} to 0
-	message "&8[Duck Hunt] Ready."
+	if {Duck.userdata.%uuid of player%.kills} is not set:
+		set {Duck.userdata.%uuid of player%.kills} to 0
+	message "&7[&aDuck Hunt&7] &fReady."
 	remove all items from the player
 	set the tool of the player to bow
 	enchant the tool of the player with power 127
@@ -45,6 +45,10 @@ on right click on sign:
 	stop
 
 on join:
+	if {Duck.userdata.%uuid of player%.kills} is not set:
+		if {Duck.userdata.%player%.kills} is set:
+			set {Duck.userdata.%uuid of player%.kills} to {Duck.userdata.%player%.kills}
+			delete {Duck.userdata.%player%.kills}
 	{Duck.userdata.%player%.active} is true
 	set {Duck.userdata.%player%.active} to false
 	teleport player to {Duck.spawnpoint}
@@ -55,14 +59,14 @@ on command:
 	{Duck.userdata.%player%.active} is true
 	command is not "leaveduck" or "startduck" or "/leaveduck" or "/startduck"
 	cancel event
-	message "&8[Duck Hunt] Only /leaveduck and /startduck is permitted in Duck Hunt."
+	message "&7[&aDuck Hunt&7] &fOnly /leaveduck and /startduck is permitted in Duck Hunt."
 	stop
 
 command /leaveduck:
 	permission: duck.commands
 	trigger:
 		if {Duck.userdata.%player%.active} is not true:
-			message "&8[Duck Hunt] You aren't playing."
+			message "&7[&aDuck Hunt&7]&f You aren't playing."
 			stop
 		set {Duck.userdata.%player%.active} to false
 		clear inventory of player
@@ -71,84 +75,89 @@ command /leaveduck:
 		if size of {Duck.players::*} is 0:
 			set {Duck.canStart} to true
 			set {Duck.active} to false
-			broadcast "&8[Duck Hunt] Game %{Duck.playcount}% ended with %{Duck.kills}% kills."
+			broadcast "&7[&aDuck Hunt&7] &fGame %{Duck.playcount}% ended with %{Duck.kills}% kills."
 
 command /startduck:
 	permission: duck.commands
 	trigger:
 		{Duck.canStart} is true
 		if {Duck.userdata.%player%.active} is not true:
-			message "&8[Duck Hunt] You aren't playing."
+			message "&7[&aDuck Hunt&7]&f You aren't playing."
 			stop
 		if {Duck.playcount} is not set:
 			set {Duck.playcount} to 0
 		add 1 to {Duck.playcount}
 		set {Duck.canStart} to false
-		broadcast "&8[Duck Hunt] Starting in 10 seconds!" to "DuckHunt"
+		broadcast "&7[&aDuck Hunt&7]&f Starting in 10 seconds!" to "DuckHunt"
 		wait 5 seconds
 		if size of {Duck.players::*} is 0:
 			stop
-		broadcast "&8[Duck Hunt] Starting in 5 seconds!" to "DuckHunt"
+		broadcast "&7[&aDuck Hunt&7]&f Starting in 5 seconds!" to "DuckHunt"
 		wait 5 seconds
 		set {Duck.kills} to 0
 		set {Duck.active} to true
-		broadcast "&8[Duck Hunt] Game %{Duck.playcount}% started." to "DuckHunt"
-		broadcast "&3[Duck Hunt] Round 1 starting in 3 seconds!" to "DuckHunt"
+		broadcast "&7[&aDuck Hunt&7]&f Game %{Duck.playcount}% started." to "DuckHunt"
+		broadcast "&7[&aDuck Hunt&7]&f Round 1 starting in 3 seconds!" to "DuckHunt"
 		wait 3 seconds
 		set {Duck.wave} to 1
-		broadcast "&3[Duck Hunt] Round 1 starting!" to "DuckHunt"
+		broadcast "&7[&aDuck Hunt&7]&f Round 1 starting!" to "DuckHunt"
 		while {Duck.active} is true:
 			if {Duck.wave} is less than or equal to 2:
 				spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
-				broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
-				wait 0.5 seconds
+				broadcast "&7[&aDuck Hunt&7]&f Duck spawned!" to "DuckHunt"
+				wait 1 seconds
 				spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
-				broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
+				broadcast "&7[&aDuck Hunt]&f Duck spawned!" to "DuckHunt"
 			else:
 				loop {Duck.wave} times:
 					spawn 1 chicken at {Duck.mobpoint.%random integer from 1 to 13%}
-					broadcast "&8[Duck Hunt] Duck spawned!" to "DuckHunt"
-					wait 0.5 seconds
+					broadcast "&7[&aDuck Hunt&7]&f Duck spawned!" to "DuckHunt"
+					wait 1 seconds
 				chance of 10%:
-					broadcast "&3[Duck Hunt] Cow spawning! Kill for instant $3200!" to "DuckHunt"
+					broadcast "&7[&aDuck Hunt]&f Cow spawning! Kill for instant $3200!" to "DuckHunt"
 					wait 3 seconds
 					spawn 1 cow at {Duck.mobpoint.%random integer from 1 to 13%}
 			wait 7 seconds
 			if {Duck.active} is false:
 				stop
 			add 1 to {Duck.wave}
-			broadcast "&3[Duck Hunt] Round %{Duck.wave}% starting in 3 seconds!" to "DuckHunt"
+			broadcast "&7[&aDuck Hunt&7]&f Round %{Duck.wave}% starting in 3 seconds!" to "DuckHunt"
 			wait 3 seconds
 			loop {Duck.players::*}:
-				send "&8[Duck Hunt] Survived another round." to loop-value
-			broadcast "&3[Duck Hunt] Round %{Duck.wave}% starting!" to "DuckHunt"
+				send "&7[&aDuck Hunt&7]&f Survived another round." to loop-value
+			broadcast "&7[&aDuck Hunt&7]&f Round %{Duck.wave}% starting!" to "DuckHunt"
 		stop
+
 
 on damage of chicken:
 	world is "DuckHunt"
 	if attacker is a player:
-		execute console command "/eco give %attacker% 100"
+		add 50 to the attacker's balance
 		set damage to 1000
 		add 1 to {Duck.kills}
-		add 1 to {Duck.userdata.%attacker%.kills}
-		send "&8[Duck Hunt] Your total kills: %{Duck.userdata.%attacker%.kills}%" to the attacker
-		broadcast "&8[Duck Hunt] Total kills: %{Duck.kills}%." to "DuckHunt"
+		add 1 to {Duck.userdata.%uuid of attacker%.kills}
+		send "&7[&aDuck Hunt&7]&f Your total kills: %{Duck.userdata.%uuid of attacker%.kills}%" to the attacker
+		if {Duck.userdata.%uuid of attacker%.kills} is greater than 100:
+			if {Achievements.trigger.duck1.%uuid of attacker%} is not set:
+				execute console command "/achsys %attacker% 100 kills in Duck Hunt"
+				set {Achievements.trigger.duck1.%uuid of attacker%} to true
+		broadcast "&7[&aDuck Hunt&7]&f Total kills: %{Duck.kills}%." to "DuckHunt"
 	set {_z} to "%damage cause%"
 	{_z} is "lava" or "fire" or "burning"
 	set damage to 1000
 	loop {Duck.players::*}:
 		clear loop-value's inventory
 		set {Duck.userdata.%loop-value%.active} to false
-		send "&c[Duck Hunt] Oh no!" to loop-value
+		send "&7[&aDuck Hunt&7]&c Oh no!" to loop-value
 	clear {Duck.players::*}
 	loop all chickens in "DuckHunt":
 		kill the loop-entity
 	wait 1 seconds
 	execute console command "/ducklose"
-	broadcast "&8[Duck Hunt] Game %{Duck.playcount}% ended with %{Duck.kills}% kills." to "DuckHunt"
+	broadcast "&7[&aDuck Hunt&7]&f Game %{Duck.playcount}% ended with %{Duck.kills}% kills." to "DuckHunt"
 	if {Duck.highscore} is less than {Duck.kills}:
 		set {Duck.highscore} to {Duck.kills}
-		broadcast "&8[Duck Hunt] New high score!"
+		broadcast "&7[&aDuck Hunt&7]&f New high score!"
 		set line 3 of block at {Duck.sign} to "%{Duck.highscore}%"
 		set line 2 of block at {Duck.sign} to "##%{Duck.playcount}%"
 	wait 0.5 second
@@ -159,7 +168,7 @@ on damage of cow:
 	world is "DuckHunt"
 	attacker is a player
 	execute console command "/eco give %attacker% 1000"
-	broadcast "&b[Duck Hunt] %attacker% shot down a cow!" to "DuckHunt"
+	broadcast "&7[&aDuck Hunt&7]&f %attacker% shot down a cow!" to "DuckHunt"
 
 command /duck <text> [<number>]:
 	permission: duck.admin
@@ -230,11 +239,12 @@ on right click on grass block holding a fish:
 	add {_l} to {DuckHunt.fall::*}
 	message "&8[DuckHunt] Location set."
 
-on damage:
+on damage of player:
 	world is "DuckHunt"
-	attacker is a player
-	victim is a player
-	cancel event
+	if attacker is a player:
+		cancel event
+	else if damage cause is fall:
+		set damage to 1000
 	stop
 
 command /ducklose:

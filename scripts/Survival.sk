@@ -204,3 +204,9 @@ command /xenontool <player> <text>:
 					set id of loop-item to 2
 			message "{@x}Go Green complete." to arg 1
 		stop
+
+on break of monster spawner:
+	world is "RegularSurvival"
+	gamemode of player is survival
+	drop 1 monster spawner at location of block
+	stop

@@ -61,3 +61,9 @@ command /ragequit:
 #		set {actioncmd.%uuid of player%} to now
 #		broadcast "%player's display name% Dafuq?"
 #		stop
+
+command !ch <text>:
+	executable by: console
+	trigger:
+		broadcast "&7[&fMTN.DEW&7] &f@console&7: %arg 1%"
+		stop
