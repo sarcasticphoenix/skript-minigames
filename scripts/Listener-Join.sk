@@ -4,6 +4,7 @@ on join:
 		message "&7[&aJoin&7]&f Silently Joined."
 	else:
 		set join message to "&7[&a++&7]&f %player% connected."
+<<<<<<< HEAD
 	wait 0.5 seconds
 	#set display name of player to "&7%player%"
 	player has played on this server before
@@ -16,6 +17,14 @@ on join:
 	message "                       &bUse the forums for discussion!"
 	message "   &e                             www.sarc.biz/forum"
 	message "&3====================================================="
+=======
+	wait 0.3 seconds
+	#set display name of player to "&7%player%"
+	player has played on this server before
+	message "&7[&aSarcaCraft&7] &fHello, %player%!"
+	message "&7[&aSarcaCraft&7] &fHave you fetched your daily free cash?"
+	message "&7[&aSarcaCraft&7]&e http://www.sarc.biz/vote.html"
+>>>>>>> origin/master
 	stop
 
 on quit:

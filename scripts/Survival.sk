@@ -210,6 +210,7 @@ on break of monster spawner:
 	gamemode of player is survival
 	drop 1 monster spawner at location of block
 	stop
+<<<<<<< HEAD
 
 on dispense of seeds:
 	set {_1} to location of block in front of event-block
@@ -232,3 +233,5 @@ on dispense of potato:
 	set item to air
 	set block in front of event-block to potato plant
 	stop
+=======
+>>>>>>> origin/master

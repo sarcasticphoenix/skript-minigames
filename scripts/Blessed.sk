@@ -24,6 +24,7 @@ on right click holding gold sword:
 		play mobspawner flames on player
 		set tool of player to air
 		stop
+<<<<<<< HEAD
 	play mobspawner flames on player
 	loop entities in radius 5 of location of player:
 		if loop-entity isn't a player:
@@ -31,6 +32,13 @@ on right click holding gold sword:
 			ignite the loop-entity for 1 second
 			play  mobspawner flames on loop-entity
 			push the loop-entity upwards at speed 1.5
+=======
+	loop entities in radius 5 of location of player:
+		if loop-entity isn't player:
+			damage the loop-entity by 9 heart
+			ignite the loop-entity for 1 second
+			play  mobspawner flames on loop-entity
+>>>>>>> origin/master
 			push the loop-entity backwards at speed 4
 	stop
 
