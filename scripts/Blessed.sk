@@ -42,7 +42,11 @@ on right click holding blaze rod:
 		message "You are too deep underground. Go up to the ground and try again."
 		stop
 	open chest with 1 rows named "&1Overdirve Blade Selection" to player
-	format slot 2 of player with diamond sword of sharpness 3 and knockback 1 named "&bArctic Blade" with lore "&3The sharp blade, used for fighting||&3in the freezing arctic.||&fMainly single target.||&fMax stats - Sharpness 10 and Knockback 5" to close
+	format slot 2 of player with diamond sword of sharpness 3 and knockback 1 named "&bArctic Blade" with lore "&3The legendary blade, used for fighting||&3in the freezing arctic.||&fSpecial attacks: Mainly single target.||&fMax stats - Sharpness 10 and Knockback 5" to close
+	format slot 3 of player with gold sword of sharpness 2 and fire aspect 1 named "&bEclipse Blade" with lore "&3The golden broadsword, which brings victory||&3against hordes of enemies.||&fSpecial attacks: Mainly multi-target.||&fMax stats - Sharpness 7 and Fire aspect 7" to close
+	format slot 4 of player with bow of power 3 and punch 1 named "&bPhoenix Longbow" with lore "&3A fine-crafted precision longbow, designed||&3to bring death to its target.||&fSpecial attacks: Mainly single target.||&fMax stats: Power 8 and Punch 6" to close
+	format slot 5 of player with bow of power 2 and flame 2 named "&bPhantom Crossbow" with lore "&3A durable crossbow made to allow||&3deadly rapidfire shooting.||&fSpecial attacks: Mainly multi-target.||&fMax stats: Power 5 and Flame 8" to close
+	format slot 6 of player with blaze rod of sharpness 3 and smite 3 named "&bTempest Staff" with lore "&3A staff which deals heavy damage||&3through magical powers.||&fSpecial attacks: Mainly multi-target.||&fMax stats: Sharpness 9 and Smite 7" to close
 	stop
 
 command /setlore <text>:
