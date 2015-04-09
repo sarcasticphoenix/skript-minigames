@@ -11,6 +11,16 @@ on death:
 		else:
 			broadcast "&7[&aGunfight&7] &f%victim% died" to "Gunfight"
 			stop
+	else if world is "PVP":
+		set death message to ""
+		if attacker is a player:
+			broadcast "&7[&aPVP&7] &f%attacker% killed %victim% using %tool of attacker%" to "PVP"
+		else:
+			broadcast "&7[&aPVP&7] &f%victim% died" to "PVP"
+		stop
+	else if world is "DuckHunt":
+		set death message to ""
+		stop
 	if victim is attacker:
 		set death message to  "{@p}%victim% was slain by their own clone."
 		stop

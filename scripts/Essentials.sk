@@ -27,16 +27,41 @@ command /list:
 					set {_j} to number of players - 53
 					format slot {_i} of player with chest named "%{_j}% more players unlisted" to be unstealable
 					stop
+				set {_rand} to a random integer between 1 and 10000
+				set {_%{_rand}%} to "%loop-player%"
 				if loop-player has permission "adminchat.adminchat":
-					format slot {_i} of player with skull of loop-player named "&b&l%display name of loop-player%" with lore "&7Staff" to be unstealable
+					format slot {_i} of player with skull of loop-player named "&b&l%display name of loop-player%" with lore "&7Staff||&7/rank %loop-player% for info" to be unstealable
 				else:
-					format slot {_i} of player with skull of loop-player named "&f&l%display name of loop-player%" with lore "&7Rank: %{NR.%uuid of loop-player%.rank}%" to be unstealable
+					format slot {_i} of player with skull of loop-player named "&f&l%display name of loop-player%" with lore "&7Rank: %{NR.%uuid of loop-player%.rank}%||&7/rank %loop-player% for info" to be unstealable
 				add 1 to {_i}
 			stop
 		if size of all players is 0:
 			message "&7[&aList&7]&f Online Players: 0"
 			stop
 		message "&7[&aList&7]&f Online Players (%number of players%): %all players%"
+		stop
+
+command /rank <player = %player%>:
+	trigger:
+		open chest with 1 rows named "Info on %arg 1%" to player
+		wait 1 tick
+		format slot 2 of player with skull of arg 1 named "&f&l%display name of arg 1%" to be unstealable
+		if arg 1 has permission "adminchat.adminchat":
+			format slot 3 of player with gold ingot named "&fStaff - No rank" to be unstealable
+		else:
+			format slot 3 of player with gold ingot named "&fRank" with lore "&a%{NR.%uuid of arg 1%.rank}%" to be unstealable
+		set {_a} to ""
+		loop {Achievements.%uuid of arg 1%::*}:
+			if {_a} is "":
+				set {_a} to "&a%loop-value%"
+			else:
+				set {_a} to "%{_a}%||&a%loop-value%"
+		format slot 4 of player with clock named "&fTime spent online" with lore "&a%{OnlinePoints.%uuid of arg 1%} / 60% hours||&a(%{OnlinePoints.%uuid of arg 1%}% minutes)" to be unstealable
+		format slot 5 of player with nether star named "&fAchievements List" with lore {_a} to be unstealable
+		if {Votecount.%uuid of arg 1%} is set:
+			format slot 6 of player with exp bottle named "&fVote Count" with lore "&a%{Votecount.%uuid of arg 1%}%" to be unstealable
+		else:
+			format slot 6 of player with exp bottle named "&fVote Count" with lore "&a0" to be unstealable
 		stop
 
 #command /listworld:

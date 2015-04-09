@@ -49,14 +49,19 @@ on right click on sign:
 			stop
 		open chest with 1 rows named "&1Arena Selection" to player
 		wait 1 tick
-		format slot 1 of player with oak sapling named "&fBiomes" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.biomes}]
+		format slot 1 of player with oak sapling named "&fBiomes" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.biomes.%random integer between 1 and 6%}]
+		format slot 2 of player with compass named "&fRadial" with lore "&7Size: Small" to close then run [teleport player to {PVP.arena.radial.%random integer between 1 and 6%}]
+		format slot 3 of player with water bucket named "&fWaterfall" with lore "&7Size: Medium" to close then run [teleport player to {PVP.arena.waterfall.%random integer between 1 and 6%}]
+		format slot 4 of player with stone brick named "&fCastle" with lore "&7Size: Medium" to close then run [teleport player to {PVP.arena.castle.%random integer between 1 and 6%}]
+		format slot 5 of player with orange stained clay named "&fPlaza" with lore "&7Size: Medium" to close then run [teleport player to {PVP.arena.Plaza.%random integer between 1 and 6%}]
+		format slot 6 of player with lava bucket named "&fNostalgia" with lore "&7Size: Large" to close then run [teleport player to {PVP.arena.nostalgia.%random integer between 1 and 6%}]
 	stop
 	
-command /setpvparena <text>:
+command /setpvparena <text> <number>:
 	permission: dsad.das.d.adas.daas.das
 	trigger:
-		set {PVP.arena.%arg 1%} to location of player
-		message "{@p}Set arena %arg 1%."
+		set {PVP.arena.%arg 1%.%arg 2%} to location of player
+		message "{@p}Set arena %arg 1% spawnpoint %arg 2%."
 		stop
 	
 on death of player:
@@ -69,16 +74,27 @@ on death of player:
 	clear inventory of victim
 	if attacker is a player:
 		add 1 to {PVP.userdata.%attacker%.killstreak}
+		if {PVP.killcounter.%attacker%} is not set:
+			set {PVP.killcounter.%attacker%} to 0
+		if {PVP.killcounter.%attacker%} is greater than 50:
+			if {Achievements.trigger.pvp1.%attacker%} is not set:
+				execute console command "/achsys %attacker% 50 kills in PVP"
+				set {Achievements.trigger.pvp1.%attacker%} to true
+		else if {PVP.killcounter.%attacker%} is greater than 500:
+			if {Achievements.trigger.pvp2.%attacker%} is not set:
+				execute console command "/achsys %attacker% 500 kills in PVP"
+				set {Achievements.trigger.pvp2.%attacker%} to true
 	stop
 
-on command "/mvs":
+on command "mvs":
 	world is "PVP"
 	set {PVP.userdata.%player%.killstreak} to 0
 	set helmet of player to air
 	set chestplate of player to air
 	set leggings of player to air
 	set boots of player to air
-	clear inventory of player
+	wait 1 tick
+	execute console command "/ci %player%"
 	stop
 	
 on damage:
@@ -90,14 +106,14 @@ on damage:
 	else if tool of attacker is blaze rod named "&fDark Staff":
 		apply blindness to the victim for 0.1 seconds
 	else if tool of attacker is redstone torch named "&fLeech Staff":
-		heal attacker by 0.5 hearts
+		heal attacker by 0.75 hearts
 	stop
 		
 on right click:
 	world is "PVP"
-	if name of tool of player is "&fShuriken" or "&fRecord" or "&fCoins" or "&fSyringe" or "&fDocuments":
+	if name of tool of player is "&fShuriken" or "&fRecord" or "&fCoins" or "&fSyringe" or "&fDocuments" or "&fBooks":
 		remove 1 of tool of player from the player
-		make player shoot an arrow at speed 5
+		make player shoot an arrow at speed 2
 	stop
 	
 command /pvpsys <text> <player> <text>:
@@ -119,7 +135,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg a diamond sword of sharpness 3 and knockback 1 named "&fKnight's Sword"
+				give player-arg a diamond sword of knockback 1 named "&fKnight's Sword"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 				add 1 potion of swiftness named "&fInstant Speed" to player-arg
 			else if arg 3 is "ranger":
@@ -135,7 +151,7 @@ command /pvpsys <text> <player> <text>:
 				add 1 potion of swiftness named "&fInstant Speed" to player-arg
 			else if arg 3 is "barbarian":
 				equip player-arg with all leather armor
-				give player-arg a iron axe of sharpness 4 and knockback 2 named "&fBarbarian's Axe"
+				give player-arg a iron axe of sharpness 3 and knockback 2 named "&fBarbarian's Axe"
 				add 1 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "rogue":
 				equip player-arg with all leather armor
@@ -229,7 +245,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg a bow named "&fPistol"
+				give player-arg a bow of power 3 named "&fPistol"
 				add 64 arrows to player-arg
 				give player-arg a iron sword of sharpness 2 named "&fPirate's Blade"
 				add 2 potions of swiftness named "&fAlcohol" to player-arg
@@ -240,7 +256,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg an iron sword of sharpness 2 named "&fTank's Sword"
+				give player-arg an iron sword of sharpness 1 named "&fTank's Sword"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "bloodmage":
 				equip player-arg with all leather armor
@@ -321,8 +337,8 @@ command /pvpsys <text> <player> <text>:
 				dye chestplate of player-arg yellow
 				dye leggings of player-arg yellow
 				dye boots of player-arg yellow
-				give player-arg a bread of sharpness 2 named "&fStale Bread"
-				give player-arg a furnace of sharpness 1 and knockback 2 and fire aspect 1 named "&fBakery Oven"
+				give player-arg a bread of sharpness 3 named "&fStale Bread"
+				give player-arg a non-burning furnace of sharpness 1 and knockback 2 and fire aspect 1 named "&fBakery Oven"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "dj":
 				equip player-arg with all iron armor
@@ -440,7 +456,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg iron hoe of sharpness 2 named "&fToothbrush"
+				give player-arg iron hoe of sharpness 3 named "&fToothbrush"
 				give player-arg string of knockback 3 named "&fDental Floss"
 				add 2 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "architect":
@@ -449,7 +465,7 @@ command /pvpsys <text> <player> <text>:
 				enchant chestplate of player with protection 1
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
-				give player-arg iron ingot of sharpness 2 named "&fModeling Software Box"
+				give player-arg iron ingot of sharpness 3 named "&fModeling Software Box"
 				give player-arg book of knockback 2 named "&fBlueprints"
 				add 3 potions of healing named "&fHealth Restore" to player-arg
 			else if arg 3 is "farmer":
@@ -510,6 +526,6 @@ command /pvpsys <text> <player> <text>:
 				enchant leggings of player with protection 1
 				enchant boots of player with protection 1
 				give player-arg a tripwire hook of knockback 2 and sharpness 1 named "&fMic"
-				give player-arg iron ingot of sharpness 2 and knockback 1 named "&fLarge Camera"
+				give player-arg iron ingot of sharpness 3 and knockback 1 named "&fLarge Camera"
 				add 1 potions of healing named "&fHealth Restore" to player-arg
 				add 3 potion of swiftness named "&fInstant Speed" to player-arg

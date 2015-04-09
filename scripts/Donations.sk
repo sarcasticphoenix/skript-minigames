@@ -1,5 +1,5 @@
 options:
-	p: &7[&6Donations&7] &6
+	p: &7[&eVIP&7] &e
 
 command /donor <text> <text>:
 	executable by: console
@@ -34,3 +34,40 @@ command /donor <text> <text>:
 #			stop
 #		spawn 10 of particle arg 1:1 offset by 0.5, 0.5, 0.5 at head location of player
 #		stop
+
+command /aura [<text = "help">] [<text>]:
+	permission: dolor.gold
+	trigger:
+		if arg 1 is "on":
+			set {Particles.%uuid of player%} to true
+			if {Particles.%uuid of player%.type} is not set:
+				set {Particles.%uuid of player%.type} to "fire"
+			message "{@p}Enabled donor aura."
+			message "{@p}To change particles, do /aura set ParticleName."
+			stop
+		else if arg 1 is "off":
+			set {Particles.%uuid of player%} to false
+			message "{@p}Disabled donor aura."
+			stop
+		else if arg 1 is "set":
+			if arg 2 is "fire":
+				set {Particles.%uuid of player%.type} to "fire"
+				message "{@p}Particle set to Fire."
+			else if arg 2 is "signal":
+				set {Particles.%uuid of player%.type} to "signal"
+				message "{@p}Particle set to Signal."
+			else:
+				message "{@p}Particles can be set to fire or signal. More coming soon."
+		else:
+			message "{@p}/aura on/off/set"
+			stop
+
+every 0.4 seconds:
+	loop all players:
+		if loop-player has permission "donor.gold":
+			if {Particles.%uuid of loop-player%} is true:
+				if {Particles.%uuid of loop-player%.type} is "fire":
+					play mobspawner flames on loop-player
+				else if {Particles.%uuid of loop-player%.type} is "signal":
+					play ender signal on loop-player
+	stop

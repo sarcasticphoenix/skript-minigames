@@ -1,6 +1,6 @@
 options:
-	p: &7[&eArtifacts&7] &e
-	e: &c[Artifacts] &c
+	p: &7[&eOverdrive&7] &e
+	e: &7[&eOverdrive&7] &e
 
 command /solarblade:
 	executable by: players
@@ -14,15 +14,6 @@ command /solarblade:
 		enchant tool of player with sharpness 10
 		enchant tool of player with knockback 3
 		message "{@p}The blade has been summoned."
-		spawn 50 of particle fireworks spark offset by 2, 2, 2 at location of player
-		spawn 50 of particle fireworks spark:1 offset by 2, 2, 2 at location of player
-		wait 1 second
-		set {_z} to 0
-		while {_z} is less than 25:
-			spawn 10 of particle flame:1 offset by 5, 5, 5 at location of player
-			spawn 10 of particle enchantment table:1 offset by 5, 5, 5 at location of player
-			wait 0.2 seconds
-			add 1 to {_z}
 		stop
 
 on right click holding gold sword:
@@ -30,93 +21,57 @@ on right click holding gold sword:
 	set {_n} to player
 	if {_n} isn't "Sarcasticphoenix":
 		set health of player to 1
-		spawn 500 of particle lava offset by 5, 5, 5 at location of player
+		play mobspawner flames on player
 		set tool of player to air
 		stop
-	set {_p} to 10
-	loop 25 times:
-		spawn {_p} of particle flame:1 offset by 3, 3, 3 at location of player
-		spawn {_p} of particle enchantment table:1 offset by 3, 3, 3 at location of player
-		add 1 to {_p}
-		wait 0.2 seconds
-	strike lightning effect at location of player
-	spawn 2 of particle huge explosion offset by 0, 0, 0 at location of player
-	spawn 300 of particle fireworks spark:1 offset by 0.5, 0.5, 0.5 at location of player
-	spawn 300 of particle lava offset by 5, 5, 5 at location of player
-	loop entities in radius 10 of location of player:
-		if loop-entity isn't player:
-			damage the loop-entity by 1 heart
-			chance of 50%:
-				ignite the loop-entity
+	play mobspawner flames on player
+	loop entities in radius 5 of location of player:
+		if loop-entity isn't a player:
+			damage the loop-entity by 9 heart
+			ignite the loop-entity for 1 second
+			play  mobspawner flames on loop-entity
 			push the loop-entity upwards at speed 1.5
-			push the loop-entity backwards at speed 1.5
+			push the loop-entity backwards at speed 4
 	stop
 
-on mine of stone:
-	world is "survival"
-	gamemode of player is survival
-	if y-coordinate of block is less than 10:
-		set {_z} to 0.00015
-	else:
-		set {_z} to 0.0001
-	chance of {_z}:
-		message "{@p}Stone crumbles, exposing an ancient item."
-		cancel event
-		set block to stained glass
-		spawn 25 of particle fireworks spark offset by 2, 2, 2 at location of block
-		set {_z} to location of block
-		chance of 30%:
-			drop 25 diamonds at {_z}
-			stop
-		chance of 95%:
-			set {_z} to rounded random number between 1 and 13
-			if {_z} is 1:
-				give player an iron sword of sharpness 3 and knockback 1 and unbreaking 10 named "&bFrostbane"
-			else if {_z} is 2:
-				give player an iron sword of sharpness 3 and unbreaking 10 named "&bSting"
-			else if {_z} is 3:
-				give player a stone sword of knockback 3 and unbreaking 10 and sharpness 2 named "&bBarbarian Club"
-			else if {_z} is 4:
-				give player an iron axe of knockback 2 and unbreaking 10 and sharpness 3 named "&bAres Battleaxe"
-			else if {_z} is 5:
-				give player a gold sword of sharpness 3 and unbreaking 10 and knockback 4 named "&aWitherbane"
-			else if {_z} is 6:
-				give player a diamond sword of sharpness 3 and unbreaking 10 and smite 5 named "&aZombieslayer"
-			else if {_z} is 7:
-				give player a bow of power 3 and unbreaking 10 and punch 2 named "&bArtemis Bow"
-			else if {_z} is 8:
-				give player a bow of power 2 and unbreaking 10 and flame 3 named "&bFury"
-			else if {_z} is 9:
-				give player a bow of power 3 and flame 2 and punch 1 and unbreaking 10 named "&aRage"
-			else if {_z} is 10:
-				give player an iron helmet of protection 2 and unbreaking 10 and thorns 1 named "&bPolished helm"
-			else if {_z} is 11:
-				give player a chain helmet of thorns 4 and unbreaking 10 named "&bBacklash"
-			else if {_z} is 12:
-				give player a wither skeleton head of protection 4 and aqua affinity 1 and unbreaking 10 named "&aPhantom"
-			else if {_z} is 13:
-				give player a chain chestplate of protection 2 and unbreaking 10 and thorns 1 named "&bBarrier"
+on right click holding blaze rod:
+	name of tool of player is "&aOverdrive Blade Selection"
+	cancel event
+	wait 1 tick
+	if y-coordinate of player is less than 50:
+		message "You are too deep underground. Go up to the ground and try again."
+		stop
+	open chest with 1 rows named "&1Overdirve Blade Selection" to player
+	format slot 2 of player to diamond sword of sharpness 3 and knockback 1 named "&bArctic Blade" with lore "&3The sharp blade, used for fighting||&3in the freezing arctic.||&fMainly single target.||&fMax stats: Sharpness 10 and Knockback 5" to close then run [message "Still in testing"]
+	stop
+
+command /setlore <text>:
+	permission: lore.set
+	trigger:
+		set lore of tool of player to "%arg 1%"
 		stop
 
-on tool change:
-	wait 1 tick
-	name of tool of player contains "&a" or "&b" or "&6"
-	world is "survival" or "SuperflatSurvival"
+on break of stone:
+	world is "RegularSurvival"
 	gamemode of player is survival
-	if player doesn't contain a water bottle named "&1Potion of Handle Artifact":
-		if name of tool of player contains "&a":
-			damage player by 3 hearts
-		else if name of tool of player contains "&b":
-			damage player by 4 hearts
-		else if name of tool of player contains "&6":
-			damage player by 5 hearts
-		message "{@p}A magical force from your artifact blasts you!"
-		spawn 100 of particle lava offset by 1, 1, 1 at location of player
-		apply blindness to the player for 3 seconds
-	else:
-		message "{@p}Having a potion of handle artifact, the artifact settles into your hands."
-		spawn 25 of particle explode:1 offset by 1, 1, 1 at location of player
-	stop
+	y-coordinate of player is less than 30
+	chance of 0.05%:
+		message "You find an old chest in the stone."
+		wait 1 tick
+		set block at location of event-block to chest
+		wait 1 tick
+		if {Overdrive.selected.%uuid of player%} is not set:
+			add 1 blaze rod named "&aOverdrive Blade Selection" with lore "&fRight click holding this||&fto choose your overdrive||&fblade." to inventory of block at location of event-block
+			set {Overdrive.selected.%uuid of player%} to true
+		else:
+			add 1 glowstone dust named "&aOverdrive Upgrade Powder" with lore "&fUse from overdrive blade||&fright click menu." to inventory of block at location of event-block
+			chance of 30%:
+				add 1 glowstone dust named "&aOverdrive Upgrade Powder" with lore "&fUse from overdrive blade||&fright click menu." to inventory of block at location of event-block
+			chance of 10%:
+				add 1 glowstone dust named "&aOverdrive Upgrade Powder" with lore "&fUse from overdrive blade||&fright click menu." to inventory of block at location of event-block
+		stop
+
+
 
 on right click holding ghast tear:
 	name of tool of player is "&aAmulet of Levitation"

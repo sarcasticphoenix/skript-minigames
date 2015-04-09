@@ -105,7 +105,7 @@ on server list ping:
 	else:
 		set {_s} to "BUUURP!"
 	#Special MOTDs==============
-	#set {_s} to "Happy Halloween from SarcaCraft!"
+	#set {_s} to "Happy 3rd Year Anniversary!"
 	#===========================
 	set motd to "%{_a}%%{_p}% %{_s}%"
 	stop

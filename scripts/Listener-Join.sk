@@ -4,15 +4,24 @@ on join:
 		message "&7[&aJoin&7]&f Silently Joined."
 	else:
 		set join message to "&7[&a++&7]&f %player% connected."
-	wait 0.1 seconds
+	wait 0.5 seconds
 	#set display name of player to "&7%player%"
-	message "&7[&aJoin&7] &fHello, %player%!"
-	stop	
+	player has played on this server before
+	message "&3====================================================="
+	message "                       &bWelcome back, %player%!"
+	message "&3====================================================="
+	message "                &bHave you fetched your daily free cash?"
+	message "                                 &e www.sarc.biz/vote"
+	message "&3====================================================="
+	message "                       &bUse the forums for discussion!"
+	message "   &e                             www.sarc.biz/forum"
+	message "&3====================================================="
+	stop
 
 on quit:
 	if player has permission "adminchat.adminchat":
 		set leave message to ""
 		stop
 	else:
-		set leave message to "&7[&c--&7] %player% disconnected."
+		set leave message to "&7[&c--&7] &7%player% disconnected."
 		stop

@@ -204,3 +204,31 @@ command /xenontool <player> <text>:
 					set id of loop-item to 2
 			message "{@x}Go Green complete." to arg 1
 		stop
+
+on break of monster spawner:
+	world is "RegularSurvival"
+	gamemode of player is survival
+	drop 1 monster spawner at location of block
+	stop
+
+on dispense of seeds:
+	set {_1} to location of block in front of event-block
+	block below {_1} is dry soil or wet soil
+	set block in front of event-block to freshly planted wheat
+	cancel event
+	remove 1 seed from event-block
+	stop
+
+on dispense of carrot:
+	set {_1} to location of block in front of event-block
+	block below {_1} is dry soil or wet soil
+	set item to air
+	set block in front of event-block to carrot plant
+	stop
+
+on dispense of potato:
+	set {_1} to location of block in front of event-block
+	block below {_1} is dry soil or wet soil
+	set item to air
+	set block in front of event-block to potato plant
+	stop

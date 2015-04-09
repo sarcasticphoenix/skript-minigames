@@ -1,0 +1,38 @@
+options:
+	#p = Prefix
+	p: &7[&aBookshelf&7] &f
+
+command /bookshelf <text> [<text>]:
+	permission: bookshelf.manage
+	trigger:
+		if arg 1 is "add" or "new":
+			if arg 2 is not set:
+				message "{@p}Provide a message to add."
+				stop
+			if {Bookshelf.list::*} contains "%arg 2%":
+				message "{@p}That message already exists."
+				stop
+			add "%arg 2%" to {Bookshelf.list::*}
+			message "{@p}'%arg 2%' added to list."
+			stop
+		else if arg 1 is "delete" or "del" or "remove" or "rem":
+			if arg 2 is not set:
+				message "{@p}Provide a message to delete."
+				stop
+			if {Bookshelf.list::*} doesn't contain "%arg 2%":
+				message "{@p}List does not contain '%arg 2%'"
+				stop
+			remove "%arg 2%" from {Bookshelf.list::*}
+			message "{@p}Message '%arg 2%' removed."
+			stop
+		else if arg 1 is "list":
+			message "{@p}List of all messages:"
+			message "{@p}%{Bookshelf.list::*}%"
+			stop
+		else:
+			message "{@p}/bookshelf add/delete/list"
+			stop
+
+on right click on bookshelf:
+	message "{@p}Book says: '%random element of {Bookshelf.list::*}%'"
+	stop
