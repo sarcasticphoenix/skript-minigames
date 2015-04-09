@@ -24,7 +24,6 @@ on right click holding gold sword:
 		play mobspawner flames on player
 		set tool of player to air
 		stop
-<<<<<<< HEAD
 	play mobspawner flames on player
 	loop entities in radius 5 of location of player:
 		if loop-entity isn't a player:
@@ -32,13 +31,6 @@ on right click holding gold sword:
 			ignite the loop-entity for 1 second
 			play  mobspawner flames on loop-entity
 			push the loop-entity upwards at speed 1.5
-=======
-	loop entities in radius 5 of location of player:
-		if loop-entity isn't player:
-			damage the loop-entity by 9 heart
-			ignite the loop-entity for 1 second
-			play  mobspawner flames on loop-entity
->>>>>>> origin/master
 			push the loop-entity backwards at speed 4
 	stop
 
@@ -50,7 +42,7 @@ on right click holding blaze rod:
 		message "You are too deep underground. Go up to the ground and try again."
 		stop
 	open chest with 1 rows named "&1Overdirve Blade Selection" to player
-	format slot 2 of player to diamond sword of sharpness 3 and knockback 1 named "&bArctic Blade" with lore "&3The sharp blade, used for fighting||&3in the freezing arctic.||&fMainly single target.||&fMax stats: Sharpness 10 and Knockback 5" to close then run [message "Still in testing"]
+	format slot 2 of player with diamond sword of sharpness 3 and knockback 1 named "&bArctic Blade" with lore "&3The sharp blade, used for fighting||&3in the freezing arctic.||&fMainly single target.||&fMax stats - Sharpness 10 and Knockback 5" to close
 	stop
 
 command /setlore <text>:
